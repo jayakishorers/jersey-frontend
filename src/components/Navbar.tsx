@@ -37,7 +37,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="flex-shrink-0"
           >
             <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">
-              JerseyPro
+              CHENNAIYIN JERSEYS
             </h1>
           </motion.div>
 

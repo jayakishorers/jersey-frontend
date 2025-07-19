@@ -50,7 +50,7 @@ export const Hero: React.FC<HeroProps> = ({ onShopNowClick }) => {
               CHENNAIYIN
             </span>
             <br />
-            <span className="text-white">LEGENDS</span>
+            <span className="text-white">JERSEYS</span>
           </h1>
 
           <motion.p
