@@ -87,6 +87,9 @@ export const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
       }
     });
   };
+const handleSearchClick = () => {
+  setShowFilters(false); // This closes the filter panel
+};
 
   return (
     <div className="min-h-screen bg-gray-900 pt-20">
@@ -239,6 +242,14 @@ export const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
                     </div>
                   </div>
                 ))}
+                {/* Search Button */}
+<button
+  onClick={handleSearchClick}
+  className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+>
+  Search
+</button>
+
               </motion.div>
             )}
           </AnimatePresence>
