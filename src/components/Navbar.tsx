@@ -151,7 +151,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </div>
 
                 {/* Mobile Actions */}
-                <div className="flex justify-around pt-4">
+                <div className="flex flex-col gap-4 pt-4 sm:flex-row sm:justify-around">
                   <motion.button
                     whileTap={{ scale: 0.95 }}
                     onClick={onCustomizeClick}
