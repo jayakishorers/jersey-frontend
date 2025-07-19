@@ -152,14 +152,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                 {/* Mobile Actions */}
                 <div className="flex flex-col gap-4 pt-4 sm:flex-row sm:justify-around">
-                  <motion.button
-                    whileTap={{ scale: 0.95 }}
-                    onClick={onCustomizeClick}
-                    className="flex items-center space-x-2 p-2 text-gray-300 hover:text-white"
-                  >
-                    <Palette className="h-5 w-5" />
-                    <span>Customize</span>
-                  </motion.button>
                   
                   <motion.button
                     whileTap={{ scale: 0.95 }}
