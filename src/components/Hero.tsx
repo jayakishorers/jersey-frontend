@@ -9,7 +9,8 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onShopNowClick }) => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900/20 to-green-900/20">
+    <section className="relative min-h-screen pt-20 sm:pt-24 flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900/20 to-green-900/20">
+
       {/* Background Image */}
       <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=1920')] bg-cover bg-center opacity-10"></div>
 
@@ -46,7 +47,7 @@ export const Hero: React.FC<HeroProps> = ({ onShopNowClick }) => {
         >
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight">
             <span className="bg-gradient-to-r from-blue-400 via-green-400 to-yellow-400 bg-clip-text text-transparent">
-              JERSEY
+              CHENNAIYIN
             </span>
             <br />
             <span className="text-white">LEGENDS</span>
