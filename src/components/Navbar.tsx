@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Filter, Menu, X, ShoppingCart, Heart, User, Palette } from 'lucide-react';
+import { Search, Menu, X, ShoppingCart, Heart, User } from 'lucide-react';
 
 interface NavbarProps {
   searchQuery: string;
@@ -31,12 +31,18 @@ export const Navbar: React.FC<NavbarProps> = ({
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
+          {/* Logo with Badge and Scroll-to-Top */}
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="flex-shrink-0"
+            className="flex-shrink-0 flex items-center space-x-3 cursor-pointer"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">
+            <img
+              src="/logo.png"
+              alt="Chennaiyin Logo"
+              className="h-10 w-auto object-contain"
+            />
+            <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">
               CHENNAIYIN JERSEYS
             </h1>
           </motion.div>
@@ -58,26 +64,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Desktop Actions */}
+          {/* Desktop Actions (Cleaned Up) */}
           <div className="hidden md:flex items-center space-x-4">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={onCustomizeClick}
-              className="p-2 text-gray-300 hover:text-white bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-600 hover:border-purple-500 transition-colors"
-            >
-              <Palette className="h-5 w-5" />
-            </motion.button>
-            
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={onFilterToggle}
-              className="p-2 text-gray-300 hover:text-white bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-600 hover:border-blue-500 transition-colors"
-            >
-              <Filter className="h-5 w-5" />
-            </motion.button>
-            
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -152,16 +140,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                 {/* Mobile Actions */}
                 <div className="flex flex-col gap-4 pt-4 sm:flex-row sm:justify-around">
-                  
-                  <motion.button
-                    whileTap={{ scale: 0.95 }}
-                    onClick={onFilterToggle}
-                    className="flex items-center space-x-2 p-2 text-gray-300 hover:text-white"
-                  >
-                    <Filter className="h-5 w-5" />
-                    <span>Filter</span>
-                  </motion.button>
-                  
                   <motion.button
                     whileTap={{ scale: 0.95 }}
                     className="flex items-center space-x-2 p-2 text-gray-300 hover:text-white"
@@ -182,6 +160,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                         {cartCount}
                       </span>
                     )}
+                  </motion.button>
+
+                  {/* New Profile Button in Mobile */}
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center space-x-2 p-2 text-gray-300 hover:text-white"
+                  >
+                    <User className="h-5 w-5" />
+                    <span>Profile</span>
                   </motion.button>
                 </div>
               </div>

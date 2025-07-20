@@ -45,13 +45,27 @@ export const Hero: React.FC<HeroProps> = ({ onShopNowClick }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight">
-            <span className="bg-gradient-to-r from-blue-400 via-green-400 to-yellow-400 bg-clip-text text-transparent">
-              CHENNAIYIN
-            </span>
-            <br />
-            <span className="text-white">JERSEYS</span>
-          </h1>
+          <h1 className="flex items-center justify-center gap-5 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight text-center">
+  {/* Image on the left */}
+  <motion.img
+  src="/logo.png"
+  alt="Chennaiyin Logo"
+  className="h-[6.5rem] md:h-[8rem] w-auto object-contain drop-shadow-lg"
+  initial={{ opacity: 0, scale: 0.95 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ duration: 0.6 }}
+/>
+
+
+
+  {/* Text stacked and centered beside image */}
+  <div className="flex flex-col items-center leading-tight">
+    <span className="bg-gradient-to-r from-blue-400 via-green-400 to-yellow-400 bg-clip-text text-transparent">
+      CHENNAIYIN
+    </span>
+    <span className="text-white">JERSEYS</span>
+  </div>
+</h1>
 
           <motion.p
             initial={{ opacity: 0, y: 30 }}
