@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { FilterPanel } from './components/FilterPanel';
@@ -14,6 +14,8 @@ import { Jersey, ViewMode } from './types';
 import { useFilters } from './hooks/useFilters';
 import { useWishlist } from './hooks/useWishlist';
 import { useCart } from './hooks/useCart';
+import SignIn from './SignIn';
+import SignUp from './SignUp';
 
 function App() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -30,15 +32,15 @@ function App() {
   } = useFilters(jerseys);
 
   const { wishlistedItems, toggleWishlist } = useWishlist();
-  const { 
-    cartItems, 
-    isCartOpen, 
-    setIsCartOpen, 
-    addToCart, 
-    removeFromCart, 
-    updateQuantity, 
-    getCartTotal, 
-    getCartCount 
+  const {
+    cartItems,
+    isCartOpen,
+    setIsCartOpen,
+    addToCart,
+    removeFromCart,
+    updateQuantity,
+    getCartTotal,
+    getCartCount
   } = useCart();
 
   const handleViewDetails = (jersey: Jersey) => {
@@ -54,7 +56,7 @@ function App() {
   const handleAddToCart = (jersey: Jersey, size: string, quantity: number = 1) => {
     addToCart(jersey, size, quantity);
   };
-  // Get jerseys by categories for sections
+
   const playerVersionJerseys = jerseys.filter(j => j.type === 'Player Version');
   const masterCopyJerseys = jerseys.filter(j => j.type === 'Master Copy');
   const retroJerseys = jerseys.filter(j => j.type === 'Retro');
@@ -75,21 +77,19 @@ function App() {
             onBack={() => setCurrentView('home')}
           />
         );
-      
+
       case 'home':
       default:
         return (
           <>
-            {/* Hero Section */}
-            <Hero 
+            <Hero
               onShopNowClick={() => setCurrentView('search')}
               onCustomizeClick={() => setCurrentView('customize')}
             />
 
-            {/* Category Sections */}
             <section className="py-16">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* New Arrivals */}
+
                 <CategorySection
                   title="New Arrivals"
                   jerseys={newJerseys}
@@ -100,7 +100,6 @@ function App() {
                   onViewAll={() => setCurrentView('search')}
                 />
 
-                {/* Best Sellers */}
                 <CategorySection
                   title="Best Sellers"
                   jerseys={bestSellerJerseys}
@@ -111,7 +110,6 @@ function App() {
                   onViewAll={() => setCurrentView('search')}
                 />
 
-                {/* Player Version */}
                 <CategorySection
                   title="Player Version"
                   jerseys={playerVersionJerseys}
@@ -122,7 +120,6 @@ function App() {
                   onViewAll={() => setCurrentView('search')}
                 />
 
-                {/* Retro Collection */}
                 <CategorySection
                   title="Retro Collection"
                   jerseys={retroJerseys}
@@ -133,7 +130,6 @@ function App() {
                   onViewAll={() => setCurrentView('search')}
                 />
 
-                {/* Full Kits */}
                 <CategorySection
                   title="Full Kits"
                   jerseys={fullKitJerseys}
@@ -149,51 +145,54 @@ function App() {
         );
     }
   };
+
   return (
-    <div className="min-h-screen bg-gray-900">
-      {/* Navbar */}
-      <Navbar
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        onFilterToggle={() => setIsFilterOpen(true)}
-        cartCount={getCartCount()}
-        onCartClick={() => setIsCartOpen(true)}
-        onSearchClick={() => setCurrentView('search')}
-        onCustomizeClick={() => setCurrentView('customize')}
+    <Routes>
+      <Route path="/signin" element={<SignIn />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route
+        path="*"
+        element={
+          <div className="min-h-screen bg-gray-900">
+            <Navbar
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              onFilterToggle={() => setIsFilterOpen(true)}
+              cartCount={getCartCount()}
+              onCartClick={() => setIsCartOpen(true)}
+              onSearchClick={() => setCurrentView('search')}
+              onCustomizeClick={() => setCurrentView('customize')}
+            />
+
+            <FilterPanel
+              isOpen={isFilterOpen}
+              onClose={() => setIsFilterOpen(false)}
+              filters={filters}
+              onFilterChange={setFilters}
+            />
+
+            <ProductModal
+              jersey={selectedJersey}
+              isOpen={isModalOpen}
+              onClose={handleCloseModal}
+              onAddToCart={handleAddToCart}
+            />
+
+            <CartDrawer
+              isOpen={isCartOpen}
+              onClose={() => setIsCartOpen(false)}
+              cartItems={cartItems}
+              onUpdateQuantity={updateQuantity}
+              onRemoveItem={removeFromCart}
+              cartTotal={getCartTotal()}
+            />
+
+            <main>{renderCurrentView()}</main>
+            {currentView === 'home' && <Footer />}
+          </div>
+        }
       />
-
-      {/* Filter Panel */}
-      <FilterPanel
-        isOpen={isFilterOpen}
-        onClose={() => setIsFilterOpen(false)}
-        filters={filters}
-        onFilterChange={setFilters}
-      />
-
-      {/* Product Modal */}
-      <ProductModal
-        jersey={selectedJersey}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onAddToCart={handleAddToCart}
-      />
-
-      {/* Cart Drawer */}
-      <CartDrawer
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        cartItems={cartItems}
-        onUpdateQuantity={updateQuantity}
-        onRemoveItem={removeFromCart}
-        cartTotal={getCartTotal()}
-      />
-
-      {/* Main Content */}
-      <main>{renderCurrentView()}</main>
-
-      {/* Footer */}
-      {currentView === 'home' && <Footer />}
-    </div>
+    </Routes>
   );
 }
 

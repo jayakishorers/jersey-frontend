@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Menu, X, ShoppingCart, Heart, User } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
 
 interface NavbarProps {
   searchQuery: string;
@@ -22,6 +23,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onCustomizeClick
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <motion.nav
@@ -95,6 +97,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => navigate('/signin')}
               className="p-2 text-gray-300 hover:text-white bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-600 hover:border-yellow-500 transition-colors"
             >
               <User className="h-5 w-5" />
