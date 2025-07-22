@@ -23,15 +23,11 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   if (!jersey) return null;
 
   const nextImage = () => {
-    setCurrentImageIndex((prev) => 
-      prev === jersey.images.length - 1 ? 0 : prev + 1
-    );
+    setCurrentImageIndex((prev) => prev === jersey.images.length - 1 ? 0 : prev + 1);
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prev) => 
-      prev === 0 ? jersey.images.length - 1 : prev - 1
-    );
+    setCurrentImageIndex((prev) => prev === 0 ? jersey.images.length - 1 : prev - 1);
   };
 
   const handleAddToCart = () => {
@@ -39,6 +35,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
     onAddToCart(jersey, selectedSize, quantity);
     onClose();
   };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -49,30 +46,30 @@ export const ProductModal: React.FC<ProductModalProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
           />
 
           {/* Modal */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 50 }}
+            initial={{ opacity: 0, scale: 0.95, y: 50 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 50 }}
+            exit={{ opacity: 0, scale: 0.95, y: 50 }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed inset-4 md:inset-8 bg-gray-900/95 backdrop-blur-md border border-gray-700/50 rounded-2xl z-50 overflow-hidden"
+            className="fixed inset-4 md:inset-8 bg-white text-gray-900 border border-gray-200 rounded-2xl z-50 overflow-hidden shadow-2xl"
           >
             {/* Close Button */}
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={onClose}
-              className="absolute top-4 right-4 z-10 p-2 bg-gray-800/50 backdrop-blur-sm rounded-full border border-gray-600 text-gray-400 hover:text-white hover:border-white transition-colors"
+              className="absolute top-4 right-4 z-10 p-2 bg-gray-100 rounded-full border border-gray-300 text-gray-600 hover:text-black"
             >
               <X className="w-6 h-6" />
             </motion.button>
 
             <div className="flex flex-col lg:flex-row h-full">
               {/* Image Section */}
-              <div className="lg:w-1/2 relative bg-gray-800/30">
+              <div className="lg:w-1/2 relative bg-gray-100">
                 <div className="relative h-64 lg:h-full">
                   <motion.img
                     key={currentImageIndex}
@@ -82,14 +79,13 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                     alt={jersey.name}
                     className="w-full h-full object-cover"
                   />
-                  
                   {jersey.images.length > 1 && (
                     <>
                       <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={prevImage}
-                        className="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 bg-gray-900/50 backdrop-blur-sm rounded-full border border-gray-600 text-white hover:border-blue-500 transition-colors"
+                        className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-white border border-gray-300 rounded-full text-gray-700"
                       >
                         <ChevronLeft className="w-5 h-5" />
                       </motion.button>
@@ -97,27 +93,21 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={nextImage}
-                        className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 bg-gray-900/50 backdrop-blur-sm rounded-full border border-gray-600 text-white hover:border-blue-500 transition-colors"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-white border border-gray-300 rounded-full text-gray-700"
                       >
                         <ChevronRight className="w-5 h-5" />
                       </motion.button>
                     </>
                   )}
-
-                  {/* Image Indicators */}
-                  {jersey.images.length > 1 && (
-                    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                      {jersey.images.map((_, index) => (
-                        <button
-                          key={index}
-                          onClick={() => setCurrentImageIndex(index)}
-                          className={`w-2 h-2 rounded-full transition-colors ${
-                            index === currentImageIndex ? 'bg-blue-500' : 'bg-gray-500'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  )}
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+                    {jersey.images.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentImageIndex(index)}
+                        className={`w-2 h-2 rounded-full ${index === currentImageIndex ? 'bg-blue-600' : 'bg-gray-300'}`}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -128,23 +118,17 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                   <div>
                     <div className="flex items-center space-x-2 mb-2">
                       {jersey.isNew && (
-                        <span className="px-2 py-1 bg-green-500 text-white text-xs font-semibold rounded">
-                          NEW
-                        </span>
+                        <span className="px-2 py-1 bg-green-500 text-white text-xs font-semibold rounded">NEW</span>
                       )}
                       {jersey.isBestSeller && (
-                        <span className="px-2 py-1 bg-yellow-500 text-black text-xs font-semibold rounded">
-                          BESTSELLER
-                        </span>
+                        <span className="px-2 py-1 bg-yellow-300 text-black text-xs font-semibold rounded">BESTSELLER</span>
                       )}
                       {jersey.isTrending && (
-                        <span className="px-2 py-1 bg-blue-500 text-white text-xs font-semibold rounded">
-                          TRENDING
-                        </span>
+                        <span className="px-2 py-1 bg-blue-500 text-white text-xs font-semibold rounded">TRENDING</span>
                       )}
                     </div>
-                    <h1 className="text-3xl font-bold text-white mb-2">{jersey.name}</h1>
-                    <p className="text-xl text-gray-400">{jersey.club}</p>
+                    <h1 className="text-3xl font-bold">{jersey.name}</h1>
+                    <p className="text-lg text-gray-500">{jersey.club}</p>
                   </div>
 
                   {/* Rating */}
@@ -153,59 +137,39 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`w-5 h-5 ${
-                            i < Math.floor(jersey.rating)
-                              ? 'text-yellow-400 fill-yellow-400'
-                              : 'text-gray-600'
-                          }`}
+                          className={`w-5 h-5 ${i < Math.floor(jersey.rating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
                         />
                       ))}
                     </div>
-                    <span className="text-gray-400">
+                    <span className="text-gray-500">
                       {jersey.rating} ({jersey.reviews} reviews)
                     </span>
                   </div>
 
                   {/* Price */}
                   <div className="flex items-center space-x-4">
-                    <span className="text-4xl font-bold text-white">
-                      ${jersey.price}
-                    </span>
+                    <span className="text-4xl font-bold text-black">${jersey.price}</span>
                     {jersey.originalPrice && (
-                      <span className="text-xl text-gray-500 line-through">
-                        ${jersey.originalPrice}
-                      </span>
-                    )}
-                    {jersey.originalPrice && (
-                      <span className="px-3 py-1 bg-red-500/20 text-red-400 text-sm rounded border border-red-500/30">
-                        Save ${(jersey.originalPrice - jersey.price).toFixed(2)}
-                      </span>
+                      <>
+                        <span className="text-xl text-gray-400 line-through">${jersey.originalPrice}</span>
+                        <span className="px-3 py-1 bg-red-100 text-red-500 text-sm rounded border border-red-300">
+                          Save ${(jersey.originalPrice - jersey.price).toFixed(2)}
+                        </span>
+                      </>
                     )}
                   </div>
 
-                  {/* Details */}
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <span className="text-gray-400 text-sm">Type:</span>
-                      <p className="text-white font-semibold">{jersey.type}</p>
-                    </div>
-                    <div>
-                      <span className="text-gray-400 text-sm">Material:</span>
-                      <p className="text-white font-semibold">{jersey.material}</p>
-                    </div>
-                    <div>
-                      <span className="text-gray-400 text-sm">Category:</span>
-                      <p className="text-white font-semibold">{jersey.category}</p>
-                    </div>
-                    <div>
-                      <span className="text-gray-400 text-sm">Full Kit:</span>
-                      <p className="text-white font-semibold">{jersey.fullKit ? 'Yes' : 'No'}</p>
-                    </div>
+                  {/* Info Grid */}
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div><span className="text-gray-500">Type:</span> <p className="font-medium">{jersey.type}</p></div>
+                    <div><span className="text-gray-500">Material:</span> <p className="font-medium">{jersey.material}</p></div>
+                    <div><span className="text-gray-500">Category:</span> <p className="font-medium">{jersey.category}</p></div>
+                    <div><span className="text-gray-500">Full Kit:</span> <p className="font-medium">{jersey.fullKit ? 'Yes' : 'No'}</p></div>
                   </div>
 
                   {/* Size Selection */}
                   <div>
-                    <h3 className="text-lg font-semibold text-white mb-3">Select Size</h3>
+                    <h3 className="text-lg font-semibold mb-3">Select Size</h3>
                     <div className="grid grid-cols-5 gap-2">
                       {jersey.sizes.map((size) => (
                         <motion.button
@@ -213,10 +177,10 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={() => setSelectedSize(size)}
-                          className={`p-3 rounded-lg border-2 transition-all duration-200 ${
+                          className={`p-3 rounded-lg border-2 transition ${
                             selectedSize === size
-                              ? 'border-blue-500 bg-blue-500/20 text-blue-400'
-                              : 'border-gray-600 text-gray-400 hover:border-blue-400 hover:text-blue-400'
+                              ? 'border-blue-600 bg-blue-100 text-blue-600'
+                              : 'border-gray-300 text-gray-600 hover:border-blue-500 hover:text-blue-500'
                           }`}
                         >
                           {size}
@@ -227,24 +191,22 @@ export const ProductModal: React.FC<ProductModalProps> = ({
 
                   {/* Quantity */}
                   <div>
-                    <h3 className="text-lg font-semibold text-white mb-3">Quantity</h3>
+                    <h3 className="text-lg font-semibold mb-3">Quantity</h3>
                     <div className="flex items-center space-x-3">
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="p-2 border border-gray-600 rounded-lg text-gray-400 hover:border-blue-400 hover:text-blue-400 transition-colors"
+                        className="p-2 border border-gray-300 rounded-lg text-gray-600 hover:border-blue-400 hover:text-blue-600"
                       >
                         -
                       </motion.button>
-                      <span className="px-4 py-2 bg-gray-800/50 border border-gray-600 rounded-lg text-white min-w-[60px] text-center">
-                        {quantity}
-                      </span>
+                      <span className="px-4 py-2 border border-gray-300 bg-gray-100 rounded-lg text-center min-w-[60px]">{quantity}</span>
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setQuantity(quantity + 1)}
-                        className="p-2 border border-gray-600 rounded-lg text-gray-400 hover:border-blue-400 hover:text-blue-400 transition-colors"
+                        className="p-2 border border-gray-300 rounded-lg text-gray-600 hover:border-blue-400 hover:text-blue-600"
                       >
                         +
                       </motion.button>
@@ -258,20 +220,20 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                       whileTap={{ scale: 0.98 }}
                       disabled={!selectedSize}
                       onClick={handleAddToCart}
-                      className={`flex-1 flex items-center justify-center space-x-2 py-4 rounded-lg font-semibold transition-all duration-200 ${
+                      className={`flex-1 flex items-center justify-center space-x-2 py-4 rounded-lg font-semibold transition ${
                         selectedSize
-                          ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:shadow-lg hover:shadow-blue-500/30'
-                          : 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                          ? 'bg-blue-600 text-white hover:shadow-lg'
+                          : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                       }`}
                     >
                       <ShoppingCart className="w-5 h-5" />
                       <span>Add to Cart</span>
                     </motion.button>
-                    
+
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="p-4 border border-gray-600 rounded-lg text-gray-400 hover:border-red-500 hover:text-red-500 transition-colors"
+                      className="p-4 border border-gray-300 rounded-lg text-gray-600 hover:border-red-500 hover:text-red-500"
                     >
                       <Heart className="w-5 h-5" />
                     </motion.button>
@@ -279,17 +241,17 @@ export const ProductModal: React.FC<ProductModalProps> = ({
 
                   {/* Description */}
                   <div>
-                    <h3 className="text-lg font-semibold text-white mb-3">Description</h3>
-                    <p className="text-gray-300 leading-relaxed">{jersey.description}</p>
+                    <h3 className="text-lg font-semibold mb-3">Description</h3>
+                    <p className="text-gray-700">{jersey.description}</p>
                   </div>
 
                   {/* Features */}
                   <div>
-                    <h3 className="text-lg font-semibold text-white mb-3">Features</h3>
-                    <ul className="space-y-2">
+                    <h3 className="text-lg font-semibold mb-3">Features</h3>
+                    <ul className="space-y-2 text-gray-700">
                       {jersey.features.map((feature, index) => (
-                        <li key={index} className="flex items-center space-x-2 text-gray-300">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        <li key={index} className="flex items-center space-x-2">
+                          <div className="w-2 h-2 bg-blue-500 rounded-full" />
                           <span>{feature}</span>
                         </li>
                       ))}

@@ -19,7 +19,7 @@ export interface Jersey {
   isNew?: boolean;
   isBestSeller?: boolean;
   isTrending?: boolean;
-  stock: number;
+  stock?: number;
   discount?: number;
 }
 

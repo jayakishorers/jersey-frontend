@@ -21,10 +21,10 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
   onAddToCart,
   wishlistedItems,
   onToggleWishlist,
-  onViewAll
+  onViewAll,
 }) => {
   return (
-    <section className="py-16">
+    <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -33,13 +33,13 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
           viewport={{ once: true }}
           className="flex items-center justify-between mb-8"
         >
-          <h2 className="text-4xl font-bold text-white">{title}</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-800">{title}</h2>
           {onViewAll && (
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={onViewAll}
-              className="flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors"
+              className="flex items-center space-x-2 text-blue-600 hover:text-blue-500 transition-colors font-medium"
             >
               <span>View All</span>
               <ChevronRight className="w-5 h-5" />
@@ -47,8 +47,8 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
           )}
         </motion.div>
 
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {/* Product Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
           {jerseys.slice(0, 4).map((jersey, index) => (
             <motion.div
               key={jersey.id}
@@ -57,13 +57,15 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <ProductCard
-                jersey={jersey}
-                onViewDetails={onViewDetails}
-                onAddToCart={onAddToCart}
-                isWishlisted={wishlistedItems.includes(jersey.id)}
-                onToggleWishlist={onToggleWishlist}
-              />
+              <div className="bg-white shadow-md rounded-xl border border-gray-200 p-3 hover:shadow-lg transition-shadow duration-300">
+                <ProductCard
+                  jersey={jersey}
+                  onViewDetails={onViewDetails}
+                  onAddToCart={onAddToCart}
+                  isWishlisted={wishlistedItems.includes(jersey.id)}
+                  onToggleWishlist={onToggleWishlist}
+                />
+              </div>
             </motion.div>
           ))}
         </div>

@@ -71,7 +71,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         />
         <div className={`w-5 h-5 rounded border-2 transition-all duration-200 ${
           checked 
-            ? 'bg-blue-500 border-blue-500' 
+            ? 'bg-white-500 border-blue-500' 
             : 'border-gray-500 hover:border-blue-400'
         }`}>
           {checked && (

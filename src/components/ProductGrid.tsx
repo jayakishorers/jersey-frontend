@@ -20,27 +20,25 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
   wishlistedItems,
   onToggleWishlist,
   isLoading = false,
-  viewMode = 'grid'
+  viewMode = 'grid',
 }) => {
   if (isLoading) {
     return (
-      <div className={`grid gap-6 ${
-        viewMode === 'list' 
-          ? 'grid-cols-1' 
-          : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
-      }`}>
-        {[...Array(12)].map((_, index) => (
+      <div
+        className={`grid gap-4 p-4 bg-white ${
+          viewMode === 'list'
+            ? 'grid-cols-1'
+            : 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+        }`}
+      >
+        {[...Array(8)].map((_, index) => (
           <div
             key={index}
-            className={`bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl overflow-hidden animate-pulse ${
-              viewMode === 'list' ? 'flex' : ''
-            }`}
+            className="aspect-square bg-gray-200 border border-gray-300 rounded-xl animate-pulse"
           >
-            <div className={`bg-gray-700 ${viewMode === 'list' ? 'w-48 h-48' : 'aspect-square'}`}></div>
-            <div className="p-4 space-y-3">
-              <div className="h-4 bg-gray-700 rounded w-3/4"></div>
-              <div className="h-3 bg-gray-700 rounded w-1/2"></div>
-              <div className="h-6 bg-gray-700 rounded w-1/4"></div>
+            <div className="w-full h-full flex flex-col justify-center items-center p-4 space-y-3">
+              <div className="w-3/4 h-4 bg-gray-300 rounded" />
+              <div className="w-1/2 h-3 bg-gray-300 rounded" />
             </div>
           </div>
         ))}
@@ -53,17 +51,30 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center py-16"
+        className="text-center py-16 bg-white"
       >
         <div className="max-w-md mx-auto">
-          <div className="w-32 h-32 mx-auto mb-6 bg-gray-800/50 rounded-full flex items-center justify-center">
-            <svg className="w-16 h-16 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2M4 13h2m13-8l-4 4-4-4m-6 0l4 4-4-4" />
+          <div className="w-32 h-32 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
+            <svg
+              className="w-16 h-16 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2M4 13h2m13-8l-4 4-4-4m-6 0l4 4-4-4"
+              />
             </svg>
           </div>
-          <h3 className="text-2xl font-semibold text-white mb-2">No jerseys found</h3>
-          <p className="text-gray-400">
-            Try adjusting your search criteria or filters to find what you're looking for.
+          <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+            No jerseys found
+          </h3>
+          <p className="text-gray-500">
+            Try adjusting your search criteria or filters to find what you're
+            looking for.
           </p>
         </div>
       </motion.div>
@@ -74,20 +85,20 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className={`grid gap-6 ${
-        viewMode === 'list' 
-          ? 'grid-cols-1' 
-          : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+      className={`grid gap-4 p-4 bg-white ${
+        viewMode === 'list'
+          ? 'grid-cols-1'
+          : 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
       }`}
     >
       <AnimatePresence mode="popLayout">
         {jerseys.map((jersey, index) => (
           <motion.div
             key={jersey.id}
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.4, delay: index * 0.1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.3, delay: index * 0.05 }}
           >
             <ProductCard
               jersey={jersey}
@@ -95,7 +106,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
               onAddToCart={onAddToCart}
               isWishlisted={wishlistedItems.includes(jersey.id)}
               onToggleWishlist={onToggleWishlist}
-              viewMode={viewMode}
+              viewMode="grid"
             />
           </motion.div>
         ))}

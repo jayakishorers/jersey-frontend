@@ -165,14 +165,18 @@ export const Navbar: React.FC<NavbarProps> = ({
                     )}
                   </motion.button>
 
-                  {/* New Profile Button in Mobile */}
                   <motion.button
-                    whileTap={{ scale: 0.95 }}
-                    className="flex items-center space-x-2 p-2 text-gray-300 hover:text-white"
-                  >
-                    <User className="h-5 w-5" />
-                    <span>Profile</span>
-                  </motion.button>
+  whileTap={{ scale: 0.95 }}
+  onClick={() => {
+    navigate('/signin');
+    setIsMobileMenuOpen(false); // optional: close the menu after navigation
+  }}
+  className="flex items-center space-x-2 p-2 text-gray-300 hover:text-white"
+>
+  <User className="h-5 w-5" />
+  <span>Profile</span>
+</motion.button>
+
                 </div>
               </div>
             </motion.div>
