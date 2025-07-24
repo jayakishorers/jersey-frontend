@@ -14,7 +14,6 @@ export const jerseys: Jersey[] = [
     price: 89.99,
     originalPrice: 109.99,
     rating: 4.8,
-    reviews: 324,
     stock: 50,
     image: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
@@ -39,7 +38,6 @@ export const jerseys: Jersey[] = [
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     price: 75.99,
     rating: 4.9,
-    reviews: 278,
     image: 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
       'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -59,7 +57,6 @@ export const jerseys: Jersey[] = [
     sizes: ['S', 'M', 'L', 'XL'],
     price: 94.99,
     rating: 4.7,
-    reviews: 189,
     image: 'https://images.pexels.com/photos/2834914/pexels-photo-2834914.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
       'https://images.pexels.com/photos/2834914/pexels-photo-2834914.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -79,7 +76,6 @@ export const jerseys: Jersey[] = [
     sizes: ['M', 'L', 'XL', 'XXL'],
     price: 69.99,
     rating: 4.6,
-    reviews: 156,
     image: 'https://images.pexels.com/photos/1661950/pexels-photo-1661950.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
       'https://images.pexels.com/photos/1661950/pexels-photo-1661950.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -100,7 +96,7 @@ export const jerseys: Jersey[] = [
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     price: 99.99,
     rating: 5.0,
-    reviews: 445,
+
     image: 'https://images.pexels.com/photos/1374125/pexels-photo-1374125.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
       'https://images.pexels.com/photos/1374125/pexels-photo-1374125.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -121,7 +117,7 @@ export const jerseys: Jersey[] = [
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     price: 84.99,
     rating: 4.5,
-    reviews: 203,
+
     image: 'https://images.pexels.com/photos/2834914/pexels-photo-2834914.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
       'https://images.pexels.com/photos/2834914/pexels-photo-2834914.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -140,7 +136,7 @@ export const jerseys: Jersey[] = [
     sizes: ['S', 'M', 'L', 'XL'],
     price: 119.99,
     rating: 4.8,
-    reviews: 267,
+
     image: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
       'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -161,7 +157,6 @@ export const jerseys: Jersey[] = [
     sizes: ['M', 'L', 'XL', 'XXL'],
     price: 79.99,
     rating: 4.7,
-    reviews: 198,
     image: 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
       'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -180,7 +175,6 @@ export const jerseys: Jersey[] = [
     sizes: ['S', 'M', 'L', 'XL'],
     price: 64.99,
     rating: 4.4,
-    reviews: 134,
     image: 'https://images.pexels.com/photos/1661950/pexels-photo-1661950.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
       'https://images.pexels.com/photos/1661950/pexels-photo-1661950.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -200,7 +194,7 @@ export const jerseys: Jersey[] = [
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     price: 87.99,
     rating: 4.6,
-    reviews: 221,
+
     image: 'https://images.pexels.com/photos/2834914/pexels-photo-2834914.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
       'https://images.pexels.com/photos/2834914/pexels-photo-2834914.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -220,7 +214,7 @@ export const jerseys: Jersey[] = [
     sizes: ['S', 'M', 'L', 'XL'],
     price: 92.99,
     rating: 4.9,
-    reviews: 312,
+
     image: 'https://images.pexels.com/photos/1374125/pexels-photo-1374125.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
       'https://images.pexels.com/photos/1374125/pexels-photo-1374125.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -240,7 +234,7 @@ export const jerseys: Jersey[] = [
     sizes: ['M', 'L', 'XL', 'XXL'],
     price: 91.99,
     rating: 4.5,
-    reviews: 167,
+
     image: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
       'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -260,7 +254,7 @@ export const jerseys: Jersey[] = [
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     price: 104.99,
     rating: 4.8,
-    reviews: 289,
+
     image: 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
       'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -280,7 +274,7 @@ export const jerseys: Jersey[] = [
     sizes: ['S', 'M', 'L', 'XL'],
     price: 71.99,
     rating: 4.3,
-    reviews: 145,
+
     image: 'https://images.pexels.com/photos/1661950/pexels-photo-1661950.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
       'https://images.pexels.com/photos/1661950/pexels-photo-1661950.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -299,7 +293,7 @@ export const jerseys: Jersey[] = [
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     price: 88.99,
     rating: 4.7,
-    reviews: 234,
+
     image: 'https://images.pexels.com/photos/2834914/pexels-photo-2834914.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
       'https://images.pexels.com/photos/2834914/pexels-photo-2834914.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -320,7 +314,6 @@ export const jerseys: Jersey[] = [
     sizes: ['M', 'L', 'XL', 'XXL'],
     price: 96.99,
     rating: 4.6,
-    reviews: 201,
     image: 'https://images.pexels.com/photos/1374125/pexels-photo-1374125.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
       'https://images.pexels.com/photos/1374125/pexels-photo-1374125.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -339,7 +332,6 @@ export const jerseys: Jersey[] = [
     sizes: ['S', 'M', 'L', 'XL'],
     price: 83.99,
     rating: 4.5,
-    reviews: 178,
     image: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
       'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -359,7 +351,6 @@ export const jerseys: Jersey[] = [
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     price: 81.99,
     rating: 4.4,
-    reviews: 156,
     image: 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
       'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -378,7 +369,6 @@ export const jerseys: Jersey[] = [
     sizes: ['S', 'M', 'L', 'XL'],
     price: 112.99,
     rating: 4.7,
-    reviews: 193,
     image: 'https://images.pexels.com/photos/2834914/pexels-photo-2834914.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
       'https://images.pexels.com/photos/2834914/pexels-photo-2834914.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -399,7 +389,6 @@ export const jerseys: Jersey[] = [
     sizes: ['M', 'L', 'XL', 'XXL'],
     price: 67.99,
     rating: 4.8,
-    reviews: 167,
     image: 'https://images.pexels.com/photos/1661950/pexels-photo-1661950.jpeg?auto=compress&cs=tinysrgb&w=500',
     images: [
       'https://images.pexels.com/photos/1661950/pexels-photo-1661950.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -407,12 +396,294 @@ export const jerseys: Jersey[] = [
     description: 'Portugal retro jersey from Euro 2004 home tournament.',
     features: ['Euro 2004 retro', 'Home tournament edition', 'Portuguese heritage'],
     isBestSeller: true
-  }
+  },
+  // Add these inside your `jerseys` array in `data/jerseys.ts`
+  {
+    id: 'cric001',
+    name: 'India ODI Jersey 2024',
+    club: 'BCCI',
+    country: 'India',
+    type: 'Full Sleeve',
+    material: 'Dri-FIT',
+    category: 'Cricket',
+    fullKit: false,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    price: 1499,
+    rating: 4.7,
+    image: 'https://example.com/images/india-odi-2024.jpg',
+    images: [
+      'https://example.com/images/india-odi-2024.jpg',
+      'https://example.com/images/india-odi-2024-2.jpg',
+    ],
+    description: 'Official India ODI 2024 jersey with modern fit and breathable fabric.',
+    features: ['Moisture-wicking', 'Authentic Design'],
+    stock: 30,
+  },
+  {
+    id: 'cric002',
+    name: 'India T20 Jersey 2024',
+    club: 'BCCI',
+    country: 'India',
+    type: 'Player Version',
+    material: 'Polyester',
+    category: 'Cricket',
+    fullKit: false,
+    sizes: ['S', 'M', 'L', 'XL'],
+    price: 1599,
+    rating: 4.8,
+    image: 'https://example.com/images/india-t20-2024.jpg',
+    images: [
+      'https://example.com/images/india-t20-2024.jpg',
+      'https://example.com/images/india-t20-2024-back.jpg',
+    ],
+    description: 'Stylish India T20 jersey for 2024 season. Lightweight and pro-level fabric.',
+    features: ['Lightweight Mesh', 'Modern T20 Cut'],
+    stock: 25,
+  },
+  {
+    id: 'cric003',
+    name: 'India Test Jersey 2024',
+    club: 'BCCI',
+    country: 'India',
+    type: 'Full Sleeve',
+    material: 'Cotton',
+    category: 'Cricket',
+    fullKit: false,
+    sizes: ['M', 'L', 'XL', 'XXL'],
+    price: 1699,
+    rating: 4.6,
+    image: 'https://example.com/images/india-test-2024.jpg',
+    images: [
+      'https://example.com/images/india-test-2024.jpg',
+      'https://example.com/images/india-test-2024-close.jpg',
+    ],
+    description: 'Classic white India test cricket jersey with full sleeves.',
+    features: ['Breathable Cotton', 'Traditional Style'],
+    stock: 20,
+  },
+  {
+    id: 'cric004',
+    name: 'Chennai Super Kings Jersey 2024',
+    club: 'CSK',
+    country: 'India',
+    type: 'Sublimation',
+    material: 'Polyester',
+    category: 'Cricket',
+    fullKit: true,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    price: 1399,
+    rating: 4.5,
+    image: 'https://example.com/images/csk-2024.jpg',
+    images: ['https://example.com/images/csk-2024.jpg'],
+    description: 'Official IPL CSK jersey for 2024 season. Show your roar!',
+    features: ['CSK Badge', 'Comfort Fit'],
+    stock: 35,
+  },
+  {
+    id: 'cric005',
+    name: 'Mumbai Indians Jersey 2024',
+    club: 'MI',
+    country: 'India',
+    type: 'Player Version',
+    material: 'Mesh',
+    category: 'Cricket',
+    fullKit: false,
+    sizes: ['S', 'M', 'L'],
+    price: 1499,
+    rating: 4.7,
+    image: 'https://example.com/images/mi-2024.jpg',
+    images: ['https://example.com/images/mi-2024.jpg'],
+    description: 'Official 2024 Mumbai Indians IPL jersey.',
+    features: ['Breathable Mesh', 'Vibrant Blue'],
+    stock: 40,
+  },
+  {
+    id: 'cric006',
+    name: 'Royal Challengers Bangalore Jersey 2024',
+    club: 'RCB',
+    country: 'India',
+    type: 'Retro',
+    material: 'Polyester',
+    category: 'Cricket',
+    fullKit: false,
+    sizes: ['M', 'L', 'XL'],
+    price: 1399,
+    rating: 4.4,
+    image: 'https://example.com/images/rcb-2024.jpg',
+    images: ['https://example.com/images/rcb-2024.jpg'],
+    description: 'Bold and fiery jersey of RCB for IPL 2024.',
+    features: ['Retro Pattern', 'Sleek Fit'],
+    stock: 18,
+  },
+  {
+    id: 'cric007',
+    name: 'Kolkata Knight Riders Jersey 2024',
+    club: 'KKR',
+    country: 'India',
+    type: 'Sublimation',
+    material: 'Dri-FIT',
+    category: 'Cricket',
+    fullKit: false,
+    sizes: ['S', 'M', 'L'],
+    price: 1349,
+    rating: 4.3,
+    image: 'https://example.com/images/kkr-2024.jpg',
+    images: ['https://example.com/images/kkr-2024.jpg'],
+    description: '2024 edition KKR jersey – purple and gold!',
+    features: ['Cool Design', 'Official Logo'],
+    stock: 22,
+  },
+  {
+    id: 'cric008',
+    name: 'Delhi Capitals Jersey 2024',
+    club: 'DC',
+    country: 'India',
+    type: 'Player Version',
+    material: 'Polyester',
+    category: 'Cricket',
+    fullKit: false,
+    sizes: ['M', 'L', 'XL', 'XXL'],
+    price: 1299,
+    rating: 4.2,
+    image: 'https://example.com/images/dc-2024.jpg',
+    images: ['https://example.com/images/dc-2024.jpg'],
+    description: 'Vibrant Delhi Capitals jersey for IPL 2024.',
+    features: ['Official IPL Edition', 'Sweat-wicking'],
+    stock: 15,
+  },
+  {
+    id: 'cric009',
+    name: 'Sunrisers Hyderabad Jersey 2024',
+    club: 'SRH',
+    country: 'India',
+    type: 'Retro',
+    material: 'Cotton',
+    category: 'Cricket',
+    fullKit: false,
+    sizes: ['S', 'M', 'L'],
+    price: 1250,
+    rating: 4.1,
+    image: 'https://example.com/images/srh-2024.jpg',
+    images: ['https://example.com/images/srh-2024.jpg'],
+    description: 'Bright and bold SRH jersey 2024 edition.',
+    features: ['Bold Orange', 'Retro Emboss'],
+    stock: 17,
+  },
+  {
+    id: 'cric010',
+    name: 'India World Cup Retro Jersey',
+    club: 'BCCI',
+    country: 'India',
+    type: 'Retro',
+    material: 'Cotton',
+    category: 'Cricket',
+    fullKit: false,
+    sizes: ['S', 'M', 'L', 'XL'],
+    price: 1599,
+    rating: 4.9,
+    image: 'https://example.com/images/india-retro.jpg',
+    images: ['https://example.com/images/india-retro.jpg'],
+    description: 'Throwback India World Cup jersey with classic 90s design.',
+    features: ['Vintage Appeal', 'Soft Cotton'],
+    stock: 12,
+  },
+  {
+    id: 'cric011',
+    name: 'Punjab Kings Jersey 2024',
+    club: 'Punjab Kings',
+    country: 'India',
+    type: 'Player Version',
+    material: 'Dri-FIT',
+    category: 'Cricket',
+    fullKit: false,
+    sizes: ['M', 'L', 'XL'],
+    price: 1299,
+    rating: 4.3,
+    image: 'https://i.ibb.co/JCR7Bqk/pk.jpg',
+    images: ['https://i.ibb.co/JCR7Bqk/pk.jpg'],
+    description: 'Stylish red Punjab Kings 2024 IPL jersey.',
+    features: ['Sweat-resistant', 'Bold logo'],
+    stock: 13,
+  },
+  {
+    id: 'cric012',
+    name: 'Gujarat Titans Jersey 2024',
+    club: 'Gujarat Titans',
+    country: 'India',
+    type: 'Sublimation',
+    material: 'Polyester',
+    category: 'Cricket',
+    fullKit: true,
+    sizes: ['S', 'M', 'L', 'XL'],
+    price: 1399,
+    rating: 4.4,
+    image: 'https://i.ibb.co/W6L8SHx/gt.jpg',
+    images: ['https://i.ibb.co/W6L8SHx/gt.jpg'],
+    description: 'Dark navy blue GT 2024 jersey with lightning theme.',
+    features: ['Official edition', 'Full kit option'],
+    stock: 22,
+  },
+  {
+    id: 'cric013',
+    name: 'Lucknow Super Giants Jersey 2024',
+    club: 'Lucknow Super Giants',
+    country: 'India',
+    type: 'Sublimation',
+    material: 'Mesh',
+    category: 'Cricket',
+    fullKit: false,
+    sizes: ['S', 'M', 'L'],
+    price: 1299,
+    rating: 4.2,
+    image: 'https://i.ibb.co/4sp1s7L/lsg.jpg',
+    images: ['https://i.ibb.co/4sp1s7L/lsg.jpg'],
+    description: 'LSG jersey for 2024 with modern pastel look.',
+    features: ['Cool pastel tone', 'Mesh cooling'],
+    stock: 15,
+  },
+  {
+    id: 'cric014',
+    name: 'India Practice Jersey Blue',
+    club: 'BCCI',
+    country: 'India',
+    type: 'Sublimation',
+    material: 'Polyester',
+    category: 'Cricket',
+    fullKit: false,
+    sizes: ['M', 'L', 'XL'],
+    price: 999,
+    rating: 4.0,
+    image: 'https://i.ibb.co/8rVyxL2/practice.jpg',
+    images: ['https://i.ibb.co/8rVyxL2/practice.jpg'],
+    description: 'Blue India practice jersey with minimal design.',
+    features: ['Training wear', 'Cool fit'],
+    stock: 18,
+  },
+  {
+    id: 'cric015',
+    name: 'India Training Polo 2024',
+    club: 'BCCI',
+    country: 'India',
+    type: 'Full Sleeve',
+    material: 'Cotton',
+    category: 'Cricket',
+    fullKit: false,
+    sizes: ['M', 'L', 'XL'],
+    price: 1199,
+    rating: 4.1,
+    image: 'https://i.ibb.co/k8v0SYs/training.jpg',
+    images: ['https://i.ibb.co/k8v0SYs/training.jpg'],
+    description: 'Official India training polo for 2024.',
+    features: ['Polo collar', 'Cotton blend'],
+    stock: 20,
+  },
+  // Add 5 more for 15 total if needed
 ];
+
 
 export const categories = {
   types: ['Player Version', 'Master Copy', 'Sublimation', 'Retro', 'Full Sleeve', 'Full Kit'],
   materials: ['Polyester', 'Mesh', 'Dri-FIT', 'Cotton'],
-  categories: ['Club', 'Country'],
+  categories: ['Club', 'Country','Cricket'],
   sizes: ['S', 'M', 'L', 'XL', 'XXL']
 };

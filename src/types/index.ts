@@ -5,13 +5,12 @@ export interface Jersey {
   country?: string;
   type: 'Player Version' | 'Master Copy' | 'Sublimation' | 'Retro' | 'Full Sleeve' | 'Full Kit';
   material: 'Polyester' | 'Mesh' | 'Dri-FIT' | 'Cotton';
-  category: 'Club' | 'Country';
+  category: 'Club' | 'Country' | 'Cricket';
   fullKit: boolean;
   sizes: ('S' | 'M' | 'L' | 'XL' | 'XXL')[];
   price: number;
   originalPrice?: number;
   rating: number;
-  reviews: number;
   image: string;
   images: string[];
   description: string;

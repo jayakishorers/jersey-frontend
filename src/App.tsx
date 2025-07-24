@@ -1,199 +1,108 @@
 import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { Navbar } from './components/Navbar';
-import { Hero } from './components/Hero';
-import { FilterPanel } from './components/FilterPanel';
-import { ProductGrid } from './components/ProductGrid';
-import { ProductModal } from './components/ProductModal';
 import { CategorySection } from './components/CategorySection';
-import { AdvancedSearch } from './components/AdvancedSearch';
-import { CartDrawer } from './components/CartDrawer';
-import { Footer } from './components/Footer';
+import { StaticCategoryCarousel } from './components/StaticCategoryCarousel';
+import { ProductModal } from './components/ProductModal';
 import { jerseys } from './data/jerseys';
-import { Jersey, ViewMode } from './types';
-import { useFilters } from './hooks/useFilters';
-import { useWishlist } from './hooks/useWishlist';
-import { useCart } from './hooks/useCart';
-import SignIn from './SignIn';
-import SignUp from './SignUp';
 
-function App() {
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [selectedJersey, setSelectedJersey] = useState<Jersey | null>(null);
+import { Navbar } from './components/Navbar';         // ✅ Navbar
+import { Hero } from './components/Hero';             // ✅ Hero section
+import { Footer } from './components/Footer';         // ✅ Footer
+
+const App: React.FC = () => {
+  const [selectedJersey, setSelectedJersey] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentView, setCurrentView] = useState<ViewMode>('home');
+  const [wishlist, setWishlist] = useState<string[]>([]);
 
-  const {
-    filters,
-    setFilters,
-    searchQuery,
-    setSearchQuery,
-    filteredJerseys
-  } = useFilters(jerseys);
-
-  const { wishlistedItems, toggleWishlist } = useWishlist();
-  const {
-    cartItems,
-    isCartOpen,
-    setIsCartOpen,
-    addToCart,
-    removeFromCart,
-    updateQuantity,
-    getCartTotal,
-    getCartCount
-  } = useCart();
-
-  const handleViewDetails = (jersey: Jersey) => {
+  const handleViewDetails = (jersey: any) => {
     setSelectedJersey(jersey);
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const handleAddToCart = (jersey: any, size: string, quantity: number) => {
+    console.log("Add to Cart:", jersey, size, quantity);
     setIsModalOpen(false);
-    setSelectedJersey(null);
   };
 
-  const handleAddToCart = (jersey: Jersey, size: string, quantity: number = 1) => {
-    addToCart(jersey, size, quantity);
+  const handleToggleWishlist = (jerseyId: string) => {
+    setWishlist((prev) =>
+      prev.includes(jerseyId)
+        ? prev.filter((id) => id !== jerseyId)
+        : [...prev, jerseyId]
+    );
   };
+  const [searchQuery, setSearchQuery] = useState('');
+const [isDark, setIsDark] = useState(false); // if you have a dark mode switch
+const cartItems = []; // Replace with your real cart state
 
-  const playerVersionJerseys = jerseys.filter(j => j.type === 'Player Version');
-  const masterCopyJerseys = jerseys.filter(j => j.type === 'Master Copy');
-  const retroJerseys = jerseys.filter(j => j.type === 'Retro');
-  const fullKitJerseys = jerseys.filter(j => j.fullKit);
-  const newJerseys = jerseys.filter(j => j.isNew);
-  const bestSellerJerseys = jerseys.filter(j => j.isBestSeller);
+const handleSearchChange = (query: string) => {
+  setSearchQuery(query);
+};
 
-  const renderCurrentView = () => {
-    switch (currentView) {
-      case 'search':
-        return (
-          <AdvancedSearch
-            jerseys={jerseys}
-            onViewDetails={handleViewDetails}
-            wishlistedItems={wishlistedItems}
-            onToggleWishlist={toggleWishlist}
-            onAddToCart={handleAddToCart}
-            onBack={() => setCurrentView('home')}
-          />
-        );
+const handleFilterToggle = () => {
+  console.log('Filter toggle clicked');
+};
 
-      case 'home':
-      default:
-        return (
-          <>
-            <Hero
-              onShopNowClick={() => setCurrentView('search')}
-              onCustomizeClick={() => setCurrentView('customize')}
-            />
-
-            <section className="py-16">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-                <CategorySection
-                  title="New Arrivals"
-                  jerseys={newJerseys}
-                  onViewDetails={handleViewDetails}
-                  onAddToCart={handleAddToCart}
-                  wishlistedItems={wishlistedItems}
-                  onToggleWishlist={toggleWishlist}
-                  onViewAll={() => setCurrentView('search')}
-                />
-
-                <CategorySection
-                  title="Best Sellers"
-                  jerseys={bestSellerJerseys}
-                  onViewDetails={handleViewDetails}
-                  onAddToCart={handleAddToCart}
-                  wishlistedItems={wishlistedItems}
-                  onToggleWishlist={toggleWishlist}
-                  onViewAll={() => setCurrentView('search')}
-                />
-
-                <CategorySection
-                  title="Player Version"
-                  jerseys={playerVersionJerseys}
-                  onViewDetails={handleViewDetails}
-                  onAddToCart={handleAddToCart}
-                  wishlistedItems={wishlistedItems}
-                  onToggleWishlist={toggleWishlist}
-                  onViewAll={() => setCurrentView('search')}
-                />
-
-                <CategorySection
-                  title="Retro Collection"
-                  jerseys={retroJerseys}
-                  onViewDetails={handleViewDetails}
-                  onAddToCart={handleAddToCart}
-                  wishlistedItems={wishlistedItems}
-                  onToggleWishlist={toggleWishlist}
-                  onViewAll={() => setCurrentView('search')}
-                />
-
-                <CategorySection
-                  title="Full Kits"
-                  jerseys={fullKitJerseys}
-                  onViewDetails={handleViewDetails}
-                  onAddToCart={handleAddToCart}
-                  wishlistedItems={wishlistedItems}
-                  onToggleWishlist={toggleWishlist}
-                  onViewAll={() => setCurrentView('search')}
-                />
-              </div>
-            </section>
-          </>
-        );
-    }
-  };
+const handleProfileClick = () => {
+  console.log('Navigate to profile page');
+};
 
   return (
-    <Routes>
-      <Route path="/signin" element={<SignIn />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route
-        path="*"
-        element={
-          <div className="min-h-screen bg-gray-900">
-            <Navbar
-              searchQuery={searchQuery}
-              onSearchChange={setSearchQuery}
-              onFilterToggle={() => setIsFilterOpen(true)}
-              cartCount={getCartCount()}
-              onCartClick={() => setIsCartOpen(true)}
-              onSearchClick={() => setCurrentView('search')}
-              onCustomizeClick={() => setCurrentView('customize')}
-            />
+    <div className="bg-black min-h-screen text-white">
+      {/* ✅ Navbar at top */}
+      <Navbar
+  searchQuery={searchQuery}
+  onSearchChange={handleSearchChange}
+  onFilterToggle={handleFilterToggle}
+  cartCount={cartItems.length}
+  onCartClick={() => console.log('Go to cart')}
+  onSearchClick={() => console.log('Search bar clicked')}
+  onCustomizeClick={() => console.log('Customize clicked')}
+/>
 
-            <FilterPanel
-              isOpen={isFilterOpen}
-              onClose={() => setIsFilterOpen(false)}
-              filters={filters}
-              onFilterChange={setFilters}
-            />
-
-            <ProductModal
-              jersey={selectedJersey}
-              isOpen={isModalOpen}
-              onClose={handleCloseModal}
-              onAddToCart={handleAddToCart}
-            />
-
-            <CartDrawer
-              isOpen={isCartOpen}
-              onClose={() => setIsCartOpen(false)}
-              cartItems={cartItems}
-              onUpdateQuantity={updateQuantity}
-              onRemoveItem={removeFromCart}
-              cartTotal={getCartTotal()}
-            />
-
-            <main>{renderCurrentView()}</main>
-            {currentView === 'home' && <Footer />}
-          </div>
-        }
+      {/* ✅ Hero Section */}
+      <Hero
+        onShopNowClick={() => {
+          const section = document.getElementById('category-sections');
+          if (section) section.scrollIntoView({ behavior: 'smooth' });
+        }}
+        onCustomizeClick={() => {
+          console.log("Customize button clicked");
+        }}
       />
-    </Routes>
+
+      {/* ✅ Horizontal category carousel */}
+      <StaticCategoryCarousel />
+
+      {/* ✅ Product sections */}
+      <div id="category-sections">
+        <CategorySection title="New Arrivals" jerseys={jerseys.filter(j => j.isNew && j.category !== 'Cricket')} onViewDetails={handleViewDetails} onAddToCart={handleAddToCart} wishlistedItems={wishlist} onToggleWishlist={handleToggleWishlist} />
+        <CategorySection title="Best Sellers" jerseys={jerseys.filter(j => j.isBestSeller && j.category !== 'Cricket')} onViewDetails={handleViewDetails} onAddToCart={handleAddToCart} wishlistedItems={wishlist} onToggleWishlist={handleToggleWishlist} />
+        <CategorySection title="Country Jerseys" jerseys={jerseys.filter(j => j.category === 'Country')} onViewDetails={handleViewDetails} onAddToCart={handleAddToCart} wishlistedItems={wishlist} onToggleWishlist={handleToggleWishlist} />
+        <CategorySection title="Club Jerseys" jerseys={jerseys.filter(j => j.category === 'Club')} onViewDetails={handleViewDetails} onAddToCart={handleAddToCart} wishlistedItems={wishlist} onToggleWishlist={handleToggleWishlist} />
+        <CategorySection title="Trending" jerseys={jerseys.filter(j => j.isTrending && j.category !== 'Cricket')} onViewDetails={handleViewDetails} onAddToCart={handleAddToCart} wishlistedItems={wishlist} onToggleWishlist={handleToggleWishlist} />
+        <CategorySection title="Retro Collection" jerseys={jerseys.filter(j => j.type === 'Retro' && j.category !== 'Cricket')} onViewDetails={handleViewDetails} onAddToCart={handleAddToCart} wishlistedItems={wishlist} onToggleWishlist={handleToggleWishlist} />
+        <CategorySection title="Full Kit" jerseys={jerseys.filter(j => j.fullKit && j.category !== 'Cricket')} onViewDetails={handleViewDetails} onAddToCart={handleAddToCart} wishlistedItems={wishlist} onToggleWishlist={handleToggleWishlist} />
+        <CategorySection title="Full Sleeve" jerseys={jerseys.filter(j => j.type === 'Full Sleeve' && j.category !== 'Cricket')} onViewDetails={handleViewDetails} onAddToCart={handleAddToCart} wishlistedItems={wishlist} onToggleWishlist={handleToggleWishlist} />
+        <CategorySection title="Master Copy" jerseys={jerseys.filter(j => j.type === 'Master Copy' && j.category !== 'Cricket')} onViewDetails={handleViewDetails} onAddToCart={handleAddToCart} wishlistedItems={wishlist} onToggleWishlist={handleToggleWishlist} />
+        <CategorySection title="Player Version" jerseys={jerseys.filter(j => j.type === 'Player Version' && j.category !== 'Cricket')} onViewDetails={handleViewDetails} onAddToCart={handleAddToCart} wishlistedItems={wishlist} onToggleWishlist={handleToggleWishlist} />
+        <CategorySection title="Sublimation" jerseys={jerseys.filter(j => j.type === 'Sublimation' && j.category !== 'Cricket')} onViewDetails={handleViewDetails} onAddToCart={handleAddToCart} wishlistedItems={wishlist} onToggleWishlist={handleToggleWishlist} />
+        <CategorySection title="Cricket" jerseys={jerseys.filter(j => j.category === 'Cricket')} onViewDetails={handleViewDetails} onAddToCart={handleAddToCart} wishlistedItems={wishlist} onToggleWishlist={handleToggleWishlist} />
+      </div>
+
+      {/* ✅ Jersey details popup */}
+      {selectedJersey && (
+        <ProductModal
+          jersey={selectedJersey}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onAddToCart={handleAddToCart}
+        />
+      )}
+
+      {/* ✅ Footer at bottom */}
+      <Footer />
+    </div>
   );
-}
+};
 
 export default App;

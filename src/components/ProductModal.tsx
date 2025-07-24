@@ -141,9 +141,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                         />
                       ))}
                     </div>
-                    <span className="text-gray-500">
-                      {jersey.rating} ({jersey.reviews} reviews)
-                    </span>
+                    
                   </div>
 
                   {/* Price */}
