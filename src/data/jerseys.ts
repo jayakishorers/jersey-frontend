@@ -15,9 +15,8 @@ export const jerseys: Jersey[] = [
     originalPrice: 109.99,
     rating: 4.8,
     stock: 50,
-    image: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=500',
-    images: [
-      'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: "/manutd.jpeg",
+    images: ["/manutd.jpeg",
       'https://images.pexels.com/photos/1374125/pexels-photo-1374125.jpeg?auto=compress&cs=tinysrgb&w=800'
     ],
     description: 'Official Manchester United home jersey with premium Dri-FIT technology.',
@@ -67,7 +66,7 @@ export const jerseys: Jersey[] = [
   },
   {
     id: '4',
-    name: 'Barcelona Retro 1992 Jersey',
+    name: 'Barcelona Retro Rivaldo Jersey',
     club: 'FC Barcelona',
     type: 'Retro',
     material: 'Cotton',
@@ -76,9 +75,9 @@ export const jerseys: Jersey[] = [
     sizes: ['M', 'L', 'XL', 'XXL'],
     price: 69.99,
     rating: 4.6,
-    image: 'https://images.pexels.com/photos/1661950/pexels-photo-1661950.jpeg?auto=compress&cs=tinysrgb&w=500',
+    image: "/barca.webp",
     images: [
-      'https://images.pexels.com/photos/1661950/pexels-photo-1661950.jpeg?auto=compress&cs=tinysrgb&w=800'
+       "/barca.webp"
     ],
     description: 'Classic Barcelona retro jersey from the legendary 1992 season.',
     features: ['Vintage design', '100% cotton fabric', 'Retro club badge'],

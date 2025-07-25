@@ -97,7 +97,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => navigate('/signin')}
+              onClick={() => navigate('/SignIn')}
               className="p-2 text-gray-300 hover:text-white bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-600 hover:border-yellow-500 transition-colors"
             >
               <User className="h-5 w-5" />
