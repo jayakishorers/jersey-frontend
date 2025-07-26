@@ -1,19 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingBag, Star, Search } from 'lucide-react';
-import { useNavigate } from 'react-router-dom'; // ✅ Make sure react-router-dom is used
 
-export const Hero: React.FC = () => {
-  const navigate = useNavigate(); // ✅ Navigation function
+interface HeroProps {
+  onShopNowClick: () => void;
+  onCustomizeClick: () => void;
+}
 
-  const handleShopNowClick = () => {
-    navigate('/advanced-search'); // ✅ correct lowercase path
-// ✅ Your AdvancedSearch route path
-  };
-
+export const Hero: React.FC<HeroProps> = ({ onShopNowClick, onCustomizeClick }) => {
   return (
     <section className="relative min-h-screen pt-20 sm:pt-24 flex items-center justify-center overflow-hidden bg-white">
-      {/* ✅ Subtle Background Enhancement */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-white via-gray-50 to-gray-200 opacity-90 z-0" />
 
       <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 w-full max-w-6xl mx-auto">
@@ -28,7 +24,6 @@ export const Hero: React.FC = () => {
               transition={{ duration: 0.6 }}
             />
             <div className="flex flex-col items-center leading-tight font-extrabold tracking-tight">
-              {/* ✅ Enhanced Font and Gradient Text */}
               <span className="text-transparent bg-clip-text bg-gradient-to-br from-blue-700 via-indigo-600 to-purple-700 text-4xl md:text-5xl lg:text-6xl font-extrabold drop-shadow">
                 CHENNAIYIN
               </span>
@@ -55,7 +50,7 @@ export const Hero: React.FC = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={handleShopNowClick}
+              onClick={onShopNowClick}
               className="group relative px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold rounded-lg transition-all duration-300"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
@@ -64,13 +59,17 @@ export const Hero: React.FC = () => {
                 <span>Shop Now</span>
               </div>
             </motion.button>
-          </motion.div><motion.div
+
+            
+          </motion.div>
+
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9 }}
             className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 px-4"
           >
-            {[
+            {[ 
               { icon: Star, label: 'Happy Customers', value: '500K+' },
               { icon: ShoppingBag, label: 'Premium Jerseys', value: '1000+' },
               { icon: Star, label: 'Global Teams', value: '200+' },

@@ -3,79 +3,97 @@ import { CategorySection } from './components/CategorySection';
 import { StaticCategoryCarousel } from './components/StaticCategoryCarousel';
 import { ProductModal } from './components/ProductModal';
 import { jerseys } from './data/jerseys';
-
-import { Navbar } from './components/Navbar';         // ✅ Navbar
-import { Hero } from './components/Hero';             // ✅ Hero section
-import { Footer } from './components/Footer';         // ✅ Footer
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import AdvancedSearch from './components/AdvancedSearch'; // Adjust path as needed
+import { Navbar } from './components/Navbar';
+import { Hero } from './components/Hero';
+import { Footer } from './components/Footer';
+import { Jersey } from './types'; // make sure your types file is correctly referenced
+import { AdvancedSearch } from './components/AdvancedSearch';
 
 const App: React.FC = () => {
-  const [selectedJersey, setSelectedJersey] = useState(null);
+  const [selectedJersey, setSelectedJersey] = useState<Jersey | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [wishlist, setWishlist] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
 
-  const handleViewDetails = (jersey: any) => {
+  const handleViewDetails = (jersey: Jersey) => {
     setSelectedJersey(jersey);
     setIsModalOpen(true);
   };
-const navigate = useNavigate();
 
-  const handleAddToCart = (jersey: any, size: string, quantity: number) => {
+  const handleAddToCart = (jersey: Jersey, size: string, quantity: number) => {
     console.log("Add to Cart:", jersey, size, quantity);
     setIsModalOpen(false);
   };
 
   const handleToggleWishlist = (jerseyId: string) => {
-    setWishlist((prev) =>
+    setWishlist(prev =>
       prev.includes(jerseyId)
-        ? prev.filter((id) => id !== jerseyId)
+        ? prev.filter(id => id !== jerseyId)
         : [...prev, jerseyId]
     );
   };
-  const [searchQuery, setSearchQuery] = useState('');
-const [isDark, setIsDark] = useState(false); // if you have a dark mode switch
-const cartItems = []; // Replace with your real cart state
 
-const handleSearchChange = (query: string) => {
-  setSearchQuery(query);
-};
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+  };
 
-const handleFilterToggle = () => {
-  console.log('Filter toggle clicked');
-};
+  const handleSearchClick = () => {
+    setShowAdvancedSearch(true);
+  };
 
-const handleProfileClick = () => {
-  console.log('Navigate to profile page');
-};
+  const handleBackFromSearch = () => {
+    setShowAdvancedSearch(false);
+    setSearchQuery('');
+  };
+
+  const handleFilterToggle = () => {
+    console.log('Filter toggle clicked');
+  };
+
+  const cartItems: any[] = []; // Replace with your actual cart logic
 
   return (
-  <Routes>
-    <Route
-      path="/"
-      element={
-        <div className="bg-black min-h-screen text-white">
-          <Navbar
-            searchQuery={searchQuery}
-            onSearchChange={handleSearchChange}
-            onFilterToggle={handleFilterToggle}
-            cartCount={cartItems.length}
-            onCartClick={() => console.log('Go to cart')}
-            onSearchClick={() => console.log('Search bar clicked')}
-            onCustomizeClick={() => console.log('Customize clicked')}
-          />
+    <div className="bg-black min-h-screen text-white">
+      <Navbar
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+        onFilterToggle={handleFilterToggle}
+        cartCount={cartItems.length}
+        onCartClick={() => console.log('Go to cart')}
+        onSearchClick={handleSearchClick}
+        onCustomizeClick={() => console.log('Customize clicked')}
+      />
 
+      {showAdvancedSearch ? (
+        <AdvancedSearch
+          jerseys={jerseys}
+          onViewDetails={handleViewDetails}
+          wishlistedItems={wishlist}
+          onToggleWishlist={handleToggleWishlist}
+          onAddToCart={handleAddToCart}
+          onBack={handleBackFromSearch}
+        />
+      ) : (
+        <>
           <Hero
-            onShopNowClick={() => navigate('/advanced-search')}
+            onShopNowClick={handleSearchClick}
             onCustomizeClick={() => console.log('Customize clicked')}
           />
 
           <StaticCategoryCarousel />
 
-          <div id="category-sections">
-            <div id="new-arrivals">
-              <CategorySection title="New Arrivals" jerseys={jerseys.filter(j => j.isNew && j.category !== 'Cricket')} onViewDetails={handleViewDetails} onAddToCart={handleAddToCart} wishlistedItems={wishlist} onToggleWishlist={handleToggleWishlist} />
-            </div>
+          <div id="new-arrivals">
+            <CategorySection
+              title="New Arrivals"
+              jerseys={jerseys.filter(j => j.isNew && j.category !== 'Cricket')}
+              onViewDetails={handleViewDetails}
+              onAddToCart={handleAddToCart}
+              wishlistedItems={wishlist}
+              onToggleWishlist={handleToggleWishlist}
+            />
+            {/* Add other sections like Best Sellers, Country Jerseys, etc., just like you already had */}
+          </div>
             <div id="best-sellers">
               <CategorySection title="Best Sellers" jerseys={jerseys.filter(j => j.isBestSeller && j.category !== 'Cricket')} onViewDetails={handleViewDetails} onAddToCart={handleAddToCart} wishlistedItems={wishlist} onToggleWishlist={handleToggleWishlist} />
             </div>
@@ -109,23 +127,21 @@ const handleProfileClick = () => {
             <div id="cricket">
               <CategorySection title="Cricket" jerseys={jerseys.filter(j => j.category === 'Cricket')} onViewDetails={handleViewDetails} onAddToCart={handleAddToCart} wishlistedItems={wishlist} onToggleWishlist={handleToggleWishlist} />
             </div>
-          </div>
+        </>
+      )}
 
-          {selectedJersey && (
-            <ProductModal
-              jersey={selectedJersey}
-              isOpen={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-              onAddToCart={handleAddToCart}
-            />
-          )}
+      {selectedJersey && (
+        <ProductModal
+          jersey={selectedJersey}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onAddToCart={handleAddToCart}
+        />
+      )}
 
-          <Footer />
-        </div>
-      }
-    />
-    <Route path="/advanced-search" element={<AdvancedSearch />} />
-  </Routes>
-);
+      <Footer />
+    </div>
+  );
 };
+
 export default App;
