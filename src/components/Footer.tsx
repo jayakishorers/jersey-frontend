@@ -67,7 +67,7 @@ export const Footer: React.FC = () => {
               ))}
             </ul>
           </motion.div>
-
+          
           {/* Categories */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -92,7 +92,7 @@ export const Footer: React.FC = () => {
               ))}
             </ul>
           </motion.div>
-
+          
           {/* Contact & Newsletter */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
