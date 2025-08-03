@@ -56,6 +56,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 whileTap={{ scale: 0.95 }}
                 className="p-2 text-gray-300 hover:text-white bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-600 hover:border-green-500 transition-colors"
               >
+                
                 <Heart className="h-5 w-5" />
               </motion.button>
 

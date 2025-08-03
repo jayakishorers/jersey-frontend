@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { CategorySection } from './components/CategorySection';
 import { StaticCategoryCarousel } from './components/StaticCategoryCarousel';
 import { ProductModal } from './components/ProductModal';
 import { jerseys } from './data/jerseys';
-import { Navigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Footer } from './components/Footer';
 import { Jersey } from './types';
 import { AdvancedSearch } from './components/AdvancedSearch';
-import SignIn from './SignIn'; // Adjust path if needed
+import SignIn from './SignIn';
 import SignUp from './SignUp';
-import Dashboard from './Dashboard'; 
+import Dashboard from './Dashboard';
+import { useCart } from './hooks/useCart';  // updated
+
 const App: React.FC = () => {
   const [selectedJersey, setSelectedJersey] = useState<Jersey | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,13 +21,24 @@ const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
 
+  const {
+    cartItems,
+    isCartOpen,
+    setIsCartOpen,
+    addToCart,
+    updateQuantity,
+    removeFromCart,
+    getCartTotal,
+    getCartCount
+  } = useCart();
+
   const handleViewDetails = (jersey: Jersey) => {
     setSelectedJersey(jersey);
     setIsModalOpen(true);
   };
 
   const handleAddToCart = (jersey: Jersey, size: string, quantity: number) => {
-    console.log("Add to Cart:", jersey, size, quantity);
+    addToCart(jersey, size, quantity);
     setIsModalOpen(false);
   };
 
@@ -51,16 +63,14 @@ const App: React.FC = () => {
     setSearchQuery('');
   };
 
-  const cartItems: any[] = []; // Replace with actual cart logic
-
   return (
     <div className="bg-black min-h-screen text-white">
       <Navbar
-        cartCount={cartItems.length}
+        cartCount={getCartCount()}
         cartItems={cartItems}
-        onUpdateQuantity={(id, qty) => console.log('Update quantity', id, qty)}
-        onRemoveItem={(id) => console.log('Remove item', id)}
-        cartTotal={0}
+        onUpdateQuantity={updateQuantity}
+        onRemoveItem={removeFromCart}
+        cartTotal={getCartTotal()}
       />
 
       <Routes>
@@ -82,9 +92,9 @@ const App: React.FC = () => {
                   onShopNowClick={handleSearchClick}
                   onCustomizeClick={() => console.log('Customize clicked')}
                 />
-
                 <StaticCategoryCarousel />
 
+                {/* Category Sections */}
                 <div id="new-arrivals">
                   <CategorySection
                     title="New Arrivals"
@@ -95,7 +105,6 @@ const App: React.FC = () => {
                     onToggleWishlist={handleToggleWishlist}
                   />
                 </div>
-
                 <div id="best-sellers">
                   <CategorySection
                     title="Best Sellers"
@@ -106,7 +115,6 @@ const App: React.FC = () => {
                     onToggleWishlist={handleToggleWishlist}
                   />
                 </div>
-
                 <div id="country-jerseys">
                   <CategorySection
                     title="Country Jerseys"
@@ -117,7 +125,6 @@ const App: React.FC = () => {
                     onToggleWishlist={handleToggleWishlist}
                   />
                 </div>
-
                 <div id="club-jerseys">
                   <CategorySection
                     title="Club Jerseys"
@@ -128,7 +135,6 @@ const App: React.FC = () => {
                     onToggleWishlist={handleToggleWishlist}
                   />
                 </div>
-
                 <div id="trending">
                   <CategorySection
                     title="Trending"
@@ -139,7 +145,6 @@ const App: React.FC = () => {
                     onToggleWishlist={handleToggleWishlist}
                   />
                 </div>
-
                 <div id="retro-collection">
                   <CategorySection
                     title="Retro Collection"
@@ -150,7 +155,6 @@ const App: React.FC = () => {
                     onToggleWishlist={handleToggleWishlist}
                   />
                 </div>
-
                 <div id="full-kit">
                   <CategorySection
                     title="Full Kit"
@@ -161,7 +165,6 @@ const App: React.FC = () => {
                     onToggleWishlist={handleToggleWishlist}
                   />
                 </div>
-
                 <div id="full-sleeve">
                   <CategorySection
                     title="Full Sleeve"
@@ -172,7 +175,6 @@ const App: React.FC = () => {
                     onToggleWishlist={handleToggleWishlist}
                   />
                 </div>
-
                 <div id="master-copy">
                   <CategorySection
                     title="Master Copy"
@@ -183,7 +185,6 @@ const App: React.FC = () => {
                     onToggleWishlist={handleToggleWishlist}
                   />
                 </div>
-
                 <div id="player-version">
                   <CategorySection
                     title="Player Version"
@@ -194,7 +195,6 @@ const App: React.FC = () => {
                     onToggleWishlist={handleToggleWishlist}
                   />
                 </div>
-
                 <div id="sublimation">
                   <CategorySection
                     title="Sublimation"
@@ -205,7 +205,6 @@ const App: React.FC = () => {
                     onToggleWishlist={handleToggleWishlist}
                   />
                 </div>
-
                 <div id="cricket">
                   <CategorySection
                     title="Cricket"
@@ -224,15 +223,11 @@ const App: React.FC = () => {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route
-    path="/dashboard"
-    element={
-      localStorage.getItem('token') ? (
-        <Dashboard />
-      ) : (
-        <Navigate to="/signin" replace />
-      )
-    }
-  />
+          path="/dashboard"
+          element={
+            localStorage.getItem('token') ? <Dashboard /> : <Navigate to="/signin" replace />
+          }
+        />
       </Routes>
 
       {selectedJersey && (

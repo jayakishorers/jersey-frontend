@@ -1,8 +1,10 @@
-import React from 'react';
+// All the import statements remain unchanged
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, RotateCcw } from 'lucide-react';
 import { categories } from '../data/jerseys';
 
+// Interface declarations remain the same...
 interface FilterState {
   type: string[];
   material: string[];
@@ -27,7 +29,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 }) => {
   const handleFilterChange = (filterType: keyof FilterState, value: string) => {
     const newFilters = { ...filters };
-    
+
     if (filterType === 'fullKit' || filterType === 'sortBy') {
       newFilters[filterType] = value as any;
     } else {
@@ -38,7 +40,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         newFilters[filterType] = [...currentValues, value] as any;
       }
     }
-    
+
     onFilterChange(newFilters);
   };
 
@@ -53,9 +55,22 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     });
   };
 
-  const FilterCheckbox: React.FC<{ 
-    checked: boolean; 
-    onChange: () => void; 
+  useEffect(() => {
+  if (isOpen) {
+    document.body.classList.add('lock-scroll');
+  } else {
+    document.body.classList.remove('lock-scroll');
+  }
+
+  // Cleanup in case component is unmounted
+  return () => {
+    document.body.classList.remove('lock-scroll');
+  };
+}, [isOpen]);
+
+  const FilterCheckbox: React.FC<{
+    checked: boolean;
+    onChange: () => void;
     label: string;
   }> = ({ checked, onChange, label }) => (
     <motion.label
@@ -63,16 +78,9 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       className="flex items-center space-x-3 cursor-pointer p-2 rounded-lg hover:bg-gray-700/50 transition-colors"
     >
       <div className="relative">
-        <input
-          type="checkbox"
-          checked={checked}
-          onChange={onChange}
-          className="sr-only"
-        />
+        <input type="checkbox" checked={checked} onChange={onChange} className="sr-only" />
         <div className={`w-5 h-5 rounded border-2 transition-all duration-200 ${
-          checked 
-            ? 'bg-white-500 border-blue-500' 
-            : 'border-gray-500 hover:border-blue-400'
+          checked ? 'bg-white-500 border-blue-500' : 'border-gray-500 hover:border-blue-400'
         }`}>
           {checked && (
             <motion.svg
@@ -108,17 +116,18 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
           />
 
-          {/* Panel */}
+          {/* Filter Panel */}
           <motion.div
-            initial={{ x: -400 }}
-            animate={{ x: 0 }}
-            exit={{ x: -400 }}
+            initial={{ x: 0, y: '100%' }}
+            animate={{ x: 0, y: 0 }}
+            exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed left-0 top-0 h-full w-80 bg-gray-900/95 backdrop-blur-md border-r border-gray-700/50 z-50 overflow-y-auto"
+           className="fixed top-0 left-0 h-full w-full max-w-full sm:left-0 sm:h-full sm:w-80 bg-gray-900/95 backdrop-blur-md border-r border-gray-700/50 z-50 overflow-y-auto overflow-x-hidden sm:transition-none sm:translate-y-0 sm:translate-x-0 sm:animate-none sm:static sm:rounded-none sm:border-r"
+
           >
-            <div className="p-6">
+            <div className="p-6 px-4 overflow-x-hidden">
               {/* Header */}
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center justify-between mb-6 flex-wrap gap-2 sm:flex-nowrap">
                 <h2 className="text-2xl font-bold text-white">Filters</h2>
                 <div className="flex space-x-2">
                   <motion.button
