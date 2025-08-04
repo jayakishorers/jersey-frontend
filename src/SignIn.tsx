@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useEffect } from 'react';
+
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
@@ -25,19 +27,26 @@ const SignIn: React.FC = () => {
       localStorage.setItem('user', JSON.stringify(response.data.data.user));
 
       navigate('/dashboard');
+      window.location.reload();
     } catch (err: any) {
       const msg =
-        err.response?.data?.message ||
-        err.response?.data?.errors?.[0]?.msg ||
-        'Login failed';
+      err.response?.data?.message ||
+      err.response?.data?.errors?.[0]?.msg ||
+      'Login failed';
       setError(msg);
     }
   };
-
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/dashboard');
+    }
+  }, []);
+  
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center"
-      style={{ backgroundImage: "url('/bg-img.jpg')" }}
+    className="min-h-screen flex items-center justify-center bg-cover bg-center"
+    style={{ backgroundImage: "url('/bg-img.jpg')" }}
     >
       <div className="bg-black/70 p-8 rounded-lg shadow-lg w-full max-w-md text-white">
         <h2 className="text-3xl font-bold mb-6 text-center text-green-400">Sign In</h2>
