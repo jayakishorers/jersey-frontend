@@ -2,6 +2,8 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus, Minus, Trash2, ShoppingBag, CreditCard } from 'lucide-react';
 import { CartItem } from '../types';
+import { Link } from 'react-router-dom';
+import { useCart } from '../hooks/useCart';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -18,8 +20,10 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   cartItems,
   onUpdateQuantity,
   onRemoveItem,
-  cartTotal
+  cartTotal,
 }) => {
+  const { setIsCartOpen } = useCart(); // ✅ Moved inside component
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -103,10 +107,10 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                               Size: {item.size}
                             </span>
                             <span className="text-blue-400 font-semibold">
-                              ${item.jersey.price}
+                              ₹{item.jersey.price}
                             </span>
                           </div>
-                          
+
                           {/* Quantity Controls */}
                           <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-2">
@@ -130,7 +134,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                                 <Plus className="w-3 h-3" />
                               </motion.button>
                             </div>
-                            
+
                             <motion.button
                               whileHover={{ scale: 1.1 }}
                               whileTap={{ scale: 0.9 }}
@@ -152,34 +156,33 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             {cartItems.length > 0 && (
               <div className="p-6 border-t border-gray-800">
                 <div className="space-y-4">
-                  {/* Subtotal */}
                   <div className="flex justify-between items-center text-lg">
                     <span className="text-gray-300">Subtotal:</span>
-                    <span className="text-white font-bold">${cartTotal.toFixed(2)}</span>
+                    <span className="text-white font-bold">₹{cartTotal.toFixed(2)}</span>
                   </div>
-                  
-                  {/* Shipping */}
+
                   <div className="flex justify-between items-center text-sm">
                     <span className="text-gray-400">Shipping:</span>
                     <span className="text-green-400">Free</span>
                   </div>
-                  
-                  {/* Total */}
+
                   <div className="flex justify-between items-center text-xl font-bold border-t border-gray-700 pt-4">
                     <span className="text-white">Total:</span>
-                    <span className="text-white">${cartTotal.toFixed(2)}</span>
+                    <span className="text-white">₹{cartTotal.toFixed(2)}</span>
                   </div>
-                  
-                  {/* Checkout Button */}
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full py-4 bg-gradient-to-r from-green-600 to-green-500 text-white font-bold rounded-xl text-lg flex items-center justify-center space-x-2 hover:shadow-lg hover:shadow-green-500/30 transition-all"
+
+                  {/* ✅ Clean checkout button */}
+                  <Link
+                    to="/checkout"
+                    onClick={() => setIsCartOpen(false)}
+                    className="block w-full py-4 bg-gradient-to-r from-green-600 to-green-500 text-white font-bold rounded-xl text-lg text-center hover:shadow-lg hover:shadow-green-500/30 transition-all"
                   >
-                    <CreditCard className="w-5 h-5" />
-                    <span>Proceed to Checkout</span>
-                  </motion.button>
-                  
+                    <div className="flex items-center justify-center space-x-2">
+                      <CreditCard className="w-5 h-5" />
+                      <span>Proceed to Checkout</span>
+                    </div>
+                  </Link>
+
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}

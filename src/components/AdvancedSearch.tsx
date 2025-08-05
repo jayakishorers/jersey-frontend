@@ -113,7 +113,7 @@
                 <h1 className="text-4xl font-bold text-white mb-2">Advanced Search</h1>
                 <p className="text-gray-400">Find your perfect jersey with our advanced filtering system</p>
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="hidden md:flex items-center space-x-4">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -154,7 +154,7 @@
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"> 
           <div className="flex gap-8">
             {/* Filters Sidebar */}
             <AnimatePresence>
@@ -166,90 +166,113 @@
                   className="w-80 bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6 h-fit sticky top-24"
                 >
                   <h3 className="text-xl font-bold text-white mb-6">Filters</h3>
-                  
-                  {/* Quick Stats */}
-                  <div className="grid grid-cols-2 gap-4 mb-6">
-                    <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3 text-center">
-                      <div className="text-2xl font-bold text-blue-400">{filteredJerseys.length}</div>
-                      <div className="text-xs text-gray-400">Results</div>
-                    </div>
-                    <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-3 text-center">
-                      <div className="text-2xl font-bold text-green-400">{jerseys.filter(j => j.isNew).length}</div>
-                      <div className="text-xs text-gray-400">New</div>
-                    </div>
-                  </div>
-
-                  {/* Price Range */}
-                  <div className="mb-6">
-                    <h4 className="text-white font-semibold mb-3">Price Range</h4>
-                    <div className="space-y-3">
-                      <input
-                        type="range"
-                        min="0"
-                        max="200"
-                        value={filters.priceRange[1]}
-                        onChange={(e) => handleFilterChange('priceRange', [0, parseInt(e.target.value)])}
-                        className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
-                      />
-                      <div className="flex justify-between text-sm text-gray-400">
-                        <span>$0</span>
-                        <span className="text-blue-400 font-semibold">${filters.priceRange[1]}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Rating Filter */}
-                  <div className="mb-6">
-                    <h4 className="text-white font-semibold mb-3">Minimum Rating</h4>
-                    <div className="flex space-x-2">
-                      {[1, 2, 3, 4, 5].map((rating) => (
-                        <button
-                          key={rating}
-                          onClick={() => handleFilterChange('rating', rating === filters.rating ? 0 : rating)}
-                          className={`flex items-center space-x-1 px-3 py-2 rounded-lg border transition-colors ${
-                            filters.rating >= rating
-                              ? 'border-yellow-500 bg-yellow-500/20 text-yellow-400'
-                              : 'border-gray-600 text-gray-400 hover:border-yellow-400'
-                          }`}
-                        >
-                          <Star className="w-4 h-4" />
-                          <span>{rating}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Other filters... */}
-                  {Object.entries({
-                    'Jersey Type': { key: 'type', options: categories.types },
-                    'Material': { key: 'material', options: categories.materials },
-                    'Category': { key: 'category', options: categories.categories },
-                    'Size': { key: 'size', options: categories.sizes }
-                  }).map(([title, { key, options }]) => (
-                    <div key={key} className="mb-6">
-                      <h4 className="text-white font-semibold mb-3">{title}</h4>
-                      <div className="space-y-2">
-                        {options.map((option) => (
-                          <label key={option} className="flex items-center space-x-3 cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={(filters[key as keyof FilterState] as string[]).includes(option)}
-                              onChange={() => handleFilterChange(key as keyof FilterState, option)}
-                              className="rounded border-gray-600 text-blue-500 focus:ring-blue-500"
-                            />
-                            <span className="text-gray-300">{option}</span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                  {/* Search Button */}
+{/* Mobile Filter & Sort Bar */}
+<div className="flex justify-between items-center mb-4 md:hidden">
   <button
-    onClick={handleSearchClick}
-    className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+    onClick={() => {
+      setShowFilters(true);
+    }}
+    className="flex items-center gap-1 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700"
   >
-    Search
+    <SlidersHorizontal className="w-4 h-4" />
+    Filter
   </button>
+
+  <button
+    onClick={() => {
+      // Optional: Implement Sort modal logic
+    }}
+    className="flex items-center gap-1 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700"
+  >
+    <List className="w-4 h-4" />
+    Sort
+  </button>
+</div>
+
+{/* Quick Stats */}
+<div className="grid grid-cols-2 gap-4 mb-6">
+  <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3 text-center">
+    <div className="text-2xl font-bold text-blue-400">{filteredJerseys.length}</div>
+    <div className="text-xs text-gray-400">Results</div>
+  </div>
+  <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-3 text-center">
+    <div className="text-2xl font-bold text-green-400">{jerseys.filter(j => j.isNew).length}</div>
+    <div className="text-xs text-gray-400">New</div>
+  </div>
+</div>
+
+{/* Price Range */}
+<div className="mb-6">
+  <h4 className="text-white font-semibold mb-3">Price Range</h4>
+  <div className="space-y-3">
+    <input
+      type="range"
+      min="0"
+      max="200"
+      value={filters.priceRange[1]}
+      onChange={(e) => handleFilterChange('priceRange', [0, parseInt(e.target.value)])}
+      className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+    />
+    <div className="flex justify-between text-sm text-gray-400">
+      <span>$0</span>
+      <span className="text-blue-400 font-semibold">${filters.priceRange[1]}</span>
+    </div>
+  </div>
+</div>
+
+{/* Rating Filter */}
+<div className="mb-6">
+  <h4 className="text-white font-semibold mb-3">Minimum Rating</h4>
+  <div className="flex space-x-2">
+    {[1, 2, 3, 4, 5].map((rating) => (
+      <button
+        key={rating}
+        onClick={() => handleFilterChange('rating', rating === filters.rating ? 0 : rating)}
+        className={`flex items-center space-x-1 px-3 py-2 rounded-lg border transition-colors ${
+          filters.rating >= rating
+            ? 'border-yellow-500 bg-yellow-500/20 text-yellow-400'
+            : 'border-gray-600 text-gray-400 hover:border-yellow-400'
+        }`}
+      >
+        <Star className="w-4 h-4" />
+        <span>{rating}</span>
+      </button>
+    ))}
+  </div>
+</div>
+
+{/* Dynamic Filters */}
+{Object.entries({
+  'Jersey Type': { key: 'type', options: categories.types },
+  'Material': { key: 'material', options: categories.materials },
+  'Category': { key: 'category', options: categories.categories },
+  'Size': { key: 'size', options: categories.sizes }
+}).map(([title, { key, options }]) => (
+  <div key={key} className="mb-6">
+    <h4 className="text-white font-semibold mb-3">{title}</h4>
+    <div className="space-y-2">
+      {options.map((option) => (
+        <label key={option} className="flex items-center space-x-3 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={(filters[key as keyof FilterState] as string[]).includes(option)}
+            onChange={() => handleFilterChange(key as keyof FilterState, option)}
+            className="rounded border-gray-600 text-blue-500 focus:ring-blue-500"
+          />
+          <span className="text-gray-300">{option}</span>
+        </label>
+      ))}
+    </div>
+  </div>
+))}
+
+{/* Search Button */}
+<button
+  onClick={handleSearchClick}
+  className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+>
+  Search
+</button>
 
                 </motion.div>
               )}
@@ -258,6 +281,34 @@
             {/* Results */}
             <div className="flex-1">
               {/* Results Header */}
+             <div className="md:hidden w-full sticky top-[64px] z-30 bg-white py-2 px-3 shadow-sm">
+  <div className="flex items-center gap-3">
+    {/* Filter (60%) */}
+    <button
+      onClick={() => setShowFilters(true)}
+      className="flex w-[40%] items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-800 text-sm"
+    >
+      <SlidersHorizontal className="w-4 h-4" />
+      <span>Filter</span>
+    </button>
+
+    {/* Sort (40%) */}
+    <select
+      value={filters.sortBy}
+      onChange={(e) => handleFilterChange('sortBy', e.target.value)}
+      className="w-[60%] px-4 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-800 text-sm"
+    >
+      <option value="">Sort</option>
+      <option value="price-low">Price: Low to High</option>
+      <option value="price-high">Price: High to Low</option>
+      <option value="rating">Highest Rated</option>
+      <option value="newest">Newest</option>
+      <option value="bestseller">Best Selling</option>
+    </select>
+  </div>
+</div>
+
+
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h2 className="text-2xl font-bold text-white">
@@ -269,7 +320,7 @@
                 <select
                   value={filters.sortBy}
                   onChange={(e) => handleFilterChange('sortBy', e.target.value)}
-                  className="px-4 py-2 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className=" hidden md:px-4 py-2 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Sort by</option>
                   <option value="price-low">Price: Low to High</option>

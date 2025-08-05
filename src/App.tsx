@@ -13,6 +13,17 @@ import SignIn from './SignIn';
 import SignUp from './SignUp';
 import Dashboard from './Dashboard';
 import { useCart } from './hooks/useCart';  // updated
+// ✅ Correct import for src/CheckoutPage.tsx
+import CheckoutPage from './CheckOutPage';
+
+const OrderSuccess = () => (
+  <div className="min-h-screen flex items-center justify-center text-white text-center p-8">
+    <div>
+      <h1 className="text-3xl font-bold mb-4">🎉 Order Placed Successfully!</h1>
+      <p className="text-lg">Thank you for your purchase. We’ll notify you once it’s shipped.</p>
+    </div>
+  </div>
+);
 
 const App: React.FC = () => {
   const [selectedJersey, setSelectedJersey] = useState<Jersey | null>(null);
@@ -228,6 +239,22 @@ const App: React.FC = () => {
             localStorage.getItem('token') ? <Dashboard /> : <Navigate to="/signin" replace />
           }
         />
+        <Route
+  path="/checkout"
+  element={
+    <CheckoutPage
+      cartItems={cartItems}
+      cartTotal={getCartTotal()}
+      onClearCart={() => {
+        localStorage.removeItem('cart');
+        setIsCartOpen(false);
+      }}
+    />
+  }
+/>
+
+<Route path="/order-success" element={<OrderSuccess />} />
+
       </Routes>
 
       {selectedJersey && (
