@@ -173,15 +173,16 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
                   {/* ✅ Clean checkout button */}
                   <Link
-                    to="/checkout"
-                    onClick={() => setIsCartOpen(false)}
-                    className="block w-full py-4 bg-gradient-to-r from-green-600 to-green-500 text-white font-bold rounded-xl text-lg text-center hover:shadow-lg hover:shadow-green-500/30 transition-all"
-                  >
-                    <div className="flex items-center justify-center space-x-2">
-                      <CreditCard className="w-5 h-5" />
-                      <span>Proceed to Checkout</span>
-                    </div>
-                  </Link>
+  to="/checkout"
+  onClick={onClose}
+  className="block w-full py-4 bg-gradient-to-r from-green-600 to-green-500 text-white font-bold rounded-xl text-lg text-center hover:shadow-lg hover:shadow-green-500/30 transition-all"
+>
+  <div className="flex items-center justify-center space-x-2">
+    <CreditCard className="w-5 h-5" />
+    <span>Proceed to Checkout</span>
+  </div>
+</Link>
+
 
                   <motion.button
                     whileHover={{ scale: 1.02 }}

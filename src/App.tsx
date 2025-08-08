@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import React, { useState ,useEffect} from 'react';
+import { Routes, Route, Navigate,useLocation } from 'react-router-dom';
 import { CategorySection } from './components/CategorySection';
 import { StaticCategoryCarousel } from './components/StaticCategoryCarousel';
 import { ProductModal } from './components/ProductModal';
@@ -15,6 +15,7 @@ import Dashboard from './Dashboard';
 import { useCart } from './hooks/useCart';  // updated
 // ✅ Correct import for src/CheckoutPage.tsx
 import CheckoutPage from './CheckOutPage';
+import { CartDrawer } from './components/CartDrawer'; // make sure this is imported
 
 const OrderSuccess = () => (
   <div className="min-h-screen flex items-center justify-center text-white text-center p-8">
@@ -73,7 +74,15 @@ const App: React.FC = () => {
     setShowAdvancedSearch(false);
     setSearchQuery('');
   };
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [pathname]);
+
+  return null;
+};
   return (
     <div className="bg-black min-h-screen text-white">
       <Navbar
@@ -83,7 +92,7 @@ const App: React.FC = () => {
         onRemoveItem={removeFromCart}
         cartTotal={getCartTotal()}
       />
-
+      <ScrollToTop /> 
       <Routes>
         <Route
           path="/"
@@ -257,7 +266,7 @@ const App: React.FC = () => {
 
       </Routes>
 
-      {selectedJersey && (
+            {selectedJersey && (
         <ProductModal
           jersey={selectedJersey}
           isOpen={isModalOpen}
@@ -265,6 +274,54 @@ const App: React.FC = () => {
           onAddToCart={handleAddToCart}
         />
       )}
+
+      {/* ✅ Floating Cart Icon with Hover Preview (Mobile Only) */}
+<div
+  key={getCartCount()}
+  className="fixed bottom-4 right-4 z-50 md:hidden group animate-cartPop"
+  onClick={() => setIsCartOpen(true)}
+>
+  <div
+    className="relative flex items-center justify-center w-14 h-14 bg-white text-black rounded-full shadow-xl cursor-pointer 
+            hover:animate-none transition-all duration-300 border border-gray-300
+            hover:scale-105 hover:ring-2 hover:ring-blue-400"
+  >
+    🛒
+    {getCartCount() > 0 && (
+      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-2 py-0.5">
+        {getCartCount()}
+      </span>
+    )}
+    <span className="absolute inset-0 rounded-full border-2 border-blue-300 opacity-50 animate-pulse"></span>
+  </div>
+
+  <div className="absolute bottom-16 right-0 bg-white text-sm shadow-lg rounded-md w-56 p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+    <p className="font-semibold mb-2 text-black">Cart Preview</p>
+    {cartItems.length === 0 ? (
+      <p className="text-gray-500">Your cart is empty.</p>
+    ) : (
+      <ul className="space-y-1 max-h-40 overflow-y-auto no-scrollbar text-black">
+        {cartItems.slice(0, 3).map((item, idx) => (
+          <li key={idx} className="truncate">
+            {item.jersey.club} × {item.quantity}
+          </li>
+        ))}
+        {cartItems.length > 3 && (
+          <li className="text-blue-600">+ {cartItems.length - 3} more</li>
+        )}
+      </ul>
+    )}
+  </div>
+</div>
+{/* ✅ Cart Drawer (Rendered Always but visible only when open) */}
+<CartDrawer
+  isOpen={isCartOpen}
+  onClose={() => setIsCartOpen(false)}
+  cartItems={cartItems}
+  onUpdateQuantity={updateQuantity}
+  onRemoveItem={removeFromCart}
+  cartTotal={getCartTotal()}
+/>
 
       <Footer />
     </div>
