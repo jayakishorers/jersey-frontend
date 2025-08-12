@@ -77,6 +77,8 @@ const handleOrder = async () => {
   const orderData = {
     items: cartItems.map((item) => ({
       productId: item.jersey.id,
+      isFullSleeve: item.jersey.isFullSleeve ?? false,
+      type:item.jersey.type,
       name: item.jersey.name,
       size: item.size,
       quantity: item.quantity,

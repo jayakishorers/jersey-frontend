@@ -9,6 +9,7 @@ export interface Jersey {
   fullKit: boolean;
   sizes: ('S' | 'M' | 'L' | 'XL' | 'XXL')[];
   price: number;
+  isFullSleeve?:boolean;
   originalPrice?: number;
   rating?: number;
   image: string;

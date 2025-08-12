@@ -218,26 +218,6 @@
   </div>
 </div>
 
-{/* Rating Filter */}
-<div className="mb-6">
-  <h4 className="text-white font-semibold mb-3">Minimum Rating</h4>
-  <div className="flex space-x-2">
-    {[1, 2, 3, 4, 5].map((rating) => (
-      <button
-        key={rating}
-        onClick={() => handleFilterChange('rating', rating === filters.rating ? 0 : rating)}
-        className={`flex items-center space-x-1 px-3 py-2 rounded-lg border transition-colors ${
-          filters.rating >= rating
-            ? 'border-yellow-500 bg-yellow-500/20 text-yellow-400'
-            : 'border-gray-600 text-gray-400 hover:border-yellow-400'
-        }`}
-      >
-        <Star className="w-4 h-4" />
-        <span>{rating}</span>
-      </button>
-    ))}
-  </div>
-</div>
 
 {/* Dynamic Filters */}
 {Object.entries({

@@ -5,27 +5,28 @@ export const useCart = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const addToCart = useCallback((jersey: Jersey, size: string, quantity: number = 1) => {
-    setCartItems(prev => {
-      const existingItem = prev.find(item => item.jersey.id === jersey.id && item.size === size);
-      
-      if (existingItem) {
-        return prev.map(item =>
-          item.jersey.id === jersey.id && item.size === size
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
-      } else {
-        return [...prev, {
-          id: `${jersey.id}-${size}`,
-          jersey,
-          size,
-          quantity,
-          addedAt: new Date()
-        }];
-      }
-    });
-  }, []);
+ const addToCart = useCallback((jersey: Jersey, size: string, quantity: number = 1, isFullSleeve: boolean = false) => {
+  setCartItems(prev => {
+    const existingItem = prev.find(item => item.jersey.id === jersey.id && item.size === size);
+    
+    if (existingItem) {
+      return prev.map(item =>
+        item.jersey.id === jersey.id && item.size === size
+          ? { ...item, quantity: item.quantity + quantity }
+          : item
+      );
+    } else {
+      return [...prev, {
+        id: `${jersey.id}-${size}`,
+        jersey: { ...jersey, isFullSleeve }, // ✅ store it here
+        size,
+        quantity,
+        addedAt: new Date()
+      }];
+    }
+  });
+}, []);
+
 
   const removeFromCart = useCallback((itemId: string) => {
     setCartItems(prev => prev.filter(item => item.id !== itemId));
