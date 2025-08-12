@@ -20,6 +20,7 @@ export interface Jersey {
   isTrending?: boolean;
   stock?: number;
   discount?: number;
+  PlayerName?:String;
 }
 
 export interface CartItem {

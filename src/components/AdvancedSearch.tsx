@@ -32,7 +32,7 @@
       fullKit: '',
       size: [],
       sortBy: '',
-      priceRange: [0, 200],
+      priceRange: [0, 2000],
       rating: 0
     });
 
@@ -59,14 +59,12 @@
         if (!hasMatchingSize) return false;
       }
       if (jersey.price < filters.priceRange[0] || jersey.price > filters.priceRange[1]) return false;
-      if (jersey.rating < filters.rating) return false;
 
       return true;
     }).sort((a, b) => {
       switch (filters.sortBy) {
         case 'price-low': return a.price - b.price;
         case 'price-high': return b.price - a.price;
-        case 'rating': return b.rating - a.rating;
         case 'newest': return (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0);
         case 'bestseller': return (b.isBestSeller ? 1 : 0) - (a.isBestSeller ? 1 : 0);
         default: return 0;

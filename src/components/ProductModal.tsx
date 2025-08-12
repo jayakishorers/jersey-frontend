@@ -162,18 +162,7 @@ const resetZoom = () => {
                     <p className="text-lg text-gray-500">{jersey.club}</p>
                   </div>
 
-                  {/* Rating */}
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center space-x-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`w-5 h-5 ${i < 4 ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
-                        />
-                      ))}
-                    </div>
-                    
-                  </div>
+                  
 
                   {/* Price */}
                   <div className="flex items-center space-x-4">
@@ -195,6 +184,16 @@ const resetZoom = () => {
                     <div><span className="text-gray-500">Category:</span> <p className="font-medium">{jersey.category}</p></div>
                     <div><span className="text-gray-500">Full Kit:</span> <p className="font-medium">{jersey.fullKit ? 'Yes' : 'No'}</p></div>
                   </div>
+
+                    {/* Player Name */}
+<div>
+  <h3 className="text-lg font-semibold mb-3">Player Name</h3>
+  <p className="text-gray-700 text-base font-medium">
+    {jersey.PlayerName || 'None'}
+  </p>
+</div>
+
+
 
                   {/* Size Selection */}
                   <div>
@@ -403,7 +402,9 @@ const resetZoom = () => {
     )}
   </div>
 )}
-
+<p className="mt-4 text-center text-sm md:text-base font-medium text-gray-700 bg-gray-100 px-4 py-2 rounded-lg">
+  📏"Find your perfect fit using the size chart for your jersey type."
+</p>
                   {/* Description */}
                   <div>
                     <h3 className="text-lg font-semibold mb-3">Description</h3>
