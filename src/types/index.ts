@@ -10,7 +10,7 @@ export interface Jersey {
   sizes: ('S' | 'M' | 'L' | 'XL' | 'XXL')[];
   price: number;
   originalPrice?: number;
-  rating: number;
+  rating?: number;
   image: string;
   images: string[];
   description: string;

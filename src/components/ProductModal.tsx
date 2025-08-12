@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Star, ShoppingCart, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, Star, ShoppingCart, Heart, ChevronLeft, ChevronRight , ZoomIn, ZoomOut } from 'lucide-react';
 import { Jersey } from '../types';
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
 
 interface ProductModalProps {
   jersey: Jersey | null;
@@ -35,7 +37,36 @@ export const ProductModal: React.FC<ProductModalProps> = ({
     onAddToCart(jersey, selectedSize, quantity);
     onClose();
   };
+const [modalImageIndex, setModalImageIndex] = useState(0);
+const [zoom, setZoom] = useState(1);
+const [isZoomed, setIsZoomed] = useState(false);
+const [isLoading, setIsLoading] = useState(true);
+const [isFullscreen, setIsFullscreen] = useState(false);
 
+const modalImages = [
+   "/playervers.jpg",
+  "/sublim.jpg",
+  "/fanvers.jpg"
+];
+
+const prevModalImage = () => {
+  setModalImageIndex((prev) =>
+    prev === 0 ? modalImages.length - 1 : prev - 1
+  );
+  resetZoom();
+};
+
+const nextModalImage = () => {
+  setModalImageIndex((prev) =>
+    prev === modalImages.length - 1 ? 0 : prev + 1
+  );
+  resetZoom();
+};
+
+const resetZoom = () => {
+  setZoom(1);
+  setIsZoomed(false);
+};
   return (
     <AnimatePresence>
       {isOpen && (
@@ -137,7 +168,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`w-5 h-5 ${i < Math.floor(jersey.rating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
+                          className={`w-5 h-5 ${i < 4 ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
                         />
                       ))}
                     </div>
@@ -146,12 +177,12 @@ export const ProductModal: React.FC<ProductModalProps> = ({
 
                   {/* Price */}
                   <div className="flex items-center space-x-4">
-                    <span className="text-4xl font-bold text-black">${jersey.price}</span>
+                    <span className="text-4xl font-bold text-black">Rs.{jersey.price}</span>
                     {jersey.originalPrice && (
                       <>
-                        <span className="text-xl text-gray-400 line-through">${jersey.originalPrice}</span>
+                        <span className="text-xl text-gray-400 line-through">Rs.{jersey.originalPrice}</span>
                         <span className="px-3 py-1 bg-red-100 text-red-500 text-sm rounded border border-red-300">
-                          Save ${(jersey.originalPrice - jersey.price).toFixed(2)}
+                          Save Rs.{(jersey.originalPrice - jersey.price).toFixed(2)}
                         </span>
                       </>
                     )}
@@ -236,6 +267,142 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                       <Heart className="w-5 h-5" />
                     </motion.button>
                   </div>
+
+                    {/* Modal Image Section */}
+<div className="lg:w-1/2 relative bg-black flex items-center justify-center overflow-hidden rounded-lg select-none">
+
+  {/* Loader */}
+  {isLoading && (
+    <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
+      <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  )}
+
+  {/* Image */}
+  <motion.img
+    key={modalImageIndex}
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.4 }}
+    src={modalImages[modalImageIndex]}
+    alt={`Modal jersey view ${modalImageIndex + 1}`}
+    onLoad={() => setIsLoading(false)}
+    onClick={() => {
+      setIsFullscreen(true);
+      setIsZoomed(false);
+      setZoom(1);
+    }}
+    style={{
+      transform: `scale(${zoom})`,
+      cursor: "zoom-in"
+    }}
+    className="max-h-[500px] w-auto object-contain transition-transform duration-300"
+  />
+
+  {/* Left/Right Buttons */}
+  {modalImages.length > 1 && !isZoomed && (
+    <>
+      <motion.button
+        whileHover={{ scale: 1.15 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={prevModalImage}
+        className="absolute left-4 p-3 bg-black/50 hover:bg-black/70 rounded-full text-white shadow-lg transition"
+      >
+        <ChevronLeft className="w-6 h-6" />
+      </motion.button>
+
+      <motion.button
+        whileHover={{ scale: 1.15 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={nextModalImage}
+        className="absolute right-4 p-3 bg-black/50 hover:bg-black/70 rounded-full text-white shadow-lg transition"
+      >
+        <ChevronRight className="w-6 h-6" />
+      </motion.button>
+    </>
+  )}
+
+  {/* Dots */}
+  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-2">
+    {modalImages.map((_, index) => (
+      <button
+        key={index}
+        onClick={() => { setModalImageIndex(index); resetZoom(); }}
+        className={`w-3 h-3 rounded-full transition-all duration-300 ${
+          index === modalImageIndex ? 'bg-blue-500 scale-110' : 'bg-gray-400'
+        }`}
+      />
+    ))}
+  </div>
+</div>
+
+{/* Fullscreen Overlay */}
+{isFullscreen && (
+  <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+
+    {/* Close Button */}
+<button
+  onClick={() => setIsFullscreen(false)}
+  className="absolute top-4 right-4 z-[60] p-2 rounded-full bg-black/60 backdrop-blur-md hover:bg-black/80 transition"
+  style={{
+    touchAction: "manipulation" // Prevent accidental zoom/pan blocking tap
+  }}
+>
+  <span className="text-white text-2xl leading-none">✕</span>
+</button>
+
+    {/* Fullscreen Image */}
+    <motion.img
+      key={modalImageIndex}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      src={modalImages[modalImageIndex]}
+      alt={`Fullscreen jersey view ${modalImageIndex + 1}`}
+      className="max-h-full max-w-full object-contain cursor-grab"
+      style={{
+        transform: `scale(${zoom})`,
+        transition: "transform 0.3s ease"
+      }}
+      onClick={() => setIsZoomed(!isZoomed)}
+    />
+
+    {/* Navigation Arrows */}
+    {modalImages.length > 1 && (
+      <>
+        <motion.button
+          onClick={prevModalImage}
+          className="absolute left-6 p-4 bg-black/40 hover:bg-black/60 rounded-full text-white"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </motion.button>
+        <motion.button
+          onClick={nextModalImage}
+          className="absolute right-6 p-4 bg-black/40 hover:bg-black/60 rounded-full text-white"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </motion.button>
+      </>
+    )}
+
+    {/* Zoom Controls */}
+    {isZoomed && (
+      <div className="absolute bottom-6 right-6 flex space-x-3">
+        <button
+          onClick={() => setZoom((z) => Math.min(z + 0.25, 3))}
+          className="p-3 bg-white/20 hover:bg-white/40 rounded-full text-white"
+        >
+          <ZoomIn className="w-6 h-6" />
+        </button>
+        <button
+          onClick={() => setZoom((z) => Math.max(z - 0.25, 1))}
+          className="p-3 bg-white/20 hover:bg-white/40 rounded-full text-white"
+        >
+          <ZoomOut className="w-6 h-6" />
+        </button>
+      </div>
+    )}
+  </div>
+)}
 
                   {/* Description */}
                   <div>
