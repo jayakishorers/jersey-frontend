@@ -95,7 +95,7 @@ export const WishListDrawer: React.FC<WishListDrawerProps> = ({
                           </h3>
                           <p className="text-gray-400 text-xs mb-2">{jersey.club}</p>
                           <span className="text-green-400 font-semibold">
-                            ${jersey.price}
+                            Rs{jersey.price}
                           </span>
 
                           {/* Add to Cart Button */}

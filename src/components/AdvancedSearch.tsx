@@ -212,8 +212,8 @@
       className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
     />
     <div className="flex justify-between text-sm text-gray-400">
-      <span>$0</span>
-      <span className="text-blue-400 font-semibold">${filters.priceRange[1]}</span>
+      <span>Rs0</span>
+      <span className="text-blue-400 font-semibold">Rs{filters.priceRange[1]}</span>
     </div>
   </div>
 </div>

@@ -37,15 +37,14 @@ const Dashboard: React.FC = () => {
       navigate('/signin');
       return;
     }
-
-    const fetchOrders = async () => {
+const fetchOrders = async () => {
   setLoading(true);
   try {
-    const res = await axios.get('/api/orders/my-orders', {
+    const res = await axios.get('https://jerseybackend.onrender.com/api/orders/my-orders', {
       headers: { Authorization: `Bearer ${token}` },
       params: { page: 1, limit: 20 },
     });
-    console.log('API response:', res.data); // 👈 Add this
+    console.log('API response:', res.data);
 
     if (res.data.success) {
       setOrders(res.data.data.orders);
@@ -54,7 +53,7 @@ const Dashboard: React.FC = () => {
       setError('Failed to load orders');
     }
   } catch (err) {
-    console.error('Fetch error:', err); // 👈 Add this
+    console.error('Fetch error:', err);
     setError('Failed to load orders');
   } finally {
     setLoading(false);
@@ -67,9 +66,9 @@ const Dashboard: React.FC = () => {
   const handleDelete = async (id: string) => {
     if (!window.confirm('Are you sure you want to delete this order?')) return;
     try {
-      await axios.delete(`/api/orders/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(`https://jerseybackend.onrender.com/api/orders/${id}`, {
+  headers: { Authorization: `Bearer ${token}` },
+});
       setOrders((prev) => prev.filter((order) => order._id !== id));
     } catch {
       alert('Failed to delete order.');
@@ -116,58 +115,6 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* Orders Section */}
-          <div className="mt-10">
-            <h2 className="text-2xl font-semibold mb-4">Your Orders</h2>
-            {loading && <p>Loading orders...</p>}
-            {error && <p className="text-red-500">{error}</p>}
-            {!loading && orders.length === 0 && <p>No orders found.</p>}
-
-            <ul className="space-y-4">
-              {orders.map((order) => (
-                <li
-                  key={order._id}
-                  className="bg-gray-800 rounded-lg p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
-                >
-                  <div>
-                    <p>
-                      <strong>Order #: </strong> {order.orderNumber}
-                    </p>
-                    <p>
-                      <strong>Status:</strong>{' '}
-                      <span
-                        className={
-                          order.orderStatus === 'delivered'
-                            ? 'text-green-400'
-                            : order.orderStatus === 'cancelled'
-                            ? 'text-red-500'
-                            : 'text-yellow-400'
-                        }
-                      >
-                        {order.orderStatus}
-                      </span>
-                    </p>
-                    <p>
-                      <strong>Total Amount:</strong> ₹{order.totalAmount.toFixed(2)}
-                    </p>
-                    <p>
-                      <strong>Items:</strong> {order.items.length}
-                    </p>
-                    <p className="text-gray-400 text-sm">
-                      Ordered on {new Date(order.createdAt).toLocaleString()}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => handleDelete(order._id)}
-                    className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white font-semibold self-start md:self-auto"
-                  >
-                    Delete
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
           {/* Action Buttons */}
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
             <button
@@ -183,6 +130,46 @@ const Dashboard: React.FC = () => {
               Back to Home
             </button>
           </div>
+          {loading && <p className="mt-6 text-center text-gray-400">Loading orders...</p>}
+
+{error && <p className="mt-6 text-center text-red-500">{error}</p>}
+
+{!loading && !error && orders.length === 0 && (
+  <p className="mt-6 text-center text-gray-400">You have no orders yet.</p>
+)}
+
+{!loading && !error && orders.length > 0 && (
+  <div className="mt-8 space-y-6">
+    <h2 className="text-2xl font-semibold text-green-400 mb-4">Your Orders</h2>
+    {orders.map(order => (
+      <div key={order._id} className="bg-gray-800 rounded p-4 border border-gray-700">
+        <p><strong>Order Number:</strong> {order.orderNumber}</p>
+        <p><strong>Status:</strong> {order.orderStatus}</p>
+        <p><strong>Total Amount:</strong> ₹{order.totalAmount.toFixed(2)}</p>
+        <p><strong>Placed On:</strong> {new Date(order.createdAt).toLocaleDateString()}</p>
+
+        <details className="mt-2">
+          <summary className="cursor-pointer text-green-400 font-semibold">View Items ({order.items.length})</summary>
+          <ul className="mt-2 list-disc list-inside">
+            {order.items.map((item) => (
+              <li key={item.productId}>
+                {item.name} — Size: {item.size} — Qty: {item.quantity} — ₹{item.price}
+              </li>
+            ))}
+          </ul>
+        </details>
+
+        <button
+          onClick={() => handleDelete(order._id)}
+          className="mt-3 bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-white text-sm"
+        >
+          Delete Order
+        </button>
+      </div>
+    ))}
+  </div>
+)}
+
         </div>
       </div>
     </div>

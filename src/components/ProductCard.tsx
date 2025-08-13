@@ -87,7 +87,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <div className="p-4 cursor-pointer" onClick={() => onViewDetails(jersey)}>
           <h3 className="text-gray-900 font-semibold text-lg mb-1">{jersey.name}</h3>
           <p className="text-gray-500 text-sm">{jersey.club}</p>
-          <div className="mt-2 text-gray-800 font-bold text-xl">${jersey.price}</div>
+          <div className="mt-2 text-gray-800 font-bold text-xl">Rs.{jersey.price}</div>
         </div>
       </div>
     </motion.div>

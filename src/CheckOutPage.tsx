@@ -103,7 +103,7 @@ const handleOrder = async () => {
   try {
     setLoading(true); // 🔵 Start loader
     const res = await axios.post(
-      'http://localhost:5000/api/orders/create',
+      'https://jerseybackend.onrender.com/api/orders/create',
       orderData,
       {
         headers: {
