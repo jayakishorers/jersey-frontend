@@ -32,6 +32,7 @@ const App: React.FC = () => {
   const [wishlist, setWishlist] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
+const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   const {
     cartItems,
@@ -43,6 +44,10 @@ const App: React.FC = () => {
     getCartTotal,
     getCartCount
   } = useCart();
+useEffect(() => {
+  const token = localStorage.getItem('token');
+  setIsAuthenticated(!!token);
+}, []);
 
   const handleViewDetails = (jersey: Jersey) => {
     setSelectedJersey(jersey);
@@ -83,6 +88,10 @@ const ScrollToTop = () => {
 
   return null;
 };
+if (isAuthenticated === null) {
+  return <div className="text-white text-center py-20">Loading...</div>;
+}
+
   return (
     <div className="bg-black min-h-screen text-white">
       <Navbar
@@ -243,11 +252,18 @@ const ScrollToTop = () => {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route
-          path="/dashboard"
-          element={
-            localStorage.getItem('token') ? <Dashboard /> : <Navigate to="/signin" replace />
-          }
-        />
+  path="/dashboard"
+  element={
+    isAuthenticated === null ? (
+      <div className="text-center py-20">Checking authentication...</div>
+    ) : isAuthenticated ? (
+      <Dashboard />
+    ) : (
+      <Navigate to="/signin" replace />
+    )
+  }
+/>
+
         <Route
   path="/checkout"
   element={
