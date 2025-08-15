@@ -10,6 +10,7 @@ import { Footer } from './components/Footer';
 import { Jersey } from './types';
 import { AdvancedSearch } from './components/AdvancedSearch';
 import SignIn from './SignIn';
+import AdminPage from './Adminpage'; 
 import SignUp from './SignUp';
 import Dashboard from './Dashboard';
 import { useCart } from './hooks/useCart';  // updated
@@ -263,6 +264,7 @@ if (isAuthenticated === null) {
     )
   }
 />
+        <Route path="/admin" element={<AdminPage />} />
 
         <Route
   path="/checkout"
