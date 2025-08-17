@@ -175,9 +175,10 @@ const AdminPage: React.FC = () => {
   const fetchUsers = async () => {
     setUsersLoading(true);
     try {
-      const response = await axios.get('https://jerseybackend.onrender.com/api/users/all-users', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await axios.get("https://jerseybackend.onrender.com/api/auth/all-users", {
+  headers: { Authorization: `Bearer ${token}` },
+});
+
       if (response.data.success) {
         setUsers(response.data.data.users);
       }
