@@ -10,7 +10,7 @@ import { Footer } from './components/Footer';
 import { Jersey } from './types';
 import { AdvancedSearch } from './components/AdvancedSearch';
 import SignIn from './SignIn';
-import AdminPage from './Adminpage'; 
+import AdminPage from './AdminPage'; 
 import SignUp from './SignUp';
 import Dashboard from './Dashboard';
 import { useCart } from './hooks/useCart';  // updated
