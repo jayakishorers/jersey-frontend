@@ -645,8 +645,6 @@ const AdminPage: React.FC = () => {
                     <p className="text-gray-600 text-sm font-medium">Total Revenue</p>
                     <p className="text-2xl lg:text-3xl font-bold text-gray-900">₹{analytics.totalRevenue.toLocaleString()}</p>
                     <p className="text-green-600 text-sm mt-1">
-                      <ArrowUp className="w-4 h-4 inline mr-1" />
-                      +12.5% from last month
                     </p>
                   </div>
                   <div className="w-10 h-10 lg:w-12 lg:h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -661,8 +659,7 @@ const AdminPage: React.FC = () => {
                     <p className="text-gray-600 text-sm font-medium">Total Orders</p>
                     <p className="text-2xl lg:text-3xl font-bold text-gray-900">{analytics.totalOrders}</p>
                     <p className="text-blue-600 text-sm mt-1">
-                      <ArrowUp className="w-4 h-4 inline mr-1" />
-                      +8.2% from last month
+                      
                     </p>
                   </div>
                   <div className="w-10 h-10 lg:w-12 lg:h-12 bg-blue-100 rounded-lg flex items-center justify-center">

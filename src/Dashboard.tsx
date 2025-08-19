@@ -451,7 +451,11 @@ const Dashboard: React.FC = () => {
           {!loading && !error && filteredOrders.length > 0 && (
             <div className="divide-y divide-gray-200">
               {filteredOrders.map(order => (
-                <div key={order._id} className="px-6 py-6 hover:bg-gray-50 transition-colors">
+                <div 
+                  key={order._id} 
+                  className="px-6 py-6 hover:bg-gray-50 transition-colors cursor-pointer"
+                  onClick={() => setSelectedOrder(order)}
+                >
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-4">
                       <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
@@ -500,14 +504,6 @@ const Dashboard: React.FC = () => {
                   </div>
                   
                   <div className="flex flex-wrap gap-3">
-                    <button
-                      onClick={() => setSelectedOrder(order)}
-                      className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all duration-200"
-                    >
-                      <Eye className="w-4 h-4" />
-                      <span>View Details</span>
-                    </button>
-                    
                     <button
                       onClick={() => downloadOrderReceipt(order)}
                       className="flex items-center space-x-2 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
