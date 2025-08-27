@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Users, ShoppingCart, MessageSquare, Download, LogOut, Eye, CheckCircle, XCircle, Clock, Truck, Package, TrendingUp, Search, Filter, BarChart3, DollarSign, Calendar, Bell, Settings, Home, RefreshCw, Edit3, Send, ChevronRight, ChevronDown, Star, MapPin, Phone, Mail, AlertCircle, PieChart, Activity, Target, Zap, Globe, UserPlus, ShoppingBag, CreditCard, ArrowUp, ArrowDown, MessageCircle, Podcast as Broadcast, Shirt, Plus, Minus, Save, X, Info } from 'lucide-react';
+// import the jersey data
+import { jerseys as jerseyData } from './data/jerseys';
 
 interface OrderItem {
   productId: string;
@@ -91,7 +93,26 @@ const AdminPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [activeTab, setActiveTab] = useState<'dashboard' | 'orders' | 'users' | 'messages' | 'stock'>('dashboard');
-  
+  const [dirtyJerseys, setDirtyJerseys] = useState<Record<string, boolean>>({});
+const handleUpdateStock = async (jerseyId: string, stockBySize: Record<string, number>) => {
+  try {
+    await axios.patch(
+      `https://jerseybackend.onrender.com/api/stock/${jerseyId}`,
+      { stockBySize },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    // clear dirty flag
+    setDirtyJerseys(prev => {
+      const { [jerseyId]: _, ...rest } = prev;
+      return rest;
+    });
+  } catch (err) {
+    console.error("Failed to update stock:", err);
+    alert("Failed to update stock. Please try again.");
+  }
+};
+
   // Data states
   const [orders, setOrders] = useState<Order[]>([]);
   const [users, setUsers] = useState<User[]>([]);
@@ -116,40 +137,27 @@ const AdminPage: React.FC = () => {
   const [sendingMessage, setSendingMessage] = useState(false);
   const [broadcastMessage, setBroadcastMessage] = useState({ message: '', type: 'info' as const });
   const [sendingBroadcast, setSendingBroadcast] = useState(false);
+const [stockSearch, setStockSearch] = useState("");
 
   // Mobile menu state
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const filteredJerseys = jerseys.filter(j =>
+  j.name.toLowerCase().includes(stockSearch.toLowerCase())
+);
 
   const token = localStorage.getItem('token');
+const [stockSort, setStockSort] = useState("none"); // none | low | high
+const sortedJerseys = [...filteredJerseys].sort((a, b) => {
+  const stockA = Object.values(a.currentStock).reduce((sum, s) => sum + s, 0);
+  const stockB = Object.values(b.currentStock).reduce((sum, s) => sum + s, 0);
+
+  if (stockSort === "low") return stockA - stockB;
+  if (stockSort === "high") return stockB - stockA;
+  return 0;
+});
 
   // Dummy jersey data - replace with real data from your backend
-  const dummyJerseys: Jersey[] = [
-    {
-      _id: '1',
-      name: 'Manchester United Home Jersey',
-      image: 'https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg',
-      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-      currentStock: { S: 15, M: 20, L: 25, XL: 18, XXL: 10 },
-      price: 2499
-    },
-    {
-      _id: '2',
-      name: 'Barcelona Away Jersey',
-      image: 'https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg',
-      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-      currentStock: { S: 12, M: 18, L: 22, XL: 15, XXL: 8 },
-      price: 2399
-    },
-    {
-      _id: '3',
-      name: 'Real Madrid Third Kit',
-      image: 'https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg',
-      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-      currentStock: { S: 10, M: 16, L: 20, XL: 12, XXL: 6 },
-      price: 2599
-    }
-  ];
-
+  
   useEffect(() => {
     const userData = localStorage.getItem('user');
 
@@ -173,9 +181,43 @@ const AdminPage: React.FC = () => {
   }, [navigate, token]);
 
   useEffect(() => {
-    // Initialize dummy jersey data
-    setJerseys(dummyJerseys);
-  }, []);
+  const fetchStock = async () => {
+    try {
+      const res = await axios.get("https://jerseybackend.onrender.com/api/stock", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (res.data.success) {
+        // Convert stock list to map: { jerseyId: stockBySize }
+        const stockMap: Record<string, any> = {};
+        res.data.data.forEach((s: any) => {
+          stockMap[s.jerseyId] = s.stockBySize;
+        });
+
+        // Merge jerseyData (static info) with stock data (dynamic)
+        const mapped = jerseyData.map(j => {
+  const { id, ...rest } = j; // take out id
+  return {
+    ...rest,
+    _id: id, // 👈 convert id to _id for AdminPage Jersey type
+    currentStock: stockMap[id] || j.sizes.reduce((acc, size) => {
+      acc[size] = 0;
+      return acc;
+    }, {} as Record<string, number>)
+  };
+});
+setJerseys(mapped);
+
+      }
+    } catch (err) {
+      console.error("Failed to fetch stock:", err);
+    }
+  };
+
+  fetchStock();
+}, [token]);
+
+
 
   const fetchAllData = () => {
     fetchOrders();
@@ -236,30 +278,31 @@ const AdminPage: React.FC = () => {
     }
   };
 
-  const updateOrderStatus = async (orderId: string, status: string) => {
-    try {
-      const response = await axios.patch(
-        `https://jerseybackend.onrender.com/api/orders/${orderId}/status`,
-        { orderStatus: status },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      
-      if (response.data.success) {
-        setOrders(prev => prev.map(order => 
-          order._id === orderId ? { ...order, orderStatus: status } : order
-        ));
-        
-        // Send notification to user
-        const order = orders.find(o => o._id === orderId);
-        if (order) {
-          await sendMessage(order.userId._id, `Your order ${order.orderNumber} status has been updated to: ${status}`, 'info');
-        }
+ const updateOrderStatus = async (orderId: string, newStatus: string) => {
+  try {
+    const res = await axios.patch(
+      `https://jerseybackend.onrender.com/api/orders/${orderId}/status`,
+      { orderStatus: newStatus },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // make sure you already store the token from login
+        },
       }
-    } catch (error) {
-      console.error('Error updating order status:', error);
-      alert('Failed to update order status. Please try again.');
+    );
+
+    if (res.data.success) {
+      // Update UI immediately
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order._id === orderId ? { ...order, orderStatus: newStatus } : order
+        )
+      );
     }
-  };
+  } catch (err) {
+    console.error("Failed to update order status", err);
+    alert("Failed to update order status. Please try again.");
+  }
+};
 
   const deleteOrder = async (orderId: string) => {
     if (!window.confirm('Are you sure you want to delete this order?')) return;
@@ -346,21 +389,27 @@ const AdminPage: React.FC = () => {
     }
   };
 
-  const updateStock = (jerseyId: string, size: string, change: number) => {
-    setJerseys(prev => prev.map(jersey => {
-      if (jersey._id === jerseyId) {
-        const newStock = Math.max(0, jersey.currentStock[size] + change);
+ const updateStock = async (jerseyId: string, size: string, change: number) => {
+  // 1) Update state immediately (optimistic update)
+  setJerseys(prev =>
+    prev.map(j => {
+      if (j._id === jerseyId) {
+        const newStock = Math.max(0, j.currentStock[size] + change);
         return {
-          ...jersey,
+          ...j,
           currentStock: {
-            ...jersey.currentStock,
-            [size]: newStock
-          }
+            ...j.currentStock,
+            [size]: newStock,
+          },
         };
       }
-      return jersey;
-    }));
-  };
+      return j;
+    })
+  );
+
+  setDirtyJerseys(prev => ({ ...prev, [jerseyId]: true }));
+};
+
 
   const downloadCSV = () => {
     const csvContent = [
@@ -1332,13 +1381,24 @@ const AdminPage: React.FC = () => {
                       </div>
                       
                       <div className="mt-4 pt-4 border-t border-gray-200">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-gray-600">Total Stock:</span>
-                          <span className="font-semibold text-gray-900">
-                            {Object.values(jersey.currentStock).reduce((sum, stock) => sum + stock, 0)} units
-                          </span>
-                        </div>
-                      </div>
+  <div className="flex items-center justify-between text-sm">
+    <span className="text-gray-600">Total Stock:</span>
+    <span className="font-semibold text-gray-900">
+      {Object.values(jersey.currentStock).reduce((sum, stock) => sum + stock, 0)} units
+    </span>
+  </div>
+
+  {/* 👇 Step 3: Show Update button only if jersey is dirty */}
+  {dirtyJerseys[jersey._id] && (
+    <button
+      onClick={() => handleUpdateStock(jersey._id, jersey.currentStock)}
+      className="mt-3 w-full px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition"
+    >
+      Update Stock
+    </button>
+  )}
+</div>
+
                     </div>
                   </div>
                 ))}
