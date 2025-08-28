@@ -22,7 +22,7 @@ export const Footer: React.FC = () => {
             viewport={{ once: true }}
           >
             <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent mb-4">
-              JerseyPro
+              Chennaiyin Jersey
             </h3>
             <p className="text-gray-600 mb-4 text-sm leading-relaxed">
               Your premier destination for authentic football jerseys from the
@@ -149,7 +149,7 @@ export const Footer: React.FC = () => {
           className="mt-12 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center"
         >
           <p className="text-gray-500 text-xs">
-            © 2024 JerseyPro. All rights reserved.
+            © 2024 Chennaiyin Jersey. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0 text-xs">
             <a href="#" className="text-gray-500 hover:text-gray-800 transition-colors">

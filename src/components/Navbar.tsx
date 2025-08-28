@@ -48,8 +48,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                 alt="Chennaiyin Logo"
                 className="h-10 w-auto object-contain"
               />
-              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">
-                CHENNAIYIN JERSEYS
+              <h1 className="text-xl font-bold ">
+                CHENNAIYIN JERSEY
               </h1>
             </motion.div>
 

@@ -76,7 +76,7 @@ export const Hero: React.FC<HeroProps> = ({ onShopNowClick }) => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 1 }}
             >
-              Discover authentic Chennaiyin jerseys designed for peak performance.
+              Discover authentic Chennaiyin jersey designed for peak performance.
               Limited stock available — shop now!
             </motion.p>
           </div>
