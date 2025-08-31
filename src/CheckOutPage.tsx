@@ -73,49 +73,64 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     setTouched({ ...touched, [name]: true });
   };
 
-  const validateField = (field: string) => {
-    const value = formData[field as keyof typeof formData];
-    
-    if (!value) return touched[field];
-    
-    // Additional validation for specific fields
-    if (field === 'email' && value) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return touched[field] && !emailRegex.test(value);
-    }
-    
-    if (field === 'contactNumber' && value) {
-      return touched[field] && value.length !== 10;
-    }
-    
-    if (field === 'pincode' && value) {
-      return touched[field] && value.length !== 6;
-    }
-    
-    return false;
-  };
-
   const getFieldError = (field: string) => {
     const value = formData[field as keyof typeof formData];
     
-    if (!value && touched[field]) {
-      return `Please enter your ${field === 'contactNumber' ? 'contact number' : field}.`;
+    // Only show an error if the field has been touched
+    if (!touched[field]) {
+      return '';
     }
     
-    if (field === 'email' && value && touched[field]) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(value)) {
-        return 'Please enter a valid email address.';
+    if (field === 'name') {
+      if (!value) {
+        return 'Please enter your full name.';
+      }
+      if (!/^[A-Za-z\s]{3,50}$/.test(value)) {
+        return 'Name should contain only letters & spaces (min 3 chars).';
       }
     }
-    
-    if (field === 'contactNumber' && value && touched[field]) {
+
+    if (field === 'email') {
+      const strongEmailRegex = /^[^\s@]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+      if (!value) {
+        return 'Please enter your email address.';
+      }
+      if (!strongEmailRegex.test(value) || /\.comm$/i.test(value)) {
+        return "Please enter a valid email address (e.g., did you mean '.com'?).";
+      }
+    }
+
+    if (field === 'contactNumber') {
+      if (!value) {
+        return 'Please enter your contact number.';
+      }
       if (value.length !== 10) {
         return 'Contact number must be exactly 10 digits.';
       }
     }
     
-    if (field === 'pincode' && value && touched[field]) {
+    if (field === 'address') {
+      if (!value) {
+        return 'Please enter your street address.';
+      }
+      if (value.trim().length < 5) {
+        return 'Address must be at least 5 characters long.';
+      }
+    }
+    
+    if (field === 'city' || field === 'district' || field === 'state') {
+      if (!value) {
+        return `Please enter your ${field}.`;
+      }
+      if (!/^[A-Za-z\s]{2,50}$/.test(value)) {
+        return `${field} should contain only letters (min 2 chars).`;
+      }
+    }
+
+    if (field === 'pincode') {
+      if (!value) {
+        return 'Please enter your pincode.';
+      }
       if (value.length !== 6) {
         return 'Pincode must be exactly 6 digits.';
       }
@@ -127,9 +142,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
   const handleOrder = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
-      // Save current form data before redirecting
       localStorage.setItem("checkoutForm", JSON.stringify(formData));
-      
       navigate('/signin', {
         state: {
           from: location.pathname,
@@ -138,6 +151,19 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
       });
       return;
     }
+
+    // Set all fields as touched to trigger validation messages on submit
+    setTouched({
+      name: true,
+      email: true,
+      address: true,
+      city: true,
+      district: true,
+      state: true,
+      pincode: true,
+      contactNumber: true,
+      notes: true,
+    });
 
     const requiredFields = [
       'name',
@@ -150,71 +176,14 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
       'contactNumber',
     ];
 
-    const missingFields = requiredFields.filter(
-      (key) => !formData[key as keyof typeof formData]
-    );
+    const validationErrors = requiredFields.some(field => getFieldError(field));
 
-    // Validate email format
-    // Stronger email regex: prevents ".comm", double dots, invalid TLDs
-const strongEmailRegex = /^[^\s@]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-if (!strongEmailRegex.test(formData.email) || /\.comm$/i.test(formData.email)) {
-  toast.error("Invalid email. Did you mean '.com'?");
-  setTouched({ ...touched, email: true });
-  return;
-}
-
-// Name validation: alphabets & spaces only, min 3 chars
-if (!/^[A-Za-z\s]{3,50}$/.test(formData.name)) {
-  toast.error("Name should contain only letters & spaces (min 3 chars).");
-  setTouched({ ...touched, name: true });
-  return;
-}
-
-// City/District/State validation: alphabets & spaces only
-["city", "district", "state"].forEach((field) => {
-  const val = formData[field as keyof typeof formData];
-  if (!/^[A-Za-z\s]{2,50}$/.test(val)) {
-    toast.error(`${field} should contain only letters (min 2 chars).`);
-    setTouched({ ...touched, [field]: true });
-    throw new Error("Validation failed");
-  }
-});
-
-// Address validation: min length
-if (formData.address.trim().length < 5) {
-  toast.error("Address must be at least 5 characters long.");
-  setTouched({ ...touched, address: true });
-  return;
-}
-
-// Sanitize Notes: strip dangerous tags
-const sanitizedNotes = formData.notes.replace(/<[^>]*>?/gm, "");
-
-    // Validate phone number
-    if (formData.contactNumber && formData.contactNumber.length !== 10) {
-      toast.error('Contact number must be exactly 10 digits.');
-      setTouched({ ...touched, contactNumber: true });
+    if (validationErrors) {
+      toast.error('Please fix the errors in the form.');
       return;
     }
 
-    // Validate pincode
-    if (formData.pincode && formData.pincode.length !== 6) {
-      toast.error('Pincode must be exactly 6 digits.');
-      setTouched({ ...touched, pincode: true });
-      return;
-    }
-
-    if (missingFields.length > 0) {
-      toast.error('Please fill all required fields.');
-      setTouched((prev) => {
-        const updated = { ...prev };
-        missingFields.forEach((field) => {
-          updated[field] = true;
-        });
-        return updated;
-      });
-      return;
-    }
+    const sanitizedNotes = formData.notes.replace(/<[^>]*>?/gm, "");
 
     const orderData = {
       items: cartItems.map((item) => ({
@@ -239,7 +208,7 @@ const sanitizedNotes = formData.notes.replace(/<[^>]*>?/gm, "");
         pincode: formData.pincode,
       },
       paymentMethod: 'cash_on_delivery',
-      notes: formData.notes || '',
+      notes: sanitizedNotes,
     };
 
     try {
@@ -260,8 +229,6 @@ const sanitizedNotes = formData.notes.replace(/<[^>]*>?/gm, "");
           'Thank you for your order! Our executive will call you shortly regarding your transaction.'
         );
         onClearCart();
-
-        // Clear form + localStorage after success
         setFormData({
           name: '',
           email: '',
@@ -274,7 +241,6 @@ const sanitizedNotes = formData.notes.replace(/<[^>]*>?/gm, "");
           notes: '',
         });
         localStorage.removeItem("checkoutForm");
-
         setTouched({});
         setShowSuccessModal(true);
       } else {
@@ -288,6 +254,13 @@ const sanitizedNotes = formData.notes.replace(/<[^>]*>?/gm, "");
           'Something went wrong while placing the order.'
       );
     }
+  };
+
+  const getInputFieldClass = (field: string) => {
+    const error = getFieldError(field);
+    return `w-full p-3 border rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
+      error ? 'border-red-300 ring-red-200' : 'border-gray-200'
+    }`;
   };
 
   return (
@@ -321,9 +294,7 @@ const sanitizedNotes = formData.notes.replace(/<[^>]*>?/gm, "");
                   value={formData.name}
                   onChange={handleChange}
                   onBlur={() => setTouched({ ...touched, name: true })}
-                  className={`w-full p-3 border rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
-                    validateField('name') || getFieldError('name') ? 'border-red-300 ring-red-200' : 'border-gray-200'
-                  }`}
+                  className={getInputFieldClass('name')}
                 />
                 {getFieldError('name') && (
                   <p className="text-red-500 text-sm mt-1">{getFieldError('name')}</p>
@@ -342,9 +313,7 @@ const sanitizedNotes = formData.notes.replace(/<[^>]*>?/gm, "");
                   value={formData.email}
                   onChange={handleChange}
                   onBlur={() => setTouched({ ...touched, email: true })}
-                  className={`w-full p-3 border rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
-                    validateField('email') || getFieldError('email') ? 'border-red-300 ring-red-200' : 'border-gray-200'
-                  }`}
+                  className={getInputFieldClass('email')}
                 />
                 {getFieldError('email') && (
                   <p className="text-red-500 text-sm mt-1">{getFieldError('email')}</p>
@@ -364,9 +333,7 @@ const sanitizedNotes = formData.notes.replace(/<[^>]*>?/gm, "");
                   onChange={handleChange}
                   onBlur={() => setTouched({ ...touched, contactNumber: true })}
                   maxLength={10}
-                  className={`w-full p-3 border rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
-                    validateField('contactNumber') || getFieldError('contactNumber') ? 'border-red-300 ring-red-200' : 'border-gray-200'
-                  }`}
+                  className={getInputFieldClass('contactNumber')}
                 />
                 {getFieldError('contactNumber') && (
                   <p className="text-red-500 text-sm mt-1">{getFieldError('contactNumber')}</p>
@@ -392,9 +359,7 @@ const sanitizedNotes = formData.notes.replace(/<[^>]*>?/gm, "");
                   value={formData.address}
                   onChange={handleChange}
                   onBlur={() => setTouched({ ...touched, address: true })}
-                  className={`w-full p-3 border rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
-                    validateField('address') || getFieldError('address') ? 'border-red-300 ring-red-200' : 'border-gray-200'
-                  }`}
+                  className={getInputFieldClass('address')}
                 />
                 {getFieldError('address') && (
                   <p className="text-red-500 text-sm mt-1">{getFieldError('address')}</p>
@@ -413,9 +378,7 @@ const sanitizedNotes = formData.notes.replace(/<[^>]*>?/gm, "");
                     value={formData.city}
                     onChange={handleChange}
                     onBlur={() => setTouched({ ...touched, city: true })}
-                    className={`w-full p-3 border rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
-                      validateField('city') || getFieldError('city') ? 'border-red-300 ring-red-200' : 'border-gray-200'
-                    }`}
+                    className={getInputFieldClass('city')}
                   />
                   {getFieldError('city') && (
                     <p className="text-red-500 text-sm mt-1">{getFieldError('city')}</p>
@@ -433,9 +396,7 @@ const sanitizedNotes = formData.notes.replace(/<[^>]*>?/gm, "");
                     value={formData.district}
                     onChange={handleChange}
                     onBlur={() => setTouched({ ...touched, district: true })}
-                    className={`w-full p-3 border rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
-                      validateField('district') || getFieldError('district') ? 'border-red-300 ring-red-200' : 'border-gray-200'
-                    }`}
+                    className={getInputFieldClass('district')}
                   />
                   {getFieldError('district') && (
                     <p className="text-red-500 text-sm mt-1">{getFieldError('district')}</p>
@@ -455,9 +416,7 @@ const sanitizedNotes = formData.notes.replace(/<[^>]*>?/gm, "");
                     value={formData.state}
                     onChange={handleChange}
                     onBlur={() => setTouched({ ...touched, state: true })}
-                    className={`w-full p-3 border rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
-                      validateField('state') || getFieldError('state') ? 'border-red-300 ring-red-200' : 'border-gray-200'
-                    }`}
+                    className={getInputFieldClass('state')}
                   />
                   {getFieldError('state') && (
                     <p className="text-red-500 text-sm mt-1">{getFieldError('state')}</p>
@@ -476,9 +435,7 @@ const sanitizedNotes = formData.notes.replace(/<[^>]*>?/gm, "");
                     onChange={handleChange}
                     onBlur={() => setTouched({ ...touched, pincode: true })}
                     maxLength={6}
-                    className={`w-full p-3 border rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
-                      validateField('pincode') || getFieldError('pincode') ? 'border-red-300 ring-red-200' : 'border-gray-200'
-                    }`}
+                    className={getInputFieldClass('pincode')}
                   />
                   {getFieldError('pincode') && (
                     <p className="text-red-500 text-sm mt-1">{getFieldError('pincode')}</p>
@@ -558,7 +515,7 @@ const sanitizedNotes = formData.notes.replace(/<[^>]*>?/gm, "");
         {/* Success Modal */}
         {showSuccessModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
-            <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl text-center space-y-6 transform animate-pulse">
+            <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl text-center space-y-6 transform">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
                 <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />

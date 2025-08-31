@@ -195,30 +195,11 @@ if (isAuthenticated === null) {
                     onToggleWishlist={handleToggleWishlist}
                   />
                 </div>
-                <div id="full-sleeve">
-                  <CategorySection
-                    title="Full Sleeve"
-                    jerseys={jerseys.filter(j => j.type === 'Full Sleeve' && j.category !== 'Cricket')}
-                    onViewDetails={handleViewDetails}
-                    onAddToCart={handleAddToCart}
-                    wishlistedItems={wishlist}
-                    onToggleWishlist={handleToggleWishlist}
-                  />
-                </div>
+                
                 <div id="master-copy">
                   <CategorySection
                     title="Master Copy"
                     jerseys={jerseys.filter(j => j.type === 'Master Copy' && j.category !== 'Cricket')}
-                    onViewDetails={handleViewDetails}
-                    onAddToCart={handleAddToCart}
-                    wishlistedItems={wishlist}
-                    onToggleWishlist={handleToggleWishlist}
-                  />
-                </div>
-                <div id="player-version">
-                  <CategorySection
-                    title="Player Version"
-                    jerseys={jerseys.filter(j => j.type === 'Player Version' && j.category !== 'Cricket')}
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
@@ -235,16 +216,7 @@ if (isAuthenticated === null) {
                     onToggleWishlist={handleToggleWishlist}
                   />
                 </div>
-                <div id="cricket">
-                  <CategorySection
-                    title="Cricket"
-                    jerseys={jerseys.filter(j => j.category === 'Cricket')}
-                    onViewDetails={handleViewDetails}
-                    onAddToCart={handleAddToCart}
-                    wishlistedItems={wishlist}
-                    onToggleWishlist={handleToggleWishlist}
-                  />
-                </div>
+                
               </>
             )
           }
