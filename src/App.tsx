@@ -260,10 +260,11 @@ if (isAuthenticated === null) {
     ) : isAuthenticated ? (
       <Dashboard />
     ) : (
-      <Navigate to="/signin" replace />
+      <Navigate to="/signin" state={{ from: "/dashboard" }} replace />
     )
   }
 />
+
         <Route path="/admin" element={<AdminPage />} />
 
         <Route

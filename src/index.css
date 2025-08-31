@@ -49,3 +49,21 @@ touch-action: none;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+/* Fix autofill and typed text visibility */
+input, textarea, select {
+  color: #1f2937 !important; /* Tailwind gray-800 */
+}
+
+input::placeholder, textarea::placeholder {
+  color: #6b7280; /* Tailwind gray-500 */
+  opacity: 1;
+}
+
+/* Autofill override */
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  -webkit-text-fill-color: #1f2937 !important; /* Tailwind gray-800 */
+  caret-color: #1f2937 !important;
+}

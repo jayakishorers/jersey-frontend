@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { UserPlus, Mail, Lock, User, Phone, Eye, EyeOff } from 'lucide-react';
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
@@ -15,15 +16,41 @@ const SignUp: React.FC = () => {
   const [formErrors, setFormErrors] = useState({
     name: '',
     email: '',
+    phone: '',
     password: ''
   });
 
   const [apiError, setApiError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  // ✅ Strong Email Validation
+  const validateEmail = (email: string) => {
+    const basic = /^[^\s@]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    if (!basic.test(email)) return false;
+
+    const [local, domain] = email.split('@');
+    if (!local || !domain) return false;
+
+    // No consecutive dots
+    if (/\.\./.test(local) || /\.\./.test(domain)) return false;
+
+    // Domain checks
+    const parts = domain.split('.');
+    if (parts.some(p => p.length === 0 || p.startsWith('-') || p.endsWith('-'))) return false;
+
+    // Block common typo `.comm`
+    if (/\.comm$/i.test(domain)) return false;
+
+    return true;
+  };
+
+  // ✅ Phone Validation: exactly 10 digits, not all same digit
+  const validatePhone = (phone: string) =>
+    /^\d{10}$/.test(phone) && !/^(\d)\1{9}$/.test(phone);
 
   const validateForm = () => {
     const errors: any = {};
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!formData.name.trim()) {
       errors.name = 'Name is required.';
@@ -31,8 +58,14 @@ const SignUp: React.FC = () => {
 
     if (!formData.email.trim()) {
       errors.email = 'Email is required.';
-    } else if (!emailRegex.test(formData.email)) {
-      errors.email = 'Please enter a valid email address.';
+    } else if (!validateEmail(formData.email)) {
+      errors.email = "Enter a valid email (did you mean '.com' instead of '.comm'?).";
+    }
+
+    if (!formData.phone.trim()) {
+      errors.phone = 'Phone number is required.';
+    } else if (!validatePhone(formData.phone)) {
+      errors.phone = 'Enter a valid 10-digit phone number.';
     }
 
     if (!formData.password) {
@@ -48,25 +81,23 @@ const SignUp: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+    if (name === 'phone') {
+      // Only allow digits, max length 10
+      const phoneValue = value.replace(/\D/g, '').slice(0, 10);
+      setFormData({ ...formData, [name]: phoneValue });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
 
     // Clear field-specific error as user types
-    setFormErrors((prev) => ({
-      ...prev,
-      [name]: ''
-    }));
+    setFormErrors(prev => ({ ...prev, [name]: '' }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setApiError('');
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setLoading(true);
 
@@ -90,113 +121,142 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center"
-      style={{ backgroundImage: "url('/bg-img.jpg')" }}
-    >
-      <div className="bg-black bg-opacity-70 p-8 rounded-lg shadow-2xl w-full max-w-md text-white backdrop-blur-sm">
-        <h2 className="text-3xl font-extrabold mb-6 text-center text-green-400 tracking-wide">
-          Create Your Account
-        </h2>
-
-        {apiError && (
-          <p className="text-red-400 text-sm mb-4 text-center">{apiError}</p>
-        )}
-
-        {loading ? (
-          <div className="text-center py-10">
-            <svg
-              className="animate-spin h-8 w-8 mx-auto text-green-400"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              />
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8v4l3.5-3.5L12 0v4a8 8 0 000 16v4l3.5-3.5L12 20v-4a8 8 0 01-8-8z"
-              />
-            </svg>
-            <p className="mt-4 text-green-300">Creating your account...</p>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <div className="bg-white rounded-xl shadow-lg w-full max-w-md overflow-hidden border border-gray-200">
+        {/* Header */}
+        <div className="bg-blue-600 p-8 text-center">
+          <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <UserPlus className="w-8 h-8 text-white" />
           </div>
-        ) : (
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <div>
-              <input
-                type="text"
-                name="name"
-                placeholder="Full Name"
-                value={formData.name}
-                onChange={handleChange}
-                className="w-full p-3 bg-gray-800 rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-              {formErrors.name && (
-                <p className="text-red-400 text-xs mt-1">{formErrors.name}</p>
-              )}
+          <h2 className="text-2xl font-bold text-white mb-2">Join Us Today</h2>
+          <p className="text-blue-100">Create your account to get started</p>
+        </div>
+
+        {/* Form */}
+        <div className="p-8">
+          {apiError && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-900 text-sm text-center">{apiError}</p>
             </div>
+          )}
 
-            <div>
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full p-3 bg-gray-800 rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-              {formErrors.email && (
-                <p className="text-red-400 text-xs mt-1">{formErrors.email}</p>
-              )}
+          {loading ? (
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <p className="text-gray-700">Creating your account...</p>
             </div>
+          ) : (
+            <form className="space-y-6" onSubmit={handleSubmit} noValidate>
+              {/* Name */}
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-2">
+                  <User className="w-4 h-4 inline mr-2" />
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Enter your full name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full p-3 border border-gray-200 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                />
+                {formErrors.name && (
+                  <p className="text-red-500 text-sm mt-1">{formErrors.name}</p>
+                )}
+              </div>
 
-            <div>
-              <input
-                type="tel"
-                name="phone"
-                placeholder="Phone Number"
-                value={formData.phone}
-                onChange={handleChange}
-                className="w-full p-3 bg-gray-800 rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-            </div>
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-2">
+                  <Mail className="w-4 h-4 inline mr-2" />
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full p-3 border border-gray-200 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                />
+                {formErrors.email && (
+                  <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>
+                )}
+              </div>
 
-            <div>
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full p-3 bg-gray-800 rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-              {formErrors.password && (
-                <p className="text-red-400 text-xs mt-1">{formErrors.password}</p>
-              )}
-            </div>
+              {/* Phone */}
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-2">
+                  <Phone className="w-4 h-4 inline mr-2" />
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Enter 10-digit mobile number"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  maxLength={10}
+                  className="w-full p-3 border border-gray-200 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                />
+                {formErrors.phone && (
+                  <p className="text-red-500 text-sm mt-1">{formErrors.phone}</p>
+                )}
+              </div>
 
-            <button
-              type="submit"
-              className="w-full bg-green-600 hover:bg-green-700 transition-all text-white font-semibold py-2 rounded shadow-md"
-            >
-              Sign Up
-            </button>
-          </form>
-        )}
+              {/* Password */}
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-2">
+                  <Lock className="w-4 h-4 inline mr-2" />
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    name="password"
+                    placeholder="Create a strong password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="w-full p-3 pr-10 border border-gray-200 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  >
+                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
+                </div>
+                {formErrors.password && (
+                  <p className="text-red-500 text-sm mt-1">{formErrors.password}</p>
+                )}
+              </div>
 
-        <p className="mt-4 text-center text-sm text-gray-300">
-          Already have an account?{' '}
-          <Link to="/signin" className="text-green-400 hover:underline">
-            Sign In
-          </Link>
-        </p>
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg"
+              >
+                Create Account
+              </button>
+            </form>
+          )}
+
+          {/* Footer */}
+          <div className="mt-6 text-center">
+            <p className="text-gray-700 text-sm">
+              Already have an account?{' '}
+              <Link
+                to="/signin"
+                className="text-blue-600 hover:text-blue-700 font-medium hover:underline transition-colors"
+              >
+                Sign In
+              </Link>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

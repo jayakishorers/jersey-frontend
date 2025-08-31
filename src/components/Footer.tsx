@@ -1,13 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import {
-  Facebook,
-  Twitter,
   Instagram,
-  Youtube,
   Mail,
   Phone,
-  MapPin
+  MapPin,
+  MessageCircle
 } from 'lucide-react';
 
 export const Footer: React.FC = () => {
@@ -29,17 +27,41 @@ export const Footer: React.FC = () => {
               world's greatest teams and players.
             </p>
             <div className="flex space-x-3">
-              {[Facebook, Twitter, Instagram, Youtube].map((Icon, index) => (
-                <motion.a
-                  key={index}
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  href="#"
-                  className="p-2 bg-gray-100 border border-gray-200 rounded-md text-gray-600 hover:text-white hover:bg-blue-600 transition-colors"
-                >
-                  <Icon className="w-4 h-4" />
-                </motion.a>
-              ))}
+              {/* Location */}
+              <motion.a
+                whileHover={{ scale: 1.1, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                href="https://maps.app.goo.gl/ZNYBHUkeTwLW8uSt8"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 bg-gray-100 border border-gray-200 rounded-md text-gray-600 hover:text-white hover:bg-blue-600 transition-colors"
+              >
+                <MapPin className="w-4 h-4" />
+              </motion.a>
+
+              {/* Instagram */}
+              <motion.a
+                whileHover={{ scale: 1.1, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                href="https://www.instagram.com/chennaiyinjersey?igsh=YnZjdGI3NDB6Y2kx"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 bg-gray-100 border border-gray-200 rounded-md text-gray-600 hover:text-white hover:bg-pink-600 transition-colors"
+              >
+                <Instagram className="w-4 h-4" />
+              </motion.a>
+
+              {/* WhatsApp */}
+              <motion.a
+                whileHover={{ scale: 1.1, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                href="https://wa.me/9445086680"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 bg-gray-100 border border-gray-200 rounded-md text-gray-600 hover:text-white hover:bg-green-600 transition-colors"
+              >
+                <MessageCircle className="w-4 h-4" />
+              </motion.a>
             </div>
           </motion.div>
 
@@ -108,11 +130,11 @@ export const Footer: React.FC = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="w-4 h-4 text-blue-600" />
-                <span>+1 (555) 123-4567</span>
+                <span>9445086680, 9087035955</span>
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin className="w-4 h-4 text-blue-600" />
-                <span>123 Sports Ave, City, State</span>
+                <span>5/11, Middle street, Valinokkam, Ramanathapuram</span>
               </div>
             </div>
 
