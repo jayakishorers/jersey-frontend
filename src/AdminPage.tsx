@@ -285,22 +285,44 @@ setJerseys(mapped);
       { orderStatus: newStatus },
       {
         headers: {
-          Authorization: `Bearer ${token}`, // make sure you already store the token from login
+          Authorization: `Bearer ${token}`,
         },
       }
     );
 
     if (res.data.success) {
+      // Find the updated order in the local state to get the user's email
+      const updatedOrder = orders.find(order => order._id === orderId);
+
+      // Send the status update message to the user
+      if (updatedOrder) {
+        // You'll need to send the message from the backend, so we'll call a new endpoint
+        const messageContent = `Your order #${updatedOrder.orderNumber} status has been updated to "${newStatus}".`;
+        
+        await axios.post(
+          'https://jerseybackend.onrender.com/api/messages/send-email', // This is a NEW backend endpoint
+          {
+            to: updatedOrder.shippingAddress.email,
+            subject: `Order #${updatedOrder.orderNumber} Status Update`,
+            message: messageContent,
+            orderStatus: newStatus,
+          },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+      }
+
       // Update UI immediately
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order._id === orderId ? { ...order, orderStatus: newStatus } : order
         )
       );
+
+      alert(`Order status updated to ${newStatus} and email sent!`);
     }
   } catch (err) {
-    console.error("Failed to update order status", err);
-    alert("Failed to update order status. Please try again.");
+    console.error("Failed to update order status or send email:", err);
+    alert("Failed to update order status or send email. Please try again.");
   }
 };
 
@@ -324,24 +346,43 @@ setJerseys(mapped);
   };
 
   const sendMessage = async (userId: string, message: string, type: 'info' | 'warning' | 'success' | 'error') => {
-    setSendingMessage(true);
-    try {
-      const response = await axios.post(
-        'https://jerseybackend.onrender.com/api/messages/send',
-        { userId, message, type },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      
-      if (response.data.success) {
-        setMessages(prev => [{ ...response.data.data.message, read: false }, ...prev]);
-        setNewMessage({ userId: '', message: '', type: 'info' });
+  setSendingMessage(true);
+  try {
+    const response = await axios.post(
+      'https://jerseybackend.onrender.com/api/messages/send',
+      { userId, message, type },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    
+    if (response.data.success) {
+      // Find the user to get their email
+      const user = users.find(u => u._id === userId);
+
+      if (user) {
+        // Send a separate email to the user
+        await axios.post(
+          'https://jerseybackend.onrender.com/api/messages/send-email', // The same new backend endpoint
+          {
+            to: user.email,
+            subject: 'A New Message From Our Team',
+            message,
+            type,
+          },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
       }
-    } catch (error) {
-      console.error('Error sending message:', error);
-    } finally {
-      setSendingMessage(false);
+      
+      setMessages(prev => [{ ...response.data.data.message, read: false }, ...prev]);
+      setNewMessage({ userId: '', message: '', type: 'info' });
+      alert("Message sent and email notification sent!");
     }
-  };
+  } catch (error) {
+    console.error('Error sending message:', error);
+    alert("Failed to send message or email. Please try again.");
+  } finally {
+    setSendingMessage(false);
+  }
+};
 
   const sendBroadcastMessage = async () => {
     if (!broadcastMessage.message.trim()) return;
