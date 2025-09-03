@@ -295,21 +295,7 @@ setJerseys(mapped);
       const updatedOrder = orders.find(order => order._id === orderId);
 
       // Send the status update message to the user
-      if (updatedOrder) {
-        // You'll need to send the message from the backend, so we'll call a new endpoint
-        const messageContent = `Your order #${updatedOrder.orderNumber} status has been updated to "${newStatus}".`;
-        
-        await axios.post(
-          'https://jerseybackend.onrender.com/api/messages/send-email', // This is a NEW backend endpoint
-          {
-            to: updatedOrder.shippingAddress.email,
-            subject: `Order #${updatedOrder.orderNumber} Status Update`,
-            message: messageContent,
-            orderStatus: newStatus,
-          },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-      }
+      
 
       // Update UI immediately
       setOrders((prevOrders) =>
@@ -357,20 +343,6 @@ setJerseys(mapped);
     if (response.data.success) {
       // Find the user to get their email
       const user = users.find(u => u._id === userId);
-
-      if (user) {
-        // Send a separate email to the user
-        await axios.post(
-          'https://jerseybackend.onrender.com/api/messages/send-email', // The same new backend endpoint
-          {
-            to: user.email,
-            subject: 'A New Message From Our Team',
-            message,
-            type,
-          },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-      }
       
       setMessages(prev => [{ ...response.data.data.message, read: false }, ...prev]);
       setNewMessage({ userId: '', message: '', type: 'info' });
