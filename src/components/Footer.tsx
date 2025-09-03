@@ -3,12 +3,6 @@ import { motion } from 'framer-motion';
 import { MapPin, Instagram, Mail, Phone, MessageCircle } from 'lucide-react';
 import { CartItem } from '../types';
 
-interface FooterProps {
-  cartCount: number;
-  cartItems: CartItem[];
-  onOpenCart: () => void; // handler to open cart drawer
-}
-
 const categories = [
   'New Arrivals',
   'Best Sellers',
@@ -21,7 +15,8 @@ const categories = [
   'Sublimation'
 ];
 
-const Footer: React.FC<FooterProps> = ({ cartCount, cartItems, onOpenCart }) => {
+const Footer: React.FC = () => {
+
   const [isAboutOpen, setIsAboutOpen] = useState(false);
 
   return (
@@ -106,13 +101,14 @@ const Footer: React.FC<FooterProps> = ({ cartCount, cartItems, onOpenCart }) => 
                 </motion.a>
               </li>
               <li>
-                <motion.button
-                  whileHover={{ x: 5 }}
-                  onClick={onOpenCart} // open cart drawer
-                  className="text-gray-300 hover:text-blue-400 transition-colors text-left"
-                >
-                  Cart
-                </motion.button>
+                <motion.a
+  whileHover={{ x: 5 }}
+  href="#"
+  className="text-gray-300 hover:text-blue-400 transition-colors"
+>
+  Cart
+</motion.a>
+
               </li>
               <li>
                 <motion.a whileHover={{ x: 5 }} href="/signin" className="text-gray-300 hover:text-blue-400 transition-colors">
