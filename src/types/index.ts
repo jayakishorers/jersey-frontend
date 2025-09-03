@@ -22,6 +22,7 @@ export interface Jersey {
   stock?: number;
   discount?: number;
   PlayerName?:String;
+  stockBySize?: Record<string, number>;
 }
 
 export interface CartItem {

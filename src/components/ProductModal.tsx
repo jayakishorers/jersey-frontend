@@ -192,71 +192,57 @@ const resetZoom = () => {
     {jersey.PlayerName || 'None'}
   </p>
 </div>
+{/* Size Selection */}
+<div>
+  <h3 className="text-lg font-semibold mb-3">Select Size</h3>
+  <div className="grid grid-cols-5 gap-2">
+    {jersey.sizes.map((size) => {
+      const stock = jersey.stockBySize?.[size] ?? 0;
+      const isDisabled = stock === 0;
 
+      return (
+        <motion.button
+          key={size}
+          whileHover={!isDisabled ? { scale: 1.05 } : {}}
+          whileTap={!isDisabled ? { scale: 0.95 } : {}}
+          onClick={() => !isDisabled && setSelectedSize(size)}
+          disabled={isDisabled}
+          className={`relative p-3 rounded-lg border-2 transition flex items-center justify-center
+            ${selectedSize === size && !isDisabled
+              ? 'border-blue-600 bg-blue-100 text-blue-600'
+              : isDisabled
+              ? 'border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed opacity-70'
+              : 'border-gray-300 text-gray-600 hover:border-blue-500 hover:text-blue-500'
+            }`}
+        >
+          {size}
+          {/* 🔥 Diagonal line for out-of-stock */}
+          {isDisabled && (
+            <span className="absolute left-0 top-1/2 w-full h-[2px] bg-gray-500 rotate-[-45deg]"></span>
+          )}
+        </motion.button>
+      );
+    })}
+  </div>
+</div>
 
+{/* Action Buttons */}
+<div className="flex space-x-4">
+  <motion.button
+    whileHover={{ scale: 1.02 }}
+    whileTap={{ scale: 0.98 }}
+    disabled={!selectedSize || (jersey.stockBySize?.[selectedSize] ?? 0) === 0}
+    onClick={handleAddToCart}
+    className={`flex-1 flex items-center justify-center space-x-2 py-4 rounded-lg font-semibold transition ${
+      selectedSize && (jersey.stockBySize?.[selectedSize] ?? 0) > 0
+        ? 'bg-blue-600 text-white hover:shadow-lg'
+        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+    }`}
+  >
+    <ShoppingCart className="w-5 h-5" />
+    <span>Add to Cart</span>
+  </motion.button>
 
-                  {/* Size Selection */}
-                  <div>
-                    <h3 className="text-lg font-semibold mb-3">Select Size</h3>
-                    <div className="grid grid-cols-5 gap-2">
-                      {jersey.sizes.map((size) => (
-                        <motion.button
-                          key={size}
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          onClick={() => setSelectedSize(size)}
-                          className={`p-3 rounded-lg border-2 transition ${
-                            selectedSize === size
-                              ? 'border-blue-600 bg-blue-100 text-blue-600'
-                              : 'border-gray-300 text-gray-600 hover:border-blue-500 hover:text-blue-500'
-                          }`}
-                        >
-                          {size}
-                        </motion.button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Quantity */}
-                  <div>
-                    <h3 className="text-lg font-semibold mb-3">Quantity</h3>
-                    <div className="flex items-center space-x-3">
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="p-2 border border-gray-300 rounded-lg text-gray-600 hover:border-blue-400 hover:text-blue-600"
-                      >
-                        -
-                      </motion.button>
-                      <span className="px-4 py-2 border border-gray-300 bg-gray-100 rounded-lg text-center min-w-[60px]">{quantity}</span>
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => setQuantity(quantity + 1)}
-                        className="p-2 border border-gray-300 rounded-lg text-gray-600 hover:border-blue-400 hover:text-blue-600"
-                      >
-                        +
-                      </motion.button>
-                    </div>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex space-x-4">
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      disabled={!selectedSize}
-                      onClick={handleAddToCart}
-                      className={`flex-1 flex items-center justify-center space-x-2 py-4 rounded-lg font-semibold transition ${
-                        selectedSize
-                          ? 'bg-blue-600 text-white hover:shadow-lg'
-                          : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      }`}
-                    >
-                      <ShoppingCart className="w-5 h-5" />
-                      <span>Add to Cart</span>
-                    </motion.button>
 
                     <motion.button
                       whileHover={{ scale: 1.05 }}

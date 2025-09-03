@@ -1,16 +1,16 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ProductCard } from './ProductCard';
-import { Jersey } from '../types';
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ProductCard } from "./ProductCard";
+import { Jersey } from "../types";
 
 interface ProductGridProps {
-  jerseys: Jersey[];
+  jerseys: (Jersey & { stockBySize?: Record<string, number> })[];
   onViewDetails: (jersey: Jersey) => void;
   onAddToCart: (jersey: Jersey, size: string, quantity: number) => void;
   wishlistedItems: string[];
   onToggleWishlist: (jerseyId: string) => void;
   isLoading?: boolean;
-  viewMode?: 'grid' | 'list';
+  viewMode?: "grid" | "list";
 }
 
 export const ProductGrid: React.FC<ProductGridProps> = ({
@@ -20,18 +20,19 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
   wishlistedItems,
   onToggleWishlist,
   isLoading = false,
-  viewMode = 'grid',
+  viewMode = "grid",
 }) => {
+  // --- Loading State ---
   if (isLoading) {
     return (
       <div
         className={`grid gap-4 p-4 bg-white ${
-          viewMode === 'list'
-            ? 'grid-cols-1'
-            : 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+          viewMode === "list"
+            ? "grid-cols-1"
+            : "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
         }`}
       >
-        {[...Array(8)].map((_, index) => (
+        {Array.from({ length: 8 }).map((_, index) => (
           <div
             key={index}
             className="aspect-square bg-gray-200 border border-gray-300 rounded-xl animate-pulse"
@@ -46,6 +47,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
     );
   }
 
+  // --- Empty State ---
   if (jerseys.length === 0) {
     return (
       <motion.div
@@ -81,14 +83,15 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
     );
   }
 
+  // --- Grid/List View ---
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className={`grid gap-4 p-4 bg-white ${
-        viewMode === 'list'
-          ? 'grid-cols-1'
-          : 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+        viewMode === "list"
+          ? "grid-cols-1"
+          : "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
       }`}
     >
       <AnimatePresence mode="popLayout">
@@ -106,7 +109,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
               onAddToCart={onAddToCart}
               isWishlisted={wishlistedItems.includes(jersey.id)}
               onToggleWishlist={onToggleWishlist}
-              viewMode="grid"
+              viewMode={viewMode}
             />
           </motion.div>
         ))}
