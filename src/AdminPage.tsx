@@ -611,11 +611,7 @@ setJerseys(mapped);
               >
                 <tab.icon className="w-4 h-4" />
                 <span className="text-sm">{tab.label}</span>
-                {tab.key === 'messages' && analytics.unreadMessages > 0 && (
-                  <span className="bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 min-w-[18px] text-center">
-                    {analytics.unreadMessages}
-                  </span>
-                )}
+                
               </button>
             ))}
           </div>
@@ -687,11 +683,7 @@ setJerseys(mapped);
             >
               <tab.icon className="w-4 h-4" />
               <span>{tab.label}</span>
-              {tab.key === 'messages' && analytics.unreadMessages > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 min-w-[18px] text-center">
-                  {analytics.unreadMessages}
-                </span>
-              )}
+              
             </button>
           ))}
         </div>
@@ -840,7 +832,7 @@ setJerseys(mapped);
                       <MessageSquare className="w-5 h-5 lg:w-6 lg:h-6 text-green-600" />
                       <div className="text-left">
                         <p className="font-medium text-gray-900">Messages</p>
-                        <p className="text-sm text-gray-600">{analytics.unreadMessages} unread messages</p>
+                        <p className="text-sm text-gray-600">Message the users </p>
                       </div>
                     </div>
                     <ChevronRight className="w-5 h-5 text-green-600" />
@@ -854,7 +846,7 @@ setJerseys(mapped);
                       <Shirt className="w-5 h-5 lg:w-6 lg:h-6 text-orange-600" />
                       <div className="text-left">
                         <p className="font-medium text-gray-900">Stock Management</p>
-                        <p className="text-sm text-gray-600">Manage jersey inventory</p>
+                        <p className="text-sm text-gray-600">Manage Jersey Stocks</p>
                       </div>
                     </div>
                     <ChevronRight className="w-5 h-5 text-orange-600" />
@@ -1324,21 +1316,41 @@ setJerseys(mapped);
         {activeTab === 'stock' && (
           <div className="space-y-6">
             <div className="bg-white rounded-xl p-4 lg:p-6 shadow-sm border border-gray-200">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg lg:text-xl font-semibold text-gray-900 flex items-center">
-                  <Shirt className="w-5 h-5 mr-2 text-blue-600" />
-                  Jersey Stock Management
-                </h2>
-                <div className="bg-yellow-100 border border-yellow-300 rounded-lg px-3 py-2">
-                  <div className="flex items-center text-yellow-800">
-                    <AlertCircle className="w-4 h-4 mr-2" />
-                    <span className="text-sm font-medium">Demo Mode - Changes not saved</span>
-                  </div>
-                </div>
-              </div>
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-4">
+  <h2 className="text-lg lg:text-xl font-semibold text-gray-900 flex items-center">
+    <Shirt className="w-5 h-5 mr-2 text-blue-600" />
+    Jersey Stock Management
+  </h2>
+
+  <div className="flex items-center gap-3 w-full sm:w-auto">
+    {/* Search */}
+    <div className="relative flex-1 sm:flex-none">
+      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+      <input
+        type="text"
+        placeholder="Search jerseys..."
+        className="w-full sm:w-64 pl-10 pr-4 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        value={stockSearch}
+        onChange={(e) => setStockSearch(e.target.value)}
+      />
+    </div>
+
+    {/* Sort */}
+    <select
+      className="px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      value={stockSort}
+      onChange={(e) => setStockSort(e.target.value)}
+    >
+      <option value="none">Sort by</option>
+      <option value="low">Low Stock</option>
+      <option value="high">High Stock</option>
+    </select>
+  </div>
+</div>
+
               
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                {jerseys.map(jersey => (
+                {sortedJerseys.map(jersey => (
                   <div key={jersey._id} className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
                     <div className="aspect-w-16 aspect-h-9 bg-gray-200">
                       <img 

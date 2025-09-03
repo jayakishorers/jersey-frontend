@@ -6,7 +6,7 @@ import { ProductModal } from "./components/ProductModal";
 import { jerseys } from "./data/jerseys";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
-import { Footer } from "./components/Footer";
+import Footer from "./components/Footer";
 import { Jersey } from "./types";
 import { AdvancedSearch } from "./components/AdvancedSearch";
 import SignIn from "./SignIn";
