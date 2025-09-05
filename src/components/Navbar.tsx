@@ -86,7 +86,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 whileTap={{ scale: 0.95 }}
                 onClick={() => {
                   const token = localStorage.getItem('token');
-                  navigate(token ? '/dashboard' : '/signin');
+                  navigate('/signin');
                 }}
                 className="p-2 text-gray-300 hover:text-white bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-600 hover:border-yellow-500 transition-colors"
               >
@@ -177,7 +177,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   whileTap={{ scale: 0.95 }}
                   onClick={() => {
                     const token = localStorage.getItem('token');
-                    navigate(token ? '/dashboard' : '/signin');
+                    navigate('/signin');
                     setIsMobileMenuOpen(false);
                   }}
                   className="flex items-center space-x-3 hover:text-white"

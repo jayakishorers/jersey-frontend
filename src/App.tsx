@@ -16,7 +16,7 @@ import Dashboard from "./Dashboard";
 import { useCart } from "./hooks/useCart";
 import CheckoutPage from "./CheckOutPage";
 import { CartDrawer } from "./components/CartDrawer";
-
+import { useNavigate } from "react-router-dom";
 const OrderSuccess = () => (
   <div className="min-h-screen flex items-center justify-center text-white text-center p-8">
     <div>
@@ -47,7 +47,7 @@ const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-
+const navigate = useNavigate();
   const {
     cartItems,
     isCartOpen,
@@ -58,12 +58,23 @@ const App: React.FC = () => {
     getCartTotal,
     getCartCount,
   } = useCart();
+const location = useLocation();
+const filterCategory = (location.state as any)?.filterCategory || null;
 
   // Auth check
-  useEffect(() => {
+useEffect(() => {
+  const checkAuth = () => {
     const token = localStorage.getItem("token");
     setIsAuthenticated(!!token);
-  }, []);
+  };
+
+  checkAuth(); // run on mount
+
+  // 🔥 listen for login/logout changes
+  window.addEventListener("storage", checkAuth);
+  return () => window.removeEventListener("storage", checkAuth);
+}, []);
+
 
   // Fetch stock data
   useEffect(() => {
@@ -170,24 +181,26 @@ const App: React.FC = () => {
                   <CategorySection
                     title="New Arrivals"
                     jerseys={jerseysWithStock.filter(
-                      (j) => j.isNew && j.category !== "Cricket"
+                      (j) => j.isNew
                     )}
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
                     onToggleWishlist={handleToggleWishlist}
+                    onViewAll={handleSearchClick}
                   />
                 </div>
                 <div id="best-sellers">
                   <CategorySection
                     title="Best Sellers"
                     jerseys={jerseysWithStock.filter(
-                      (j) => j.isBestSeller && j.category !== "Cricket"
+                      (j) => j.isBestSeller
                     )}
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
                     onToggleWishlist={handleToggleWishlist}
+                    onViewAll={handleSearchClick}
                   />
                 </div>
                 <div id="country-jerseys">
@@ -200,6 +213,7 @@ const App: React.FC = () => {
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
                     onToggleWishlist={handleToggleWishlist}
+                    onViewAll={handleSearchClick}
                   />
                 </div>
                 <div id="club-jerseys">
@@ -212,66 +226,72 @@ const App: React.FC = () => {
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
                     onToggleWishlist={handleToggleWishlist}
+                    onViewAll={handleSearchClick}
                   />
                 </div>
                 <div id="trending">
                   <CategorySection
                     title="Trending"
                     jerseys={jerseysWithStock.filter(
-                      (j) => j.isTrending && j.category !== "Cricket"
+                      (j) => j.isTrending
                     )}
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
                     onToggleWishlist={handleToggleWishlist}
+                    onViewAll={handleSearchClick}
                   />
                 </div>
                 <div id="retro-collection">
                   <CategorySection
                     title="Retro Collection"
                     jerseys={jerseysWithStock.filter(
-                      (j) => j.type === "Retro" && j.category !== "Cricket"
+                      (j) => j.type === "Retro"
                     )}
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
                     onToggleWishlist={handleToggleWishlist}
+                    onViewAll={handleSearchClick}
                   />
                 </div>
                 <div id="full-kit">
                   <CategorySection
                     title="Full Kit"
                     jerseys={jerseysWithStock.filter(
-                      (j) => j.fullKit && j.category !== "Cricket"
+                      (j) => j.fullKit
                     )}
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
                     onToggleWishlist={handleToggleWishlist}
+                    onViewAll={handleSearchClick}
                   />
                 </div>
                 <div id="master-copy">
                   <CategorySection
                     title="Master Copy"
                     jerseys={jerseysWithStock.filter(
-                      (j) => j.type === "Master Copy" && j.category !== "Cricket"
+                      (j) => j.type === "Master Copy"
                     )}
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
                     onToggleWishlist={handleToggleWishlist}
+                    onViewAll={handleSearchClick}
                   />
                 </div>
                 <div id="sublimation">
                   <CategorySection
                     title="Sublimation"
                     jerseys={jerseysWithStock.filter(
-                      (j) => j.type === "Sublimation" && j.category !== "Cricket"
+                      (j) => j.type === "Sublimation"
                     )}
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
                     onToggleWishlist={handleToggleWishlist}
+                    onViewAll={handleSearchClick}
                   />
                 </div>
               </>

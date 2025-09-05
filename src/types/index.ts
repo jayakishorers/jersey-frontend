@@ -3,9 +3,9 @@ export interface Jersey {
   name: string;
   club: string;
   country?: string;
-  type: 'Player Version' | 'Master Copy' | 'Sublimation' | 'Retro' | 'Full Sleeve' | 'Full Kit';
+  type:  | 'Master Copy' | 'Sublimation' | 'Retro' | 'Full Kit';
   material: 'Polyester' | 'Mesh' | 'Dri-FIT' | 'Cotton';
-  category: 'Club' | 'Country' | 'Cricket';
+  category: 'Club' | 'Country' ;
   fullKit: boolean;
   sizes: ('S' | 'M' | 'L' | 'XL' | 'XXL')[];
   price: number;
@@ -39,6 +39,7 @@ export interface FilterState {
   category: string[];
   fullKit: string;
   size: string[];
+  fullSleeve: boolean;  
   sortBy: string;
   priceRange: [number, number];
   rating: number;

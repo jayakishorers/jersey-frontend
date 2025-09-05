@@ -1831,8 +1831,8 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
 
 
 export const categories = {
-  types: ['Player Version', 'Master Copy', 'Sublimation', 'Retro', 'Full Sleeve', 'Full Kit'],
+  types: [ 'Master Copy', 'Sublimation', 'Retro', 'Full Kit'],
   materials: ['Polyester', 'Mesh', 'Dri-FIT', 'Cotton'],
-  categories: ['Club', 'Country','Cricket'],
+  categories: ['Club', 'Country'],
   sizes: ['S', 'M', 'L', 'XL', 'XXL']
 };

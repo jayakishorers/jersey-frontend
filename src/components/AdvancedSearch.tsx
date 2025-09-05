@@ -32,7 +32,8 @@
       fullKit: '',
       size: [],
       sortBy: '',
-      priceRange: [0, 2000],
+      fullSleeve: false,
+      priceRange: [0, 1000],
       rating: 0
     });
 
@@ -206,7 +207,7 @@
     <input
       type="range"
       min="0"
-      max="200"
+      max="1000"
       value={filters.priceRange[1]}
       onChange={(e) => handleFilterChange('priceRange', [0, parseInt(e.target.value)])}
       className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
@@ -219,10 +220,10 @@
 </div>
 
 
+
 {/* Dynamic Filters */}
 {Object.entries({
   'Jersey Type': { key: 'type', options: categories.types },
-  'Material': { key: 'material', options: categories.materials },
   'Category': { key: 'category', options: categories.categories },
   'Size': { key: 'size', options: categories.sizes }
 }).map(([title, { key, options }]) => (

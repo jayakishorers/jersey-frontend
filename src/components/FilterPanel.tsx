@@ -4,15 +4,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, RotateCcw } from 'lucide-react';
 import { categories } from '../data/jerseys';
 
-// Interface declarations remain the same...
 interface FilterState {
   type: string[];
-  material: string[];
   category: string[];
   fullKit: string;
+  fullSleeve: boolean; // 👈 added
   size: string[];
   sortBy: string;
 }
+
 
 interface FilterPanelProps {
   isOpen: boolean;
@@ -45,28 +45,28 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   };
 
   const clearAllFilters = () => {
-    onFilterChange({
-      type: [],
-      material: [],
-      category: [],
-      fullKit: '',
-      size: [],
-      sortBy: ''
-    });
-  };
+  onFilterChange({
+    type: [],
+    category: [],
+    fullKit: '',
+    fullSleeve: false, // 👈 added
+    size: [],
+    sortBy: ''
+  });
+};
+
 
   useEffect(() => {
-  if (isOpen) {
-    document.body.classList.add('lock-scroll');
-  } else {
-    document.body.classList.remove('lock-scroll');
-  }
+    if (isOpen) {
+      document.body.classList.add('lock-scroll');
+    } else {
+      document.body.classList.remove('lock-scroll');
+    }
 
-  // Cleanup in case component is unmounted
-  return () => {
-    document.body.classList.remove('lock-scroll');
-  };
-}, [isOpen]);
+    return () => {
+      document.body.classList.remove('lock-scroll');
+    };
+  }, [isOpen]);
 
   const FilterCheckbox: React.FC<{
     checked: boolean;
@@ -79,9 +79,11 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     >
       <div className="relative">
         <input type="checkbox" checked={checked} onChange={onChange} className="sr-only" />
-        <div className={`w-5 h-5 rounded border-2 transition-all duration-200 ${
-          checked ? 'bg-white-500 border-blue-500' : 'border-gray-500 hover:border-blue-400'
-        }`}>
+        <div
+          className={`w-5 h-5 rounded border-2 transition-all duration-200 ${
+            checked ? 'bg-white-500 border-blue-500' : 'border-gray-500 hover:border-blue-400'
+          }`}
+        >
           {checked && (
             <motion.svg
               initial={{ scale: 0 }}
@@ -122,8 +124,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             animate={{ x: 0, y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-           className="fixed top-0 left-0 h-full w-full max-w-full sm:left-0 sm:h-full sm:w-80 bg-gray-900/95 backdrop-blur-md border-r border-gray-700/50 z-50 overflow-y-auto overflow-x-hidden sm:transition-none sm:translate-y-0 sm:translate-x-0 sm:animate-none sm:static sm:rounded-none sm:border-r"
-
+            className="fixed top-0 left-0 h-full w-full max-w-full sm:left-0 sm:h-full sm:w-80 bg-gray-900/95 backdrop-blur-md border-r border-gray-700/50 z-50 overflow-y-auto"
           >
             <div className="p-6 px-4 overflow-x-hidden">
               {/* Header */}
@@ -171,29 +172,16 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-white mb-3">Jersey Type</h3>
                 <div className="space-y-1">
-                  {categories.types.map((type) => (
-                    <FilterCheckbox
-                      key={type}
-                      checked={filters.type.includes(type)}
-                      onChange={() => handleFilterChange('type', type)}
-                      label={type}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              {/* Material */}
-              <div className="mb-6">
-                <h3 className="text-lg font-semibold text-white mb-3">Material</h3>
-                <div className="space-y-1">
-                  {categories.materials.map((material) => (
-                    <FilterCheckbox
-                      key={material}
-                      checked={filters.material.includes(material)}
-                      onChange={() => handleFilterChange('material', material)}
-                      label={material}
-                    />
-                  ))}
+                  {categories.types
+                    .filter((type) => ['Replica', 'Master Copy', 'Player Edition', 'Sublimation'].includes(type))
+                    .map((type) => (
+                      <FilterCheckbox
+                        key={type}
+                        checked={filters.type.includes(type)}
+                        onChange={() => handleFilterChange('type', type)}
+                        label={type}
+                      />
+                    ))}
                 </div>
               </div>
 
@@ -201,14 +189,16 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-white mb-3">Category</h3>
                 <div className="space-y-1">
-                  {categories.categories.map((category) => (
-                    <FilterCheckbox
-                      key={category}
-                      checked={filters.category.includes(category)}
-                      onChange={() => handleFilterChange('category', category)}
-                      label={category}
-                    />
-                  ))}
+                  {categories.categories
+                    .filter((category) => category !== 'Cricket')
+                    .map((category) => (
+                      <FilterCheckbox
+                        key={category}
+                        checked={filters.category.includes(category)}
+                        onChange={() => handleFilterChange('category', category)}
+                        label={category}
+                      />
+                    ))}
                 </div>
               </div>
 
@@ -218,11 +208,26 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                 <div className="space-y-1">
                   <FilterCheckbox
                     checked={filters.fullKit === 'yes'}
-                    onChange={() => handleFilterChange('fullKit', filters.fullKit === 'yes' ? '' : 'yes')}
+                    onChange={() =>
+                      handleFilterChange('fullKit', filters.fullKit === 'yes' ? '' : 'yes')
+                    }
                     label="Full Kit Available"
                   />
                 </div>
               </div>
+{/* Full Sleeve */}
+<div className="mb-6">
+  <h3 className="text-lg font-semibold text-white mb-3">Sleeve Type</h3>
+  <div className="space-y-1">
+    <FilterCheckbox
+      checked={filters.fullSleeve}
+      onChange={() =>
+        onFilterChange({ ...filters, fullSleeve: !filters.fullSleeve })
+      }
+      label="Full Sleeve Only"
+    />
+  </div>
+</div>
 
               {/* Size */}
               <div className="mb-6">

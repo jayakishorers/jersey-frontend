@@ -12,6 +12,7 @@ interface CategorySectionProps {
   wishlistedItems: string[];
   onToggleWishlist: (jerseyId: string) => void;
   onViewAll?: () => void;
+  
 }
 
 export const CategorySection: React.FC<CategorySectionProps> = ({
