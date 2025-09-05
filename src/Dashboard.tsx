@@ -60,6 +60,7 @@ interface Order {
     state: string;
     pincode: string;
     contactNumber: string;
+    postOffice: string;
   };
   trackingNumber?: string;
   notes?: string;
@@ -229,7 +230,7 @@ const Dashboard: React.FC = () => {
       `${order.shippingAddress.name}`,
       `${order.shippingAddress.address}`,
       `${order.shippingAddress.city}, ${order.shippingAddress.state} ${order.shippingAddress.pincode}`,
-      `Phone: ${order.shippingAddress.contactNumber}`
+      `Phone: ${order.shippingAddress.contactNumber}`, `${order.shippingAddress.postOffice}`
     ].join('\n');
 
     const blob = new Blob([receiptContent], { type: 'text/plain' });
@@ -574,6 +575,7 @@ const Dashboard: React.FC = () => {
                         <p className="text-gray-700">{selectedOrder.shippingAddress.address}</p>
                         <p className="text-gray-700">{selectedOrder.shippingAddress.city}, {selectedOrder.shippingAddress.district}</p>
                         <p className="text-gray-700">{selectedOrder.shippingAddress.state} - {selectedOrder.shippingAddress.pincode}</p>
+                        <p className="text-gray-700">{selectedOrder.shippingAddress.postOffice}</p>
                         <p className="text-gray-700">📞 {selectedOrder.shippingAddress.contactNumber}</p>
                       </div>
                     </div>

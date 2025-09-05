@@ -29,6 +29,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     pincode: '',
     contactNumber: '',
     notes: '',
+    postOffice: '',
   });
 
   // Load saved form data on component mount
@@ -118,7 +119,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
       }
     }
     
-    if (field === 'city' || field === 'district' || field === 'state') {
+    if (field === 'city' || field === 'district' || field === 'state' || field === 'postOffice') {
       if (!value) {
         return `Please enter your ${field}.`;
       }
@@ -163,6 +164,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
       pincode: true,
       contactNumber: true,
       notes: true,
+      postOffice: true,
     });
 
     const requiredFields = [
@@ -174,6 +176,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
       'state',
       'pincode',
       'contactNumber',
+      'postOffice',
     ];
 
     const validationErrors = requiredFields.some(field => getFieldError(field));
@@ -206,6 +209,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
         district: formData.district,
         state: formData.state,
         pincode: formData.pincode,
+        postOffice: formData.postOffice,
       },
       paymentMethod: 'cash_on_delivery',
       notes: sanitizedNotes,
@@ -239,6 +243,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
           pincode: '',
           contactNumber: '',
           notes: '',
+          postOffice: '',
         });
         localStorage.removeItem("checkoutForm");
         setTouched({});
@@ -350,7 +355,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Street Address *
+                  House.no,  Street Address *
                 </label>
                 <input
                   name="address"
@@ -366,7 +371,8 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                 )}
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              {/* Responsive layout for address sub-fields */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     City *
@@ -402,9 +408,25 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                     <p className="text-red-500 text-sm mt-1">{getFieldError('district')}</p>
                   )}
                 </div>
-              </div>
 
-              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Post Office *
+                  </label>
+                  <input
+                    name="postOffice"
+                    type="text"
+                    placeholder="Post Office"
+                    value={formData.postOffice}
+                    onChange={handleChange}
+                    onBlur={() => setTouched({ ...touched, postOffice: true })}
+                    className={getInputFieldClass('postOffice')}
+                  />
+                  {getFieldError('postOffice') && (
+                    <p className="text-red-500 text-sm mt-1">{getFieldError('postOffice')}</p>
+                  )}
+                </div>
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     State *
@@ -422,25 +444,26 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
                     <p className="text-red-500 text-sm mt-1">{getFieldError('state')}</p>
                   )}
                 </div>
+              </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Pincode *
-                  </label>
-                  <input
-                    name="pincode"
-                    type="text"
-                    placeholder="6-digit pincode"
-                    value={formData.pincode}
-                    onChange={handleChange}
-                    onBlur={() => setTouched({ ...touched, pincode: true })}
-                    maxLength={6}
-                    className={getInputFieldClass('pincode')}
-                  />
-                  {getFieldError('pincode') && (
-                    <p className="text-red-500 text-sm mt-1">{getFieldError('pincode')}</p>
-                  )}
-                </div>
+              {/* Pincode field is placed outside the grid for better alignment */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Pincode/Zipcode *
+                </label>
+                <input
+                  name="pincode"
+                  type="text"
+                  placeholder="6-digit pincode"
+                  value={formData.pincode}
+                  onChange={handleChange}
+                  onBlur={() => setTouched({ ...touched, pincode: true })}
+                  maxLength={6}
+                  className={getInputFieldClass('pincode')}
+                />
+                {getFieldError('pincode') && (
+                  <p className="text-red-500 text-sm mt-1">{getFieldError('pincode')}</p>
+                )}
               </div>
             </div>
           </div>
