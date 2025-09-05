@@ -39,11 +39,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 50 }}
       whileHover={{ y: -4 }}
-      className="bg-white border border-gray-200 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-md relative"
+      className="bg-gray-900 text-white border border-gray-800 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-md relative"
     >
       {/* --- Mobile View --- */}
       <div className="block sm:hidden" onClick={() => onViewDetails(jersey)}>
-        <div className="relative">
+        <div className="relative bg-gray-800">
           <img
             src={jersey.image}
             alt={jersey.name}
@@ -51,23 +51,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               isOutOfStock ? "opacity-70" : ""
             }`}
           />
-
-          {/* Sold Out Banner (Bottom) */}
           {isOutOfStock && (
             <div className="absolute bottom-0 left-0 right-0 bg-red-600 text-white text-xs font-bold text-center py-1">
               SOLD OUT
             </div>
           )}
         </div>
-
-        {/* Info */}
-        <div className="p-2 text-center">
-          <p className="text-gray-800 text-sm font-semibold truncate">
-            {jersey.name}
-          </p>
-          {/* Price */}
+        <div className="p-3 text-center">
+          <p className="text-white text-sm font-semibold truncate">{jersey.name}</p>
           <div className="mt-1 flex items-center justify-center space-x-2">
-            <span className="text-base font-bold text-gray-900">
+            <span className="text-base font-bold text-white">
               ₹{jersey.price.toLocaleString()}
             </span>
             {jersey.originalPrice && jersey.originalPrice > jersey.price && (
@@ -75,7 +68,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 <span className="text-sm line-through text-gray-400">
                   ₹{jersey.originalPrice.toLocaleString()}
                 </span>
-                <span className="text-xs font-semibold text-green-600 bg-green-100 px-1.5 py-0.5 rounded">
+                <span className="text-xs font-semibold text-green-400 bg-green-800 px-1.5 py-0.5 rounded">
                   {discountPercentage}% OFF
                 </span>
               </>
@@ -91,7 +84,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => onToggleWishlist?.(jersey.id)}
-          className="absolute top-3 right-3 z-20 p-2 bg-white shadow-sm rounded-full border border-gray-300 hover:border-red-500 transition-colors"
+          className="absolute top-3 right-3 z-20 p-2 bg-gray-800 shadow-sm rounded-full border border-gray-700 hover:border-red-500 transition-colors"
         >
           <Heart
             className={`w-4 h-4 transition-colors ${
@@ -101,50 +94,46 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             }`}
           />
         </motion.button>
-
-        {/* Image */}
+        {/* Image Section */}
         <div
-          className="relative w-full aspect-[3/4] bg-gray-100 overflow-hidden cursor-pointer"
+          className="relative w-full aspect-[3/4] bg-gray-800 overflow-hidden cursor-pointer"
           onClick={() => onViewDetails(jersey)}
         >
           <motion.img
-            whileHover={{ scale: isOutOfStock ? 1 : 1.1 }}
+            whileHover={{ scale: isOutOfStock ? 1 : 1.05 }}
             src={jersey.image}
             alt={jersey.name}
-            className={`w-full h-full object-cover transition-transform duration-500 ${
-              isOutOfStock ? "opacity-70" : ""
-            }`}
+            className={`w-full h-full object-cover transition-transform duration-500`}
           />
-
-          {/* Sold Out Banner (Bottom) */}
+          {/* Conditional white overlay and SOLD OUT banner */}
           {isOutOfStock && (
-            <div className="absolute bottom-0 left-0 right-0 bg-red-600 text-white text-sm font-bold text-center py-1">
-              SOLD OUT
-            </div>
+            <>
+              {/* This is the white overlay without blur */}
+              <div
+                className="absolute inset-0 z-10 bg-white/25"
+              ></div>
+              <div className="absolute bottom-0 left-0 right-0 z-20 bg-red-600 text-white text-sm font-bold text-center py-1">
+                SOLD OUT
+              </div>
+            </>
           )}
         </div>
-
-        {/* Info */}
-        <div
-          className="p-4 cursor-pointer"
-          onClick={() => onViewDetails(jersey)}
-        >
-          <h3 className="text-gray-900 font-semibold text-lg mb-1">
+        {/* Info Section */}
+        <div className="p-4 cursor-pointer" onClick={() => onViewDetails(jersey)}>
+          <h3 className="text-white font-semibold text-lg mb-1">
             {jersey.name}
           </h3>
-          <p className="text-gray-500 text-sm">{jersey.club}</p>
-
-          {/* Price */}
+          <p className="text-gray-400 text-sm">{jersey.club}</p>
           <div className="mt-2 flex items-center space-x-2">
-            <span className="text-xl font-bold text-gray-900">
+            <span className="text-xl font-bold text-white">
               ₹{jersey.price.toLocaleString()}
             </span>
             {jersey.originalPrice && jersey.originalPrice > jersey.price && (
               <>
-                <span className="text-sm line-through text-gray-400">
+                <span className="text-sm line-through text-gray-500">
                   ₹{jersey.originalPrice.toLocaleString()}
                 </span>
-                <span className="text-xs font-semibold text-green-600 bg-green-100 px-2 py-0.5 rounded">
+                <span className="text-xs font-semibold text-green-400 bg-green-800 px-2 py-0.5 rounded">
                   {discountPercentage}% OFF
                 </span>
               </>

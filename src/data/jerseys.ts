@@ -111,9 +111,9 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
     isTrending:true,
 isBestSeller: true,
 description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
-    image: 'https://images.pexels.com/photos/2834914/pexels-photo-2834914.jpeg?auto=compress&cs=tinysrgb&w=500',
+    image: "/barcelona1.jpg",
     images: [
-      'https://images.pexels.com/photos/2834914/pexels-photo-2834914.jpeg?auto=compress&cs=tinysrgb&w=800'
+      "/barcelona1.jpg","/barcelona2.jpg"
     ],
      features:['Embroidery Logos','Regular Fit','Premium Quality Material','Grade AAA Imported Quality']
   },
