@@ -14,8 +14,35 @@ const SignIn: React.FC = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [checkingAuth, setCheckingAuth] = useState(true);
-  const [justSignedIn, setJustSignedIn] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  // Corrected useEffect to run only once on mount for initial auth check
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userData = localStorage.getItem("user");
+
+    if (token && userData) {
+      try {
+        const user = JSON.parse(userData);
+        // Redirect if a valid session exists
+        if (from && from !== "/dashboard") {
+          navigate(from, { replace: true });
+        } else if (user.email === "123@gmail.com") {
+          navigate("/admin", { replace: true });
+        } else {
+          navigate("/dashboard", { replace: true });
+        }
+      } catch (error) {
+        // Clear invalid session data
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+        setCheckingAuth(false);
+      }
+    } else {
+      // No token found, so stop checking
+      setCheckingAuth(false);
+    }
+  }, [navigate, from]); // <-- Empty dependency array to run only on mount
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,8 +65,8 @@ const SignIn: React.FC = () => {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
       window.dispatchEvent(new Event("storage"));
-      setJustSignedIn(true);
 
+      // ✅ Navigate directly after successful sign-in
       if (from && from !== "/dashboard") {
         navigate(from, { replace: true });
       } else if (user.email === "123@gmail.com") {
@@ -55,33 +82,6 @@ const SignIn: React.FC = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-  if (justSignedIn) return;
-
-  const token = localStorage.getItem("token");
-  const userData = localStorage.getItem("user");
-
-  if (token && userData) {
-    try {
-      const user = JSON.parse(userData);
-
-      // ✅ Navigate only once after mount
-      if (from && from !== "/dashboard") {
-        navigate(from, { replace: true });
-      } else if (user.email === "123@gmail.com") {
-        navigate("/admin", { replace: true });
-      } else {
-        navigate("/dashboard", { replace: true });
-      }
-      return;
-    } catch (error) {
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
-    }
-  }
-  setCheckingAuth(false);
-}, [justSignedIn]); // 👈 now only runs once (or when signing in)
 
   if (checkingAuth) {
     return (
