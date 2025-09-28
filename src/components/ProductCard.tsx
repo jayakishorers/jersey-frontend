@@ -21,6 +21,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   viewMode = "grid",
 }) => {
   const [selectedSize, setSelectedSize] = useState<string>("");
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const isStockLoading = !jersey.stockBySize;
   const totalStock = jersey.stockBySize
@@ -45,15 +46,27 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       {/* --- Mobile View --- */}
       <div className="block sm:hidden" onClick={() => onViewDetails(jersey)}>
         <div className="relative bg-gray-800">
-          <img
-            src={jersey.image}
-            alt={jersey.name}
-            className={`w-full aspect-square object-cover rounded-t-xl transition-opacity duration-300 ${
-              (isOutOfStock || isStockLoading) ? "opacity-70" : ""
-            }`}
-            loading="lazy"
-            style={{ backgroundColor: '#f3f4f6' }}
-          />
+          <div className="relative">
+            {!imageLoaded && (
+              <div className="absolute inset-0 bg-gray-700 animate-pulse flex items-center justify-center rounded-t-xl">
+                <div className="text-center text-gray-400">
+                  <div className="w-8 h-8 mx-auto mb-1 bg-gray-600 rounded animate-pulse"></div>
+                  <div className="text-xs">Loading...</div>
+                </div>
+              </div>
+            )}
+            <img
+              src={jersey.thumbnail || jersey.image}
+              alt={jersey.name}
+              className={`w-full aspect-square object-cover rounded-t-xl transition-all duration-300 ${
+                (isOutOfStock || isStockLoading) ? "opacity-70" : ""
+              } ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+              loading="lazy"
+              style={{ backgroundColor: '#f3f4f6' }}
+              onLoad={() => setImageLoaded(true)}
+              onError={() => setImageLoaded(true)}
+            />
+          </div>
           {isOutOfStock && (
             <div className="absolute bottom-0 left-0 right-0 bg-red-600 text-white text-xs font-bold text-center py-1">
               SOLD OUT
@@ -102,13 +115,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           className="relative w-full aspect-[3/4] bg-gray-800 overflow-hidden cursor-pointer"
           onClick={() => onViewDetails(jersey)}
         >
+          {!imageLoaded && (
+            <div className="absolute inset-0 bg-gray-700 animate-pulse flex items-center justify-center">
+              <div className="text-center text-gray-400">
+                <div className="w-12 h-12 mx-auto mb-2 bg-gray-600 rounded-lg animate-pulse"></div>
+                <div className="text-xs">Loading...</div>
+              </div>
+            </div>
+          )}
           <motion.img
             whileHover={{ scale: isOutOfStock ? 1 : 1.05 }}
-            src={jersey.image}
+            src={jersey.thumbnail || jersey.image}
             alt={jersey.name}
-            className="w-full h-full object-cover transition-transform duration-500"
+            className={`w-full h-full object-cover transition-all duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
             loading="lazy"
             style={{ backgroundColor: '#f3f4f6' }}
+            onLoad={() => setImageLoaded(true)}
+            onError={() => setImageLoaded(true)}
           />
           {/* Loading or Out of Stock overlay */}
           {(isStockLoading || isOutOfStock) && (

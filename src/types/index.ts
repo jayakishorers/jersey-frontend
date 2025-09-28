@@ -13,6 +13,7 @@ export interface Jersey {
   originalPrice?: number;
   rating?: number;
   image: string;
+  thumbnail?: string; // Low-quality preview image
   images: string[];
   description: string;
   features: string[];
@@ -23,6 +24,9 @@ export interface Jersey {
   discount?: number;
   PlayerName?:String;
   stockBySize?: Record<string, number>;
+  
+  // Helper function to get display image (thumbnail if available, otherwise original)
+  getDisplayImage?(): string;
 }
 
 export interface CartItem {

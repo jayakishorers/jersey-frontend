@@ -25,6 +25,8 @@
     const [searchQuery, setSearchQuery] = useState('');
     const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
     const [showFilters, setShowFilters] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 20;
     const [filters, setFilters] = useState<FilterState>({
       type: [],
       material: [],
@@ -71,6 +73,12 @@
         default: return 0;
       }
     });
+
+    const totalPages = Math.ceil(filteredJerseys.length / itemsPerPage);
+    const paginatedJerseys = filteredJerseys.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    );
 
     const handleFilterChange = (filterType: keyof FilterState, value: any) => {
       setFilters(prev => {
@@ -312,13 +320,36 @@
 
               {/* Products */}
               <ProductGrid
-                jerseys={filteredJerseys}
+                jerseys={paginatedJerseys}
                 onViewDetails={onViewDetails}
                 wishlistedItems={wishlistedItems}
                 onToggleWishlist={onToggleWishlist}
                 onAddToCart={onAddToCart}
                 viewMode={viewMode}
               />
+              
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex justify-center items-center space-x-2 mt-8">
+                  <button
+                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
+                    className="px-4 py-2 bg-gray-800 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-700"
+                  >
+                    Previous
+                  </button>
+                  <span className="text-white px-4">
+                    Page {currentPage} of {totalPages}
+                  </span>
+                  <button
+                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                    disabled={currentPage === totalPages}
+                    className="px-4 py-2 bg-gray-800 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-700"
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
