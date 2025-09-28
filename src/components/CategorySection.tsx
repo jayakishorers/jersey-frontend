@@ -79,7 +79,7 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
         {/* Jersey Scroll Carousel */}
         <div
           ref={scrollRef}
-          className="flex space-x-4 pb-2"
+          className="flex overflow-x-auto space-x-4 scroll-smooth pb-2 no-scrollbar"
         >
           {jerseys.map((jersey, index) => (
             <motion.div
