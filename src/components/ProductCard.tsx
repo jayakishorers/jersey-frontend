@@ -48,17 +48,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <div className="relative bg-gray-800">
           <div className="relative">
             {!imageLoaded && (
-              <div className="absolute inset-0 bg-gray-700 animate-pulse flex items-center justify-center rounded-t-xl">
-                <div className="text-center text-gray-400">
-                  <div className="w-8 h-8 mx-auto mb-1 bg-gray-600 rounded animate-pulse"></div>
-                  <div className="text-xs">Loading...</div>
-                </div>
+              <div className="absolute inset-0 bg-gray-700 flex items-center justify-center rounded-t-xl">
+                <div className="w-12 h-12 border-4 border-gray-500 border-t-blue-500 rounded-full animate-spin"></div>
               </div>
             )}
             <img
-              src={jersey.thumbnail || jersey.image}
+              src={`${jersey.image}?w=200&q=30`}
               alt={jersey.name}
-              className={`w-full aspect-square object-cover rounded-t-xl transition-all duration-300 ${
+              className={`w-full aspect-square object-cover rounded-t-xl transition-all duration-500 ${
                 (isOutOfStock || isStockLoading) ? "opacity-70" : ""
               } ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
               loading="lazy"
@@ -116,16 +113,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           onClick={() => onViewDetails(jersey)}
         >
           {!imageLoaded && (
-            <div className="absolute inset-0 bg-gray-700 animate-pulse flex items-center justify-center">
-              <div className="text-center text-gray-400">
-                <div className="w-12 h-12 mx-auto mb-2 bg-gray-600 rounded-lg animate-pulse"></div>
-                <div className="text-xs">Loading...</div>
-              </div>
+            <div className="absolute inset-0 bg-gray-700 flex items-center justify-center">
+              <div className="w-16 h-16 border-4 border-gray-500 border-t-blue-500 rounded-full animate-spin"></div>
             </div>
           )}
           <motion.img
             whileHover={{ scale: isOutOfStock ? 1 : 1.05 }}
-            src={jersey.thumbnail || jersey.image}
+            src={`${jersey.image}?w=200&q=30`}
             alt={jersey.name}
             className={`w-full h-full object-cover transition-all duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
             loading="lazy"
