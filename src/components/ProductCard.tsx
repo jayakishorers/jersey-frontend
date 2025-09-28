@@ -22,10 +22,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const [selectedSize, setSelectedSize] = useState<string>("");
 
+  const isStockLoading = !jersey.stockBySize;
   const totalStock = jersey.stockBySize
     ? Object.values(jersey.stockBySize).reduce((sum, qty) => sum + qty, 0)
     : 0;
-  const isOutOfStock = totalStock === 0;
+  const isOutOfStock = totalStock === 0 && !isStockLoading;
 
   const discountPercentage =
     jersey.originalPrice && jersey.originalPrice > jersey.price
@@ -47,9 +48,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <img
             src={jersey.image}
             alt={jersey.name}
-            className={`w-full aspect-square object-cover rounded-t-xl ${
-              isOutOfStock ? "opacity-70" : ""
+            className={`w-full aspect-square object-cover rounded-t-xl transition-opacity duration-300 ${
+              (isOutOfStock || isStockLoading) ? "opacity-70" : ""
             }`}
+            loading="lazy"
+            style={{ backgroundColor: '#f3f4f6' }}
           />
           {isOutOfStock && (
             <div className="absolute bottom-0 left-0 right-0 bg-red-600 text-white text-xs font-bold text-center py-1">
@@ -103,37 +106,40 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             whileHover={{ scale: isOutOfStock ? 1 : 1.05 }}
             src={jersey.image}
             alt={jersey.name}
-            className={`w-full h-full object-cover transition-transform duration-500`}
+            className="w-full h-full object-cover transition-transform duration-500"
+            loading="lazy"
+            style={{ backgroundColor: '#f3f4f6' }}
           />
-          {/* Conditional white overlay and SOLD OUT banner */}
-          {isOutOfStock && (
+          {/* Loading or Out of Stock overlay */}
+          {(isStockLoading || isOutOfStock) && (
             <>
-              {/* This is the white overlay without blur */}
-              <div
-                className="absolute inset-0 z-10 bg-white/25"
-              ></div>
-              <div className="absolute bottom-0 left-0 right-0 z-20 bg-red-600 text-white text-sm font-bold text-center py-1">
-                SOLD OUT
+              <div className="absolute inset-0 z-10 bg-white/25"></div>
+              <div className={`absolute bottom-0 left-0 right-0 z-20 text-white text-sm font-bold text-center py-1 ${
+                isStockLoading ? 'bg-blue-600' : 'bg-red-600'
+              }`}>
+                {isStockLoading ? 'LOADING STOCK...' : 'SOLD OUT'}
               </div>
             </>
           )}
         </div>
         {/* Info Section */}
-        <div className="p-4 cursor-pointer" onClick={() => onViewDetails(jersey)}>
-          <h3 className="text-white font-semibold text-lg mb-1">
-            {jersey.name}
-          </h3>
-          <p className="text-gray-400 text-sm">{jersey.club}</p>
+        <div className="p-4 cursor-pointer lg:min-h-[90px] lg:flex lg:flex-col lg:justify-between bg-gray-900" onClick={() => onViewDetails(jersey)}>
+          <div className="flex-1">
+            <h3 className="text-white font-semibold text-lg mb-1 lg:text-sm lg:leading-tight">
+              {jersey.name}
+            </h3>
+            <p className="text-gray-400 text-sm lg:text-xs">{jersey.club}</p>
+          </div>
           <div className="mt-2 flex items-center space-x-2">
-            <span className="text-xl font-bold text-white">
+            <span className="text-xl font-bold text-white lg:text-base">
               ₹{jersey.price.toLocaleString()}
             </span>
             {jersey.originalPrice && jersey.originalPrice > jersey.price && (
               <>
-                <span className="text-sm line-through text-gray-500">
+                <span className="text-sm line-through text-gray-500 lg:hidden">
                   ₹{jersey.originalPrice.toLocaleString()}
                 </span>
-                <span className="text-xs font-semibold text-green-400 bg-green-800 px-2 py-0.5 rounded">
+                <span className="text-xs font-semibold text-green-400 bg-green-800 px-2 py-0.5 rounded lg:px-1">
                   {discountPercentage}% OFF
                 </span>
               </>

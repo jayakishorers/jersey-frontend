@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Star, ShoppingCart, Heart, ChevronLeft, ChevronRight , ZoomIn, ZoomOut } from 'lucide-react';
+import { X, ShoppingCart, Heart, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, ChevronDown } from 'lucide-react';
 import { Jersey } from '../types';
-import Zoom from 'react-medium-image-zoom'
-import 'react-medium-image-zoom/dist/styles.css'
 
 interface ProductModalProps {
   jersey: Jersey | null;
@@ -21,6 +19,9 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [showSizeChart, setShowSizeChart] = useState(false);
+  const [showDescription, setShowDescription] = useState(false);
+  const [showFeatures, setShowFeatures] = useState(false);
 
   if (!jersey) return null;
 
@@ -100,15 +101,18 @@ const resetZoom = () => {
 
             <div className="flex flex-col lg:flex-row h-full">
               {/* Image Section */}
-              <div className="lg:w-1/2 relative bg-gray-100">
-                <div className="relative h-64 lg:h-full">
+              <div className="lg:w-1/2 flex flex-col bg-gray-100">
+                {/* Main Image */}
+                <div className="flex-1 relative lg:h-[400px]">
                   <motion.img
                     key={currentImageIndex}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     src={jersey.images[currentImageIndex]}
                     alt={jersey.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover cursor-zoom-in lg:object-contain"
+                    style={{ backgroundColor: '#f3f4f6' }}
+                    loading="eager"
                   />
                   {jersey.images.length > 1 && (
                     <>
@@ -116,7 +120,7 @@ const resetZoom = () => {
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={prevImage}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-white border border-gray-300 rounded-full text-gray-700"
+                        className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-white/80 backdrop-blur-sm border border-gray-300 rounded-full text-gray-700 hover:bg-white"
                       >
                         <ChevronLeft className="w-5 h-5" />
                       </motion.button>
@@ -124,26 +128,46 @@ const resetZoom = () => {
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={nextImage}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-white border border-gray-300 rounded-full text-gray-700"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-white/80 backdrop-blur-sm border border-gray-300 rounded-full text-gray-700 hover:bg-white"
                       >
                         <ChevronRight className="w-5 h-5" />
                       </motion.button>
                     </>
                   )}
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-                    {jersey.images.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentImageIndex(index)}
-                        className={`w-2 h-2 rounded-full ${index === currentImageIndex ? 'bg-blue-600' : 'bg-gray-300'}`}
-                      />
-                    ))}
-                  </div>
                 </div>
+                
+                {/* Thumbnail Strip */}
+                {jersey.images.length > 1 && (
+                  <div className="p-4 bg-white border-t border-gray-200">
+                    <div className="flex space-x-2 overflow-x-auto">
+                      {jersey.images.map((image, index) => (
+                        <motion.button
+                          key={index}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => setCurrentImageIndex(index)}
+                          className={`flex-shrink-0 w-16 h-16 rounded-lg border-2 overflow-hidden transition-all ${
+                            index === currentImageIndex 
+                              ? 'border-blue-500 ring-2 ring-blue-200' 
+                              : 'border-gray-200 hover:border-gray-300'
+                          }`}
+                        >
+                          <img
+                            src={image}
+                            alt={`${jersey.name} view ${index + 1}`}
+                            className="w-full h-full object-cover"
+                            style={{ backgroundColor: '#f3f4f6' }}
+                            loading="eager"
+                          />
+                        </motion.button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Content Section */}
-              <div className="lg:w-1/2 p-6 lg:p-8 overflow-y-auto">
+              <div className="lg:w-1/2 p-6 lg:p-4 overflow-y-auto max-h-full">
                 <div className="space-y-6">
                   {/* Header */}
                   <div>
@@ -197,8 +221,9 @@ const resetZoom = () => {
   <h3 className="text-lg font-semibold mb-3">Select Size</h3>
   <div className="grid grid-cols-5 gap-2">
     {jersey.sizes.map((size) => {
+      const isStockLoading = !jersey.stockBySize;
       const stock = jersey.stockBySize?.[size] ?? 0;
-      const isDisabled = stock === 0;
+      const isDisabled = stock === 0 || isStockLoading;
 
       return (
         <motion.button
@@ -211,15 +236,18 @@ const resetZoom = () => {
             ${selectedSize === size && !isDisabled
               ? 'border-blue-600 bg-blue-100 text-blue-600'
               : isDisabled
-              ? 'border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed opacity-70'
+              ? `border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed opacity-70 ${
+                  isStockLoading ? 'animate-pulse' : ''
+                }`
               : 'border-gray-300 text-gray-600 hover:border-blue-500 hover:text-blue-500'
             }`}
         >
-          {size}
-          {/* 🔥 Diagonal line for out-of-stock */}
-          {isDisabled && (
+          {isStockLoading ? '...' : size}
+          {/* Diagonal line for out-of-stock */}
+          {stock === 0 && !isStockLoading && (
             <span className="absolute left-0 top-1/2 w-full h-[2px] bg-gray-500 rotate-[-45deg]"></span>
           )}
+
         </motion.button>
       );
     })}
@@ -231,16 +259,16 @@ const resetZoom = () => {
   <motion.button
     whileHover={{ scale: 1.02 }}
     whileTap={{ scale: 0.98 }}
-    disabled={!selectedSize || (jersey.stockBySize?.[selectedSize] ?? 0) === 0}
+    disabled={!selectedSize || !jersey.stockBySize || (jersey.stockBySize?.[selectedSize] ?? 0) === 0}
     onClick={handleAddToCart}
     className={`flex-1 flex items-center justify-center space-x-2 py-4 rounded-lg font-semibold transition ${
-      selectedSize && (jersey.stockBySize?.[selectedSize] ?? 0) > 0
+      selectedSize && jersey.stockBySize && (jersey.stockBySize[selectedSize] ?? 0) > 0
         ? 'bg-blue-600 text-white hover:shadow-lg'
         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
     }`}
   >
     <ShoppingCart className="w-5 h-5" />
-    <span>Add to Cart</span>
+    <span>{!jersey.stockBySize ? 'Loading...' : 'Add to Cart'}</span>
   </motion.button>
 
 
@@ -253,73 +281,7 @@ const resetZoom = () => {
                     </motion.button>
                   </div>
 
-                    {/* Modal Image Section */}
-<div className="lg:w-1/2 relative bg-black flex items-center justify-center overflow-hidden rounded-lg select-none">
-
-  {/* Loader */}
-  {isLoading && (
-    <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
-      <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-    </div>
-  )}
-
-  {/* Image */}
-  <motion.img
-    key={modalImageIndex}
-    initial={{ opacity: 0, scale: 0.95 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 0.4 }}
-    src={modalImages[modalImageIndex]}
-    alt={`Modal jersey view ${modalImageIndex + 1}`}
-    onLoad={() => setIsLoading(false)}
-    onClick={() => {
-      setIsFullscreen(true);
-      setIsZoomed(false);
-      setZoom(1);
-    }}
-    style={{
-      transform: `scale(${zoom})`,
-      cursor: "zoom-in"
-    }}
-    className="max-h-[500px] w-auto object-contain transition-transform duration-300"
-  />
-
-  {/* Left/Right Buttons */}
-  {modalImages.length > 1 && !isZoomed && (
-    <>
-      <motion.button
-        whileHover={{ scale: 1.15 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={prevModalImage}
-        className="absolute left-4 p-3 bg-black/50 hover:bg-black/70 rounded-full text-white shadow-lg transition"
-      >
-        <ChevronLeft className="w-6 h-6" />
-      </motion.button>
-
-      <motion.button
-        whileHover={{ scale: 1.15 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={nextModalImage}
-        className="absolute right-4 p-3 bg-black/50 hover:bg-black/70 rounded-full text-white shadow-lg transition"
-      >
-        <ChevronRight className="w-6 h-6" />
-      </motion.button>
-    </>
-  )}
-
-  {/* Dots */}
-  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-2">
-    {modalImages.map((_, index) => (
-      <button
-        key={index}
-        onClick={() => { setModalImageIndex(index); resetZoom(); }}
-        className={`w-3 h-3 rounded-full transition-all duration-300 ${
-          index === modalImageIndex ? 'bg-blue-500 scale-110' : 'bg-gray-400'
-        }`}
-      />
-    ))}
-  </div>
-</div>
+                    
 
 {/* Fullscreen Overlay */}
 {isFullscreen && (
@@ -388,26 +350,187 @@ const resetZoom = () => {
     )}
   </div>
 )}
-<p className="mt-4 text-center text-sm md:text-base font-medium text-gray-700 bg-gray-100 px-4 py-2 rounded-lg">
-  📏"Find your perfect fit using the size chart for your jersey type."
-</p>
-                  {/* Description */}
-                  <div>
-                    <h3 className="text-lg font-semibold mb-3">Description</h3>
-                    <p className="text-gray-700">{jersey.description}</p>
+                  {/* Size Chart Collapsible */}
+                  <div className="border border-gray-200 rounded-lg">
+                    <motion.button
+                      onClick={() => setShowSizeChart(!showSizeChart)}
+                      className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                        <span className="text-lg font-semibold">Size Chart</span>
+                      </div>
+                      <motion.div
+                        animate={{ rotate: showSizeChart ? 180 : 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <ChevronDown className="w-5 h-5" />
+                      </motion.div>
+                    </motion.button>
+                    <AnimatePresence>
+                      {showSizeChart && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3, ease: 'easeInOut' }}
+                          className="overflow-hidden"
+                        >
+                          <div className="p-4 pt-0 border-t border-gray-200">
+                            {/* Modal Image Section */}
+                            <div className="relative bg-black flex items-center justify-center overflow-hidden rounded-lg select-none mb-4">
+                              {/* Loader */}
+                              {isLoading && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
+                                  <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+                                </div>
+                              )}
+
+                              {/* Image */}
+                              <motion.img
+                                key={modalImageIndex}
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.4 }}
+                                src={modalImages[modalImageIndex]}
+                                alt={`Size chart ${modalImageIndex + 1}`}
+                                onLoad={() => setIsLoading(false)}
+                                onClick={() => {
+                                  setIsFullscreen(true);
+                                  setIsZoomed(false);
+                                  setZoom(1);
+                                }}
+                                style={{
+                                  transform: `scale(${zoom})`,
+                                  cursor: "zoom-in"
+                                }}
+                                className="max-h-[400px] w-auto object-contain transition-transform duration-300"
+                              />
+
+                              {/* Left/Right Buttons */}
+                              {modalImages.length > 1 && !isZoomed && (
+                                <>
+                                  <motion.button
+                                    whileHover={{ scale: 1.15 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    onClick={prevModalImage}
+                                    className="absolute left-4 p-3 bg-black/50 hover:bg-black/70 rounded-full text-white shadow-lg transition"
+                                  >
+                                    <ChevronLeft className="w-6 h-6" />
+                                  </motion.button>
+
+                                  <motion.button
+                                    whileHover={{ scale: 1.15 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    onClick={nextModalImage}
+                                    className="absolute right-4 p-3 bg-black/50 hover:bg-black/70 rounded-full text-white shadow-lg transition"
+                                  >
+                                    <ChevronRight className="w-6 h-6" />
+                                  </motion.button>
+                                </>
+                              )}
+
+                              {/* Dots */}
+                              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-2">
+                                {modalImages.map((_, index) => (
+                                  <button
+                                    key={index}
+                                    onClick={() => { setModalImageIndex(index); resetZoom(); }}
+                                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                                      index === modalImageIndex ? 'bg-blue-500 scale-110' : 'bg-gray-400'
+                                    }`}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                            <p className="text-sm text-gray-600 text-center">
+                              Find your perfect fit using the size chart for your jersey type.
+                            </p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
 
-                  {/* Features */}
-                  <div>
-                    <h3 className="text-lg font-semibold mb-3">Features</h3>
-                    <ul className="space-y-2 text-gray-700">
-                      {jersey.features.map((feature, index) => (
-                        <li key={index} className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full" />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
+                  {/* Description Collapsible */}
+                  <div className="border border-gray-200 rounded-lg">
+                    <motion.button
+                      onClick={() => setShowDescription(!showDescription)}
+                      className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <span className="text-lg font-semibold">Description</span>
+                      </div>
+                      <motion.div
+                        animate={{ rotate: showDescription ? 180 : 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <ChevronDown className="w-5 h-5" />
+                      </motion.div>
+                    </motion.button>
+                    <AnimatePresence>
+                      {showDescription && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3, ease: 'easeInOut' }}
+                          className="overflow-hidden"
+                        >
+                          <div className="p-4 pt-0 border-t border-gray-200">
+                            <p className="text-gray-700">{jersey.description}</p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Features Collapsible */}
+                  <div className="border border-gray-200 rounded-lg">
+                    <motion.button
+                      onClick={() => setShowFeatures(!showFeatures)}
+                      className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                        </svg>
+                        <span className="text-lg font-semibold">Features</span>
+                      </div>
+                      <motion.div
+                        animate={{ rotate: showFeatures ? 180 : 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <ChevronDown className="w-5 h-5" />
+                      </motion.div>
+                    </motion.button>
+                    <AnimatePresence>
+                      {showFeatures && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3, ease: 'easeInOut' }}
+                          className="overflow-hidden"
+                        >
+                          <div className="p-4 pt-0 border-t border-gray-200">
+                            <ul className="space-y-2 text-gray-700">
+                              {jersey.features.map((feature, index) => (
+                                <li key={index} className="flex items-center space-x-2">
+                                  <div className="w-2 h-2 bg-blue-500 rounded-full" />
+                                  <span>{feature}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
               </div>

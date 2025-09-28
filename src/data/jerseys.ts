@@ -15,10 +15,8 @@ export const jerseys: Jersey[] = [
     price: 649,
 isBestSeller: true,
 description: 'Official Manchester United home jersey with premium Dri-FIT technology.',
-    image: "/manutd.jpeg",
-    images: ["/manutd.jpeg",
-      'https://images.pexels.com/photos/1374125/pexels-photo-1374125.jpeg?auto=compress&cs=tinysrgb&w=800'
-    ],
+    image: "/649/1.jpeg",
+    images: ["/649/1.jpeg"],
      features:['Embroidery Logos','Regular Fit','Premium Quality Material','Grade AAA Imported Quality']
   },
   {
@@ -35,9 +33,9 @@ description: 'Official Manchester United home jersey with premium Dri-FIT techno
 isBestSeller: true,
 isTrending:true,
 description: 'Official Manchester City home jersey with premium Dri-FIT technology.',
-    image: 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=500',
+    image: '/649/2.jpeg',
     images: [
-      'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=800'
+      '/649/2.jpeg'
     ],
      features:['Embroidery Logos','Regular Fit','Premium Quality Material','Grade AAA Imported Quality']
   },
@@ -54,9 +52,9 @@ description: 'Official Manchester City home jersey with premium Dri-FIT technolo
     price: 649,
 isBestSeller: true,
 description: 'Official Real Madrid jersey with premium Dri-FIT technology.',
-    image: 'https://images.pexels.com/photos/2834914/pexels-photo-2834914.jpeg?auto=compress&cs=tinysrgb&w=500',
+    image: '/649/3.jpeg',
     images: [
-      'https://images.pexels.com/photos/2834914/pexels-photo-2834914.jpeg?auto=compress&cs=tinysrgb&w=800'
+      '/649/3.jpeg'
     ],
      features:['Embroidery Logos','Regular Fit','Premium Quality Material','Grade AAA Imported Quality'],
      isTrending:true
@@ -74,9 +72,9 @@ description: 'Official Real Madrid jersey with premium Dri-FIT technology.',
     price: 649,
 isBestSeller: true,
 description: 'Official Arsenal  jersey with premium Dri-FIT technology.',
-    image: "/barca.webp",
+    image: "/649/4.jpeg",
     images: [
-       "/barca.webp"
+       "/649/4.jpeg"
     ],
      features:['Embroidery Logos','Regular Fit','Premium Quality Material','Grade AAA Imported Quality']
     
@@ -93,9 +91,9 @@ description: 'Official Arsenal  jersey with premium Dri-FIT technology.',
     price: 649,
 isTrending: true,
 description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
-    image: 'https://images.pexels.com/photos/1374125/pexels-photo-1374125.jpeg?auto=compress&cs=tinysrgb&w=500',
+    image: '/649/5.jpeg',
     images: [
-      'https://images.pexels.com/photos/1374125/pexels-photo-1374125.jpeg?auto=compress&cs=tinysrgb&w=800'
+      '/649/5.jpeg'
     ],
      features:['Embroidery Logos','Regular Fit','Premium Quality Material','Grade AAA Imported Quality']
   },
@@ -111,9 +109,9 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
     isTrending:true,
 isBestSeller: true,
 description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
-    image: "/barcelona1.jpg",
+    image: "/649/6.jpeg",
     images: [
-      "/barcelona1.jpg","/barcelona2.jpg"
+      "/649/6.jpeg"
     ],
      features:['Embroidery Logos','Regular Fit','Premium Quality Material','Grade AAA Imported Quality']
   },
@@ -129,8 +127,8 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   price: 699,
   isBestSeller: true,
   description: 'Official France jersey with premium Dri-FIT technology.',
-  image: 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=500',
-  images: ['https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=800'],
+  image: '/649/7.jpeg',
+  images: ['/649/7.jpeg'],
   features: ['Embroidery Logos', 'Regular Fit', 'Premium Quality Material', 'Grade AAA Imported Quality']
 },
 {
@@ -145,8 +143,8 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   price: 649,
   isBestSeller: true,
   description: 'Official Inter Miami jersey with premium Dri-FIT technology.',
-  image: 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=500',
-  images: ['https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=800'],
+  image: '/649/8.jpeg',
+  images: ['/649/8.jpeg'],
   features: ['Embroidery Logos', 'Regular Fit', 'Premium Quality Material', 'Grade AAA Imported Quality']
 },
 {
@@ -161,8 +159,8 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   price: 699,
   isBestSeller: true,
   description: 'Official Manchester United home jersey with premium Dri-FIT technology.',
-  image: 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=500',
-  images: ['https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=800'],
+  image: '/649/9.jpeg',
+  images: ['/649/9.jpeg'],
   features: ['Embroidery Logos', 'Regular Fit', 'Premium Quality Material', 'Grade AAA Imported Quality']
 },
 {
@@ -177,8 +175,8 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   price: 699,
   isBestSeller: true,
   description: 'Official Barcelona jersey with premium Dri-FIT technology.',
-  image: 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=500',
-  images: ['https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=800'],
+  image: '/649/10.jpeg',
+  images: ['/649/10.jpeg'],
   features: ['Embroidery Logos', 'Regular Fit', 'Premium Quality Material', 'Grade AAA Imported Quality']
 },
 {
@@ -194,8 +192,8 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   price: 649,
   isBestSeller: true,
   description: 'Official Manchester United home jersey with premium Dri-FIT technology.',
-  image: 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=500',
-  images: ['https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=800'],
+  image: '/649/11.jpeg',
+  images: ['/649/11.jpeg'],
   features: ['Embroidery Logos', 'Regular Fit', 'Premium Quality Material', 'Grade AAA Imported Quality']
 },
 {
@@ -210,8 +208,8 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   price: 649,
   isBestSeller: true,
   description: 'Official Manchester United home jersey with premium Dri-FIT technology.',
-  image: 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=500',
-  images: ['https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=800'],
+  image: '/649/12.jpeg',
+  images: ['/649/12.jpeg'],
   features: ['Embroidery Logos', 'Regular Fit', 'Premium Quality Material', 'Grade AAA Imported Quality']
 },
 {
@@ -226,8 +224,8 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   price: 649,
   isBestSeller: true,
   description: 'Official Manchester City home jersey with premium Dri-FIT technology.',
-  image: 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=500',
-  images: ['https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=800'],
+  image: '/649/13.jpeg',
+  images: ['/649/13.jpeg'],
   features: ['Embroidery Logos', 'Regular Fit', 'Premium Quality Material', 'Grade AAA Imported Quality']
 },
 {
@@ -242,8 +240,8 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   price: 649,
   isBestSeller: true,
   description: 'Official Chelsea home jersey with premium Dri-FIT technology.',
-  image: 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=500',
-  images: ['https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=800'],
+  image: '/649/14.jpeg',
+  images: ['/649/14.jpeg'],
   features: ['Embroidery Logos', 'Regular Fit', 'Premium Quality Material', 'Grade AAA Imported Quality']
 },
 {
@@ -258,8 +256,8 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   price: 649,
   isBestSeller: true,
   description: 'Official England jersey with premium Dri-FIT technology.',
-  image: 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=500',
-  images: ['https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=800'],
+  image: '/649/15.jpeg',
+  images: ['/649/15.jpeg'],
   features: ['Embroidery Logos', 'Regular Fit', 'Premium Quality Material', 'Grade AAA Imported Quality']
 },
 {
@@ -274,8 +272,8 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   price: 649,
   isBestSeller: true,
   description: 'Official Ajax jersey with premium Dri-FIT technology.',
-  image: 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=500',
-  images: ['https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=800'],
+  image: '/649/16.jpg',
+  images: ['/649/16.jpg'],
   features: ['Embroidery Logos', 'Regular Fit', 'Premium Quality Material', 'Grade AAA Imported Quality']
 },
 {
@@ -291,8 +289,8 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   price: 649,
   isBestSeller: true,
   description: 'Official Ac Milan jersey with premium Dri-FIT technology.',
-  image: 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=500',
-  images: ['https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=800'],
+  image: '/649/17.jpeg',
+  images: ['/649/17.jpeg'],
   features: ['Embroidery Logos', 'Regular Fit', 'Premium Quality Material', 'Grade AAA Imported Quality']
 },
 {
@@ -307,8 +305,8 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   price: 649,
   isBestSeller: true,
   description: 'Official Real Madrid jersey with premium Dri-FIT technology.',
-  image: 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=500',
-  images: ['https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=800'],
+  image: '/649/18.jpeg',
+  images: ['/649/18.jpeg'],
   features: ['Embroidery Logos', 'Regular Fit', 'Premium Quality Material', 'Grade AAA Imported Quality']
 },
   {id: '19', 

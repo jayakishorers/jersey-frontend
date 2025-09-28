@@ -79,7 +79,7 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
         {/* Jersey Scroll Carousel */}
         <div
           ref={scrollRef}
-          className="flex overflow-x-auto space-x-4 scroll-smooth pb-2 no-scrollbar"
+          className="flex space-x-4 pb-2"
         >
           {jerseys.map((jersey, index) => (
             <motion.div
@@ -88,7 +88,7 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="min-w-[160px] max-w-[160px] sm:min-w-[200px] sm:max-w-[200px] flex-shrink-0 bg-white border border-gray-300 rounded-xl shadow hover:shadow-blue-300/30 transition-shadow"
+              className="min-w-[160px] max-w-[160px] sm:min-w-[200px] sm:max-w-[200px] lg:min-w-[210px] lg:max-w-[210px] flex-shrink-0 bg-gray-900 border border-gray-700 rounded-xl shadow hover:shadow-blue-300/30 transition-shadow"
             >
               <ProductCard
                 jersey={jersey}
