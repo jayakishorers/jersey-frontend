@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
 import { Jersey } from "../types";
+import { getThumbnail, getPlaceholder } from "../utils/imageUtils";
 
 interface ProductCardProps {
   jersey: Jersey & { stockBySize?: Record<string, number> };
@@ -47,22 +48,30 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       <div className="block sm:hidden" onClick={() => onViewDetails(jersey)}>
         <div className="relative bg-gray-800">
           <div className="relative">
-            {!imageLoaded && (
-              <div className="absolute inset-0 bg-gray-700 flex items-center justify-center rounded-t-xl">
-                <div className="w-12 h-12 border-4 border-gray-500 border-t-blue-500 rounded-full animate-spin"></div>
+            <div className="relative w-full aspect-square bg-gray-700 rounded-t-xl overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center">
+                <div className="text-center text-gray-300">
+                  <div className="text-2xl mb-1">👕</div>
+                  <div className="text-xs">Loading...</div>
+                </div>
               </div>
-            )}
-            <img
-              src={`${jersey.image}?w=200&q=30`}
-              alt={jersey.name}
-              className={`w-full aspect-square object-cover rounded-t-xl transition-all duration-500 ${
-                (isOutOfStock || isStockLoading) ? "opacity-70" : ""
-              } ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-              loading="lazy"
-              style={{ backgroundColor: '#f3f4f6' }}
-              onLoad={() => setImageLoaded(true)}
-              onError={() => setImageLoaded(true)}
-            />
+              <img
+                src={`https://images.weserv.nl/?url=${encodeURIComponent(window.location.origin + jersey.image)}&w=300&q=60&output=webp&fallback=jpg`}
+                alt={jersey.name}
+                className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 ${
+                  (isOutOfStock || isStockLoading) ? "opacity-70" : ""
+                } ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                loading="lazy"
+                onLoad={() => setImageLoaded(true)}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  if (!target.src.includes(jersey.image)) {
+                    target.src = jersey.image;
+                  }
+                  setImageLoaded(true);
+                }}
+              />
+            </div>
           </div>
           {isOutOfStock && (
             <div className="absolute bottom-0 left-0 right-0 bg-red-600 text-white text-xs font-bold text-center py-1">
@@ -112,20 +121,26 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           className="relative w-full aspect-[3/4] bg-gray-800 overflow-hidden cursor-pointer"
           onClick={() => onViewDetails(jersey)}
         >
-          {!imageLoaded && (
-            <div className="absolute inset-0 bg-gray-700 flex items-center justify-center">
-              <div className="w-16 h-16 border-4 border-gray-500 border-t-blue-500 rounded-full animate-spin"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center">
+            <div className="text-center text-gray-300">
+              <div className="text-4xl mb-2">👕</div>
+              <div className="text-xs">Loading...</div>
             </div>
-          )}
+          </div>
           <motion.img
             whileHover={{ scale: isOutOfStock ? 1 : 1.05 }}
-            src={`${jersey.image}?w=200&q=30`}
+            src={`https://images.weserv.nl/?url=${encodeURIComponent(window.location.origin + jersey.image)}&w=300&q=60&output=webp&fallback=jpg`}
             alt={jersey.name}
-            className={`w-full h-full object-cover transition-all duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+            className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
             loading="lazy"
-            style={{ backgroundColor: '#f3f4f6' }}
             onLoad={() => setImageLoaded(true)}
-            onError={() => setImageLoaded(true)}
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              if (!target.src.includes(jersey.image)) {
+                target.src = jersey.image;
+              }
+              setImageLoaded(true);
+            }}
           />
           {/* Loading or Out of Stock overlay */}
           {(isStockLoading || isOutOfStock) && (

@@ -89,30 +89,52 @@ const resetZoom = () => {
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             className="fixed inset-4 md:inset-8 bg-white text-gray-900 border border-gray-200 rounded-2xl z-50 overflow-hidden shadow-2xl"
           >
-            {/* Close Button */}
+            {/* Desktop Close Button */}
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={onClose}
-              className="absolute top-4 right-4 z-10 p-2 bg-gray-100 rounded-full border border-gray-300 text-gray-600 hover:text-black"
+              className="hidden md:block absolute top-4 right-4 z-50 p-2 bg-gray-100 rounded-full border border-gray-300 text-gray-600 hover:text-black shadow-lg"
             >
               <X className="w-6 h-6" />
+            </motion.button>
+            
+            {/* Mobile Close Button */}
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={onClose}
+              className="md:hidden absolute top-2 right-2 z-50 p-3 bg-black/70 rounded-full text-white shadow-lg"
+            >
+              <X className="w-5 h-5" />
             </motion.button>
 
             <div className="flex flex-col lg:flex-row h-full">
               {/* Image Section */}
               <div className="lg:w-1/2 flex flex-col bg-gray-100">
                 {/* Main Image */}
-                <div className="flex-1 relative lg:h-[400px]">
+                <div className="flex-1 relative lg:h-[400px] bg-gray-100 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                    <div className="text-center text-gray-500">
+                      <div className="text-6xl mb-4">👕</div>
+                      <div className="text-lg font-medium">{jersey.name}</div>
+                      <div className="text-sm">{jersey.club}</div>
+                    </div>
+                  </div>
                   <motion.img
                     key={currentImageIndex}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    src={jersey.images[currentImageIndex]}
+                    src={jersey.images[currentImageIndex] || jersey.image}
                     alt={jersey.name}
-                    className="w-full h-full object-cover cursor-zoom-in lg:object-contain"
-                    style={{ backgroundColor: '#f3f4f6' }}
+                    className="relative z-10 w-full h-full object-cover cursor-zoom-in lg:object-contain"
                     loading="eager"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      if (target.src !== jersey.image) {
+                        target.src = jersey.image;
+                      }
+                    }}
                   />
                   {jersey.images.length > 1 && (
                     <>
@@ -120,7 +142,7 @@ const resetZoom = () => {
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={prevImage}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-white/80 backdrop-blur-sm border border-gray-300 rounded-full text-gray-700 hover:bg-white"
+                        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 bg-white/80 backdrop-blur-sm border border-gray-300 rounded-full text-gray-700 hover:bg-white"
                       >
                         <ChevronLeft className="w-5 h-5" />
                       </motion.button>
@@ -128,7 +150,7 @@ const resetZoom = () => {
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={nextImage}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-white/80 backdrop-blur-sm border border-gray-300 rounded-full text-gray-700 hover:bg-white"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 bg-white/80 backdrop-blur-sm border border-gray-300 rounded-full text-gray-700 hover:bg-white"
                       >
                         <ChevronRight className="w-5 h-5" />
                       </motion.button>
