@@ -171,8 +171,8 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   sizes: ['S', 'M', 'L', 'XL', 'XXL'],
   price: 699,
   description: 'Official Barcelona jersey with premium Dri-FIT technology.',
-  image: '/649/10.jpeg',
-  images: ['/649/10.jpeg'],
+  image: '/649/10.jpg',
+  images: ['/649/10.jpg'],
   features: ['Embroidery Logos', 'Regular Fit', 'Premium Quality Material', 'Grade AAA Imported Quality']
 },
 {
@@ -188,8 +188,8 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   price: 649,
   isBestSeller: true,
   description: 'Official Manchester United home jersey with premium Dri-FIT technology.',
-  image: '/649/11.jpeg',
-  images: ['/649/11.jpeg'],
+  image: '/649/11.jpg',
+  images: ['/649/11.jpg'],
   features: ['Embroidery Logos', 'Regular Fit', 'Premium Quality Material', 'Grade AAA Imported Quality']
 },
 {
