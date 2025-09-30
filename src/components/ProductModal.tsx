@@ -113,27 +113,25 @@ const resetZoom = () => {
               {/* Image Section */}
               <div className="lg:w-1/2 flex flex-col bg-gray-100">
                 {/* Main Image */}
-                <div className="flex-1 relative lg:h-[400px] bg-gray-100 flex items-center justify-center">
+                <div className="flex-1 relative h-[300px] lg:h-[400px] bg-gray-100 flex items-center justify-center">
                   <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
                     <div className="text-center text-gray-500">
-                      <div className="text-6xl mb-4">👕</div>
-                      <div className="text-lg font-medium">{jersey.name}</div>
-                      <div className="text-sm">{jersey.club}</div>
+                      <div className="text-4xl lg:text-6xl mb-2 lg:mb-4">👕</div>
+                      <div className="text-sm lg:text-lg font-medium">{jersey.name}</div>
+                      <div className="text-xs lg:text-sm">{jersey.club}</div>
                     </div>
                   </div>
                   <motion.img
                     key={currentImageIndex}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    src={jersey.images[currentImageIndex] || jersey.image}
+                    src={`https://images.weserv.nl/?url=${encodeURIComponent(window.location.origin + (jersey.images[currentImageIndex] || jersey.image))}&w=800&q=85&output=webp&fallback=jpg`}
                     alt={jersey.name}
                     className="relative z-10 w-full h-full object-cover cursor-zoom-in lg:object-contain"
                     loading="eager"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
-                      if (target.src !== jersey.image) {
-                        target.src = jersey.image;
-                      }
+                      target.src = jersey.images[currentImageIndex] || jersey.image;
                     }}
                   />
                   {jersey.images.length > 1 && (
@@ -175,11 +173,15 @@ const resetZoom = () => {
                           }`}
                         >
                           <img
-                            src={image}
+                            src={`https://images.weserv.nl/?url=${encodeURIComponent(window.location.origin + image)}&w=200&q=80&output=webp&fallback=jpg`}
                             alt={`${jersey.name} view ${index + 1}`}
                             className="w-full h-full object-cover"
                             style={{ backgroundColor: '#f3f4f6' }}
                             loading="eager"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = image;
+                            }}
                           />
                         </motion.button>
                       ))}
