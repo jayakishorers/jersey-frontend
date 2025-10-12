@@ -24,14 +24,16 @@ const SignIn: React.FC = () => {
     if (token && userData) {
       try {
         const user = JSON.parse(userData);
-        // Redirect if a valid session exists
-        if (from && from !== "/dashboard") {
-          navigate(from, { replace: true });
-        } else if (user.email === "123@gmail.com") {
-          navigate("/admin", { replace: true });
-        } else {
-          navigate("/dashboard", { replace: true });
-        }
+        // Redirect if a valid session exists with delay
+        setTimeout(() => {
+          if (from && from !== "/dashboard") {
+            navigate(from, { replace: true });
+          } else if (user.email === "123@gmail.com") {
+            navigate("/admin", { replace: true });
+          } else {
+            navigate("/dashboard", { replace: true });
+          }
+        }, 100);
       } catch (error) {
         // Clear invalid session data
         localStorage.removeItem("user");
@@ -66,14 +68,16 @@ const SignIn: React.FC = () => {
       localStorage.setItem("user", JSON.stringify(user));
       window.dispatchEvent(new Event("storage"));
 
-      // ✅ Navigate directly after successful sign-in
-      if (from && from !== "/dashboard") {
-        navigate(from, { replace: true });
-      } else if (user.email === "123@gmail.com") {
-        navigate("/admin");
-      } else {
-        navigate("/dashboard");
-      }
+      // Small delay to ensure localStorage is set before navigation
+      setTimeout(() => {
+        if (from && from !== "/dashboard") {
+          navigate(from, { replace: true });
+        } else if (user.email === "123@gmail.com") {
+          navigate("/admin", { replace: true });
+        } else {
+          navigate("/dashboard", { replace: true });
+        }
+      }, 100);
     } catch (err: any) {
       const msg =
         err.response?.data?.message || "Login failed. Please try again.";

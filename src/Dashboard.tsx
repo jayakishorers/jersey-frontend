@@ -86,7 +86,7 @@ const Dashboard: React.FC = () => {
   const [messagesLoading, setMessagesLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [showMessages, setShowMessages] = useState(false);
+
   const [orderFilter, setOrderFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -96,7 +96,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     if (!token) {
-      navigate('/signin');
+      navigate('/signin', { replace: true });
       return;
     }
     fetchOrders();
@@ -252,17 +252,14 @@ const Dashboard: React.FC = () => {
             </h1>
 
             <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setShowMessages(!showMessages)}
-                className="relative p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
-              >
+              <div className="relative p-2 rounded-lg bg-gray-100">
                 <MessageCircle className="w-5 h-5 text-gray-600" />
                 {unreadMessages > 0 && (
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {unreadMessages}
                   </span>
                 )}
-              </button>
+              </div>
 
               <button
                 onClick={() => navigate('/')}
@@ -325,8 +322,7 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Messages Panel */}
-        {showMessages && (
-          <div className="bg-white rounded-xl border border-gray-200 mb-8 overflow-hidden shadow-sm">
+        <div className="bg-white rounded-xl border border-gray-200 mb-8 overflow-hidden shadow-sm">
             <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-gray-50">
               <h3 className="text-xl font-semibold text-gray-900 flex items-center">
                 <MessageCircle className="w-5 h-5 mr-2 text-blue-600" />
@@ -337,12 +333,7 @@ const Dashboard: React.FC = () => {
                   </span>
                 )}
               </h3>
-              <button
-                onClick={() => setShowMessages(false)}
-                className="p-1 hover:bg-gray-200 rounded"
-              >
-                <X className="w-5 h-5 text-gray-500" />
-              </button>
+
             </div>
 
             <div className="max-h-96 overflow-y-auto">
@@ -381,8 +372,7 @@ const Dashboard: React.FC = () => {
                 </div>
               )}
             </div>
-          </div>
-        )}
+        </div>
 
         {/* Orders Section */}
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">

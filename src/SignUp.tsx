@@ -107,10 +107,11 @@ const SignUp: React.FC = () => {
         formData
       );
 
-      localStorage.setItem('token', response.data.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.data.user));
-
-      navigate('/dashboard');
+      // Don't store token yet, let user sign in to verify
+      navigate('/signin', { 
+        replace: true, 
+        state: { message: 'Account created successfully! Please sign in.' }
+      });
     } catch (err: any) {
       const msg =
         err.response?.data?.message || 'Signup failed. Please try again.';
