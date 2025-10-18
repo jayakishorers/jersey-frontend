@@ -12,6 +12,7 @@
     onToggleWishlist: (jerseyId: string) => void;
     onAddToCart: (jersey: Jersey, size: string, quantity: number) => void;
     onBack: () => void;
+    sectionTitle?: string | null;
   }
 
   export const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
@@ -20,8 +21,42 @@
     wishlistedItems,
     onToggleWishlist,
     onAddToCart,
-    onBack
+    onBack,
+    sectionTitle
   }) => {
+    
+    // Generate dynamic filter options based on current jerseys
+    const getAvailableOptions = () => {
+      const types = [...new Set(jerseys.map(j => j.type))];
+      const materials = [...new Set(jerseys.map(j => j.material))];
+      const categories = [...new Set(jerseys.map(j => j.category))];
+      const sizes = [...new Set(jerseys.flatMap(j => j.sizes))];
+      
+      return { types, materials, categories, sizes };
+    };
+    
+    const availableOptions = getAvailableOptions();
+    
+    // All homepage sections
+    const sections = [
+      'New Arrivals',
+      'Best Sellers', 
+      'Country Jerseys',
+      'Club Jerseys',
+      'Trending',
+      'Retro Collection',
+      'Full Kit',
+      'Master Copy',
+      'Sublimation'
+    ];
+    
+    const handleSectionClick = (section: string) => {
+      if (selectedSection === section) {
+        setSelectedSection(null);
+      } else {
+        setSelectedSection(section);
+      }
+    };
     const [searchQuery, setSearchQuery] = useState('');
     const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
     const [showFilters, setShowFilters] = useState(false);
@@ -38,8 +73,43 @@
       priceRange: [0, 1000],
       rating: 0
     });
+    
+    const [selectedSection, setSelectedSection] = useState<string | null>(sectionTitle);
 
     const filteredJerseys = jerseys.filter(jersey => {
+      // Section-specific filtering
+      if (selectedSection) {
+        switch (selectedSection) {
+          case 'New Arrivals':
+            if (!jersey.isNew) return false;
+            break;
+          case 'Best Sellers':
+            if (!jersey.isBestSeller) return false;
+            break;
+          case 'Country Jerseys':
+            if (jersey.category !== 'Country') return false;
+            break;
+          case 'Club Jerseys':
+            if (jersey.category !== 'Club') return false;
+            break;
+          case 'Trending':
+            if (!jersey.isTrending) return false;
+            break;
+          case 'Retro Collection':
+            if (jersey.type !== 'Retro') return false;
+            break;
+          case 'Full Kit':
+            if (!jersey.fullKit) return false;
+            break;
+          case 'Master Copy':
+            if (jersey.type !== 'Master Copy') return false;
+            break;
+          case 'Sublimation':
+            if (jersey.type !== 'Sublimation') return false;
+            break;
+        }
+      }
+      
       // Search filter
       if (searchQuery) {
         const searchLower = searchQuery.toLowerCase();
@@ -117,8 +187,8 @@
                   <X className="w-4 h-4" />
                   <span>Back to Home</span>
                 </button>
-                <h1 className="text-4xl font-bold text-white mb-2">Advanced Search</h1>
-                <p className="text-gray-400">Find your perfect jersey with our advanced filtering system</p>
+                <h1 className="text-4xl font-bold text-white mb-2">{sectionTitle || 'Advanced Search'}</h1>
+                <p className="text-gray-400">{sectionTitle ? `Browse all ${sectionTitle.toLowerCase()} jerseys` : 'Find your perfect jersey with our advanced filtering system'}</p>
               </div>
               <div className="hidden md:flex items-center space-x-4">
                 <motion.button
@@ -229,14 +299,39 @@
 
 
 
+{/* Sections Filter */}
+<div className="mb-6">
+  <h4 className="text-white font-semibold mb-3">Sections</h4>
+  <div className="space-y-2">
+    {sections.map((section) => (
+      <label key={section} className="flex items-center space-x-3 cursor-pointer">
+        <input
+          type="checkbox"
+          checked={selectedSection === section}
+          onChange={() => handleSectionClick(section)}
+          className="rounded border-gray-600 text-blue-500 focus:ring-blue-500"
+        />
+        <span className="text-gray-300">{section}</span>
+      </label>
+    ))}
+  </div>
+</div>
+
 {/* Dynamic Filters */}
 {Object.entries({
-  'Jersey Type': { key: 'type', options: categories.types },
-  'Category': { key: 'category', options: categories.categories },
-  'Size': { key: 'size', options: categories.sizes }
+  'Jersey Type': { key: 'type', options: availableOptions.types },
+  'Category': { key: 'category', options: availableOptions.categories },
+  'Size': { key: 'size', options: availableOptions.sizes }
 }).map(([title, { key, options }]) => (
   <div key={key} className="mb-6">
-    <h4 className="text-white font-semibold mb-3">{title}</h4>
+    <h4 className="text-white font-semibold mb-3">
+      {title}
+      {key === 'size' && (
+        <span className="text-xs text-gray-400 block mt-1">
+          Filter by available sizes
+        </span>
+      )}
+    </h4>
     <div className="space-y-2">
       {options.map((option) => (
         <label key={option} className="flex items-center space-x-3 cursor-pointer">
@@ -264,42 +359,119 @@
                 </motion.div>
               )}
             </AnimatePresence>
+            
+            {/* Mobile Filter Bottom Sheet */}
+            <AnimatePresence>
+              {showFilters && (
+                <motion.div
+                  initial={{ y: '100%' }}
+                  animate={{ y: 0 }}
+                  exit={{ y: '100%' }}
+                  className="fixed inset-x-0 bottom-0 z-50 bg-gray-900 border-t border-gray-700 rounded-t-2xl p-6 max-h-[80vh] overflow-y-auto md:hidden"
+                >
+                  <div className="flex justify-between items-center mb-6">
+                    <h3 className="text-xl font-bold text-white">Filters</h3>
+                    <button
+                      onClick={() => setShowFilters(false)}
+                      className="p-2 text-gray-400 hover:text-white rounded-lg"
+                    >
+                      <X className="w-6 h-6" />
+                    </button>
+                  </div>
+                  
+                  {/* Mobile Sections Filter */}
+                  <div className="mb-6">
+                    <h4 className="text-white font-semibold mb-3 text-lg">Sections</h4>
+                    <div className="space-y-3">
+                      {sections.map((section) => (
+                        <label key={section} className="flex items-center space-x-3 cursor-pointer p-3 rounded-lg hover:bg-gray-800">
+                          <input
+                            type="checkbox"
+                            checked={selectedSection === section}
+                            onChange={() => handleSectionClick(section)}
+                            className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 w-5 h-5"
+                          />
+                          <span className="text-gray-300 text-lg">{section}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Mobile Other Filters */}
+                  {Object.entries({
+                    'Jersey Type': { key: 'type', options: availableOptions.types },
+                    'Category': { key: 'category', options: availableOptions.categories },
+                    'Size': { key: 'size', options: availableOptions.sizes }
+                  }).map(([title, { key, options }]) => (
+                    <div key={key} className="mb-6">
+                      <h4 className="text-white font-semibold mb-3 text-lg">
+                        {title}
+                        {key === 'size' && (
+                          <span className="text-sm text-gray-400 block mt-1">
+                            Filter by available sizes
+                          </span>
+                        )}
+                      </h4>
+                      <div className="space-y-3">
+                        {options.map((option) => (
+                          <label key={option} className="flex items-center space-x-3 cursor-pointer p-3 rounded-lg hover:bg-gray-800">
+                            <input
+                              type="checkbox"
+                              checked={(filters[key as keyof FilterState] as string[]).includes(option)}
+                              onChange={() => handleFilterChange(key as keyof FilterState, option)}
+                              className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 w-5 h-5"
+                            />
+                            <span className="text-gray-300 text-lg">{option}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                  
+                  {/* Apply Button */}
+                  <button
+                    onClick={() => setShowFilters(false)}
+                    className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-xl text-lg"
+                  >
+                    Apply Filters
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Results */}
             <div className="flex-1">
               {/* Results Header */}
-             <div className="md:hidden w-full sticky top-[64px] z-30 bg-white py-2 px-3 shadow-sm">
-  <div className="flex items-center gap-3">
-    {/* Filter (60%) */}
-    <button
-      onClick={() => setShowFilters(true)}
-      className="flex w-[40%] items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-800 text-sm"
-    >
-      <SlidersHorizontal className="w-4 h-4" />
-      <span>Filter</span>
-    </button>
-
-    {/* Sort (40%) */}
-    <select
-      value={filters.sortBy}
-      onChange={(e) => handleFilterChange('sortBy', e.target.value)}
-      className="w-[60%] px-4 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-800 text-sm"
-    >
-      <option value="">Sort</option>
-      <option value="price-low">Price: Low to High</option>
-      <option value="price-high">Price: High to Low</option>
-      <option value="rating">Highest Rated</option>
-      <option value="newest">Newest</option>
-      <option value="bestseller">Best Selling</option>
-    </select>
-  </div>
-</div>
+                        {/* Mobile Filter & Sort Bar - Thumb-friendly */}
+            <div className="md:hidden w-full sticky top-[64px] z-30 bg-gray-900 py-4 px-4 border-b border-gray-700">
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => setShowFilters(true)}
+                  className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-medium text-base flex-1"
+                >
+                  <SlidersHorizontal className="w-5 h-5" />
+                  <span>Filters</span>
+                </button>
+                <select
+                  value={filters.sortBy}
+                  onChange={(e) => handleFilterChange('sortBy', e.target.value)}
+                  className="px-4 py-3 bg-gray-800 border border-gray-600 rounded-xl text-white text-base flex-1"
+                >
+                  <option value="">Sort</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="rating">Highest Rated</option>
+                  <option value="newest">Newest</option>
+                  <option value="bestseller">Best Selling</option>
+                </select>
+              </div>
+            </div>
 
 
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h2 className="text-2xl font-bold text-white">
-                    {searchQuery ? `Results for "${searchQuery}"` : 'All Jerseys'}
+                    {searchQuery ? `Results for "${searchQuery}"` : (sectionTitle || 'All Jerseys')}
                   </h2>
                   <p className="text-gray-400">{filteredJerseys.length} jerseys found</p>
                 </div>

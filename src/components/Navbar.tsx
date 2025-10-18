@@ -94,14 +94,14 @@ export const Navbar: React.FC<NavbarProps> = ({
               </motion.button>
             </div>
 
-            {/* Mobile Menu Toggle */}
+            {/* Mobile Menu Toggle - Larger touch target */}
             <div className="md:hidden">
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="p-2 text-gray-300 hover:text-white"
+                className="p-3 text-gray-300 hover:text-white rounded-lg"
               >
-                <Menu className="h-6 w-6" />
+                <Menu className="h-7 w-7" />
               </motion.button>
             </div>
           </div>
@@ -125,15 +125,15 @@ export const Navbar: React.FC<NavbarProps> = ({
               transition={{ type: 'spring', stiffness: 80, damping: 20 }}
               className="absolute top-0 right-0 w-full h-full bg-gray-900 shadow-xl flex flex-col"
             >
-              {/* Close Button */}
+              {/* Close Button - Larger touch target */}
               <div className="flex justify-end p-4 border-b border-gray-700">
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-gray-400 hover:text-white"
+                  className="p-3 text-gray-400 hover:text-white rounded-lg"
                 >
-                  <X className="h-6 w-6" />
+                  <X className="h-7 w-7" />
                 </motion.button>
               </div>
 
@@ -149,7 +149,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     transition: { staggerChildren: 0.1 }
                   }
                 }}
-                className="flex flex-col p-6 gap-6 text-gray-300 text-lg"
+                className="flex flex-col p-6 gap-8 text-gray-300 text-xl"
               >
                 <motion.li whileTap={{ scale: 0.95 }} className="flex items-center space-x-3 hover:text-white">
                   <Heart className="h-6 w-6" />

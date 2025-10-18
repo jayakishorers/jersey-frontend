@@ -113,44 +113,47 @@ const resetZoom = () => {
               {/* Image Section */}
               <div className="lg:w-1/2 flex flex-col bg-gray-100">
                 {/* Main Image */}
-                <div className="flex-1 relative h-[300px] lg:h-[400px] bg-gray-100 flex items-center justify-center">
+                <div className="relative w-full h-[350px] sm:h-[400px] lg:h-[500px] bg-gray-100 flex items-center justify-center overflow-hidden">
+                  {/* Always visible placeholder */}
                   <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
                     <div className="text-center text-gray-500">
                       <div className="text-4xl lg:text-6xl mb-2 lg:mb-4">👕</div>
-                      <div className="text-sm lg:text-lg font-medium">{jersey.name}</div>
-                      <div className="text-xs lg:text-sm">{jersey.club}</div>
+                      <div className="text-sm lg:text-lg font-medium px-4">{jersey.name}</div>
+                      <div className="text-xs lg:text-sm text-gray-400">{jersey.club}</div>
                     </div>
                   </div>
+                  {/* Image overlay */}
                   <motion.img
                     key={currentImageIndex}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     src={`https://images.weserv.nl/?url=${encodeURIComponent(window.location.origin + (jersey.images[currentImageIndex] || jersey.image))}&w=800&q=85&output=webp&fallback=jpg`}
                     alt={jersey.name}
-                    className="relative z-10 w-full h-full object-cover cursor-zoom-in lg:object-contain"
+                    className="absolute inset-0 w-full h-full object-cover cursor-zoom-in lg:object-contain z-10"
                     loading="eager"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.src = jersey.images[currentImageIndex] || jersey.image;
                     }}
                   />
+                  {/* Navigation buttons */}
                   {jersey.images.length > 1 && (
                     <>
                       <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={prevImage}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 bg-white/80 backdrop-blur-sm border border-gray-300 rounded-full text-gray-700 hover:bg-white"
+                        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 bg-white/90 backdrop-blur-sm border border-gray-300 rounded-full text-gray-700 hover:bg-white shadow-lg"
                       >
-                        <ChevronLeft className="w-5 h-5" />
+                        <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                       </motion.button>
                       <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={nextImage}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 bg-white/80 backdrop-blur-sm border border-gray-300 rounded-full text-gray-700 hover:bg-white"
+                        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 bg-white/90 backdrop-blur-sm border border-gray-300 rounded-full text-gray-700 hover:bg-white shadow-lg"
                       >
-                        <ChevronRight className="w-5 h-5" />
+                        <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                       </motion.button>
                     </>
                   )}

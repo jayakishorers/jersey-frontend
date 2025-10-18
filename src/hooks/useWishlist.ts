@@ -1,24 +1,33 @@
-import { useState, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 export const useWishlist = () => {
-  const [wishlistedItems, setWishlistedItems] = useState<string[]>([]);
+  const [wishlist, setWishlist] = useState<string[]>([]);
 
-  const toggleWishlist = useCallback((jerseyId: string) => {
-    setWishlistedItems(prev => {
-      if (prev.includes(jerseyId)) {
-        return prev.filter(id => id !== jerseyId);
-      } else {
-        return [...prev, jerseyId];
-      }
-    });
+  // Load wishlist from localStorage on mount
+  useEffect(() => {
+    const savedWishlist = localStorage.getItem('wishlist');
+    if (savedWishlist) {
+      setWishlist(JSON.parse(savedWishlist));
+    }
   }, []);
 
-  const isWishlisted = useCallback((jerseyId: string) => {
-    return wishlistedItems.includes(jerseyId);
-  }, [wishlistedItems]);
+  // Save to localStorage whenever wishlist changes
+  useEffect(() => {
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+  }, [wishlist]);
+
+  const toggleWishlist = (jerseyId: string) => {
+    setWishlist(prev => 
+      prev.includes(jerseyId)
+        ? prev.filter(id => id !== jerseyId)
+        : [...prev, jerseyId]
+    );
+  };
+
+  const isWishlisted = (jerseyId: string) => wishlist.includes(jerseyId);
 
   return {
-    wishlistedItems,
+    wishlist,
     toggleWishlist,
     isWishlisted
   };

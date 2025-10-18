@@ -14,6 +14,7 @@ import AdminPage from "./AdminPage";
 import SignUp from "./SignUp";
 import Dashboard from "./Dashboard";
 import { useCart } from "./hooks/useCart";
+import { useWishlist } from "./hooks/useWishlist";
 import CheckoutPage from "./CheckOutPage";
 import { CartDrawer } from "./components/CartDrawer";
 import { useNavigate } from "react-router-dom";
@@ -43,9 +44,10 @@ const App: React.FC = () => {
   const [jerseysWithStock, setJerseysWithStock] = useState<Jersey[]>([]);
   const [selectedJersey, setSelectedJersey] = useState<Jersey | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [wishlist, setWishlist] = useState<string[]>([]);
+  const { wishlist, toggleWishlist, isWishlisted } = useWishlist();
   const [searchQuery, setSearchQuery] = useState("");
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
+  const [currentSection, setCurrentSection] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 const navigate = useNavigate();
   const {
@@ -123,21 +125,47 @@ useEffect(() => {
     setIsModalOpen(false);
   };
 
-  const handleToggleWishlist = (jerseyId: string) => {
-    setWishlist((prev) =>
-      prev.includes(jerseyId)
-        ? prev.filter((id) => id !== jerseyId)
-        : [...prev, jerseyId]
-    );
-  };
+
 
   const handleSearchClick = () => {
     setShowAdvancedSearch(true);
+    setCurrentSection(null);
+  };
+
+  const handleViewAllSection = (sectionTitle: string) => {
+    setShowAdvancedSearch(true);
+    setCurrentSection(sectionTitle);
+  };
+
+  const getSectionJerseys = (sectionTitle: string) => {
+    switch (sectionTitle) {
+      case "New Arrivals":
+        return jerseysWithStock.filter(j => j.isNew);
+      case "Best Sellers":
+        return jerseysWithStock.filter(j => j.isBestSeller);
+      case "Country Jerseys":
+        return jerseysWithStock.filter(j => j.category === "Country");
+      case "Club Jerseys":
+        return jerseysWithStock.filter(j => j.category === "Club");
+      case "Trending":
+        return jerseysWithStock.filter(j => j.isTrending);
+      case "Retro Collection":
+        return jerseysWithStock.filter(j => j.type === "Retro");
+      case "Full Kit":
+        return jerseysWithStock.filter(j => j.fullKit);
+      case "Master Copy":
+        return jerseysWithStock.filter(j => j.type === "Master Copy");
+      case "Sublimation":
+        return jerseysWithStock.filter(j => j.type === "Sublimation");
+      default:
+        return jerseysWithStock;
+    }
   };
 
   const handleBackFromSearch = () => {
     setShowAdvancedSearch(false);
     setSearchQuery("");
+    setCurrentSection(null);
   };
 
   if (isAuthenticated === null) {
@@ -164,9 +192,10 @@ useEffect(() => {
                 jerseys={jerseysWithStock}
                 onViewDetails={handleViewDetails}
                 wishlistedItems={wishlist}
-                onToggleWishlist={handleToggleWishlist}
+                onToggleWishlist={toggleWishlist}
                 onAddToCart={handleAddToCart}
                 onBack={handleBackFromSearch}
+                sectionTitle={currentSection}
               />
             ) : (
               <>
@@ -186,8 +215,8 @@ useEffect(() => {
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
-                    onToggleWishlist={handleToggleWishlist}
-                    onViewAll={handleSearchClick}
+                    onToggleWishlist={toggleWishlist}
+                    onViewAll={() => handleViewAllSection("New Arrivals")}
                   />
                 </div>
                 <div id="best-sellers">
@@ -199,8 +228,8 @@ useEffect(() => {
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
-                    onToggleWishlist={handleToggleWishlist}
-                    onViewAll={handleSearchClick}
+                    onToggleWishlist={toggleWishlist}
+                    onViewAll={() => handleViewAllSection("Best Sellers")}
                   />
                 </div>
                 <div id="country-jerseys">
@@ -212,8 +241,8 @@ useEffect(() => {
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
-                    onToggleWishlist={handleToggleWishlist}
-                    onViewAll={handleSearchClick}
+                    onToggleWishlist={toggleWishlist}
+                    onViewAll={() => handleViewAllSection("Country Jerseys")}
                   />
                 </div>
                 <div id="club-jerseys">
@@ -225,8 +254,8 @@ useEffect(() => {
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
-                    onToggleWishlist={handleToggleWishlist}
-                    onViewAll={handleSearchClick}
+                    onToggleWishlist={toggleWishlist}
+                    onViewAll={() => handleViewAllSection("Club Jerseys")}
                   />
                 </div>
                 <div id="trending">
@@ -238,8 +267,8 @@ useEffect(() => {
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
-                    onToggleWishlist={handleToggleWishlist}
-                    onViewAll={handleSearchClick}
+                    onToggleWishlist={toggleWishlist}
+                    onViewAll={() => handleViewAllSection("Trending")}
                   />
                 </div>
                 <div id="retro-collection">
@@ -251,8 +280,8 @@ useEffect(() => {
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
-                    onToggleWishlist={handleToggleWishlist}
-                    onViewAll={handleSearchClick}
+                    onToggleWishlist={toggleWishlist}
+                    onViewAll={() => handleViewAllSection("Retro Collection")}
                   />
                 </div>
                 <div id="full-kit">
@@ -264,8 +293,8 @@ useEffect(() => {
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
-                    onToggleWishlist={handleToggleWishlist}
-                    onViewAll={handleSearchClick}
+                    onToggleWishlist={toggleWishlist}
+                    onViewAll={() => handleViewAllSection("Full Kit")}
                   />
                 </div>
                 <div id="master-copy">
@@ -277,8 +306,8 @@ useEffect(() => {
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
-                    onToggleWishlist={handleToggleWishlist}
-                    onViewAll={handleSearchClick}
+                    onToggleWishlist={toggleWishlist}
+                    onViewAll={() => handleViewAllSection("Master Copy")}
                   />
                 </div>
                 <div id="sublimation">
@@ -290,8 +319,8 @@ useEffect(() => {
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
-                    onToggleWishlist={handleToggleWishlist}
-                    onViewAll={handleSearchClick}
+                    onToggleWishlist={toggleWishlist}
+                    onViewAll={() => handleViewAllSection("Sublimation")}
                   />
                 </div>
               </>
