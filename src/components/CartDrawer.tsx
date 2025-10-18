@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Plus, Minus, Trash2, ShoppingBag, CreditCard } from 'lucide-react';
+import { X, Plus, Minus, Trash2, ShoppingBag, CreditCard, Truck } from 'lucide-react';
 import { CartItem } from '../types';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
+import { calculateDeliveryCharges } from '../utils/deliveryCharges';
 
 
 interface CartDrawerProps {
@@ -185,13 +186,16 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                 </div>
 
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-gray-400">Shipping:</span>
-                  <span className="text-green-400">Free</span>
+                  <div className="flex items-center space-x-2">
+                    <Truck className="w-4 h-4 text-blue-400" />
+                    <span className="text-gray-400">Delivery Charges:</span>
+                  </div>
+                  <span className="text-blue-400">₹{calculateDeliveryCharges(cartItems.reduce((sum, item) => sum + item.quantity, 0))}</span>
                 </div>
 
                 <div className="flex justify-between items-center text-xl font-bold border-t border-gray-700 pt-4">
                   <span className="text-white">Total:</span>
-                  <span className="text-white">₹{cartTotal.toFixed(2)}</span>
+                  <span className="text-white">₹{(cartTotal + calculateDeliveryCharges(cartItems.reduce((sum, item) => sum + item.quantity, 0))).toFixed(2)}</span>
                 </div>
 
                 {/* ✅ Authenticated checkout handling */}

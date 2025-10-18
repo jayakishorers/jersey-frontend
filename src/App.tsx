@@ -157,6 +157,8 @@ useEffect(() => {
         return jerseysWithStock.filter(j => j.type === "Master Copy");
       case "Sublimation":
         return jerseysWithStock.filter(j => j.type === "Sublimation");
+      case "LooseFit/FiveSleeve":
+        return jerseysWithStock.filter(j => j.isloosefit);
       default:
         return jerseysWithStock;
     }
@@ -321,6 +323,19 @@ useEffect(() => {
                     wishlistedItems={wishlist}
                     onToggleWishlist={toggleWishlist}
                     onViewAll={() => handleViewAllSection("Sublimation")}
+                  />
+                </div>
+                <div id="loose-fit">
+                  <CategorySection
+                    title="LooseFit/FiveSleeve"
+                    jerseys={jerseysWithStock.filter(
+                      (j) => j.isloosefit
+                    )}
+                    onViewDetails={handleViewDetails}
+                    onAddToCart={handleAddToCart}
+                    wishlistedItems={wishlist}
+                    onToggleWishlist={toggleWishlist}
+                    onViewAll={() => handleViewAllSection("LooseFit/FiveSleeve")}
                   />
                 </div>
               </>

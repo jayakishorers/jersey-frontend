@@ -18,6 +18,7 @@ export interface Jersey {
   description: string;
   features: string[];
   isNew?: boolean;
+  isloosefit?:true;
   isBestSeller?: boolean;
   isTrending?: boolean;
   stock?: number;
@@ -47,6 +48,7 @@ export interface FilterState {
   sortBy: string;
   priceRange: [number, number];
   rating: number;
+  loosefit: string[];
 }
 
 export type ViewMode = 'home' | 'search' | 'customize' | 'cart';

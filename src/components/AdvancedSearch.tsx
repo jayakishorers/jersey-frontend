@@ -1,4 +1,4 @@
-  import React, { useState } from 'react';
+  import React, { useState, useEffect } from 'react';
   import { motion, AnimatePresence } from 'framer-motion';
   import { Search, Filter, Grid, List, SlidersHorizontal, X, Star, TrendingUp } from 'lucide-react';
   import { ProductGrid } from './ProductGrid';
@@ -53,8 +53,16 @@
     const handleSectionClick = (section: string) => {
       if (selectedSection === section) {
         setSelectedSection(null);
+        // Clear corresponding filters when deselecting section
+        if (section === 'LooseFit/FiveSleeve') {
+          setFilters(prev => ({ ...prev, loosefit: [] }));
+        }
       } else {
         setSelectedSection(section);
+        // Auto-select corresponding filters when selecting section
+        if (section === 'LooseFit/FiveSleeve') {
+          setFilters(prev => ({ ...prev, loosefit: ['Yes'] }));
+        }
       }
     };
     const [searchQuery, setSearchQuery] = useState('');
@@ -71,10 +79,18 @@
       sortBy: '',
       fullSleeve: false,
       priceRange: [0, 1000],
-      rating: 0
+      rating: 0,
+      loosefit: []
     });
     
     const [selectedSection, setSelectedSection] = useState<string | null>(sectionTitle);
+    
+    // Auto-select filters when coming from a section
+    useEffect(() => {
+      if (sectionTitle === 'LooseFit/FiveSleeve') {
+        setFilters(prev => ({ ...prev, loosefit: ['Yes'] }));
+      }
+    }, [sectionTitle]);
 
     const filteredJerseys = jerseys.filter(jersey => {
       // Section-specific filtering
@@ -107,6 +123,9 @@
           case 'Sublimation':
             if (jersey.type !== 'Sublimation') return false;
             break;
+          case 'LooseFit/FiveSleeve':
+            if (!jersey.isloosefit) return false;
+            break;
         }
       }
       
@@ -131,6 +150,7 @@
         const hasMatchingSize = filters.size.some(size => jersey.sizes.includes(size as any));
         if (!hasMatchingSize) return false;
       }
+      if (filters.loosefit.length > 0 && filters.loosefit.includes('Yes') && !jersey.isloosefit) return false;
       if (jersey.price < filters.priceRange[0] || jersey.price > filters.priceRange[1]) return false;
 
       return true;
@@ -321,7 +341,8 @@
 {Object.entries({
   'Jersey Type': { key: 'type', options: availableOptions.types },
   'Category': { key: 'category', options: availableOptions.categories },
-  'Size': { key: 'size', options: availableOptions.sizes }
+  'Size': { key: 'size', options: availableOptions.sizes },
+  'LooseFit': { key: 'loosefit', options: ['Yes'] }
 }).map(([title, { key, options }]) => (
   <div key={key} className="mb-6">
     <h4 className="text-white font-semibold mb-3">
@@ -401,7 +422,8 @@
                   {Object.entries({
                     'Jersey Type': { key: 'type', options: availableOptions.types },
                     'Category': { key: 'category', options: availableOptions.categories },
-                    'Size': { key: 'size', options: availableOptions.sizes }
+                    'Size': { key: 'size', options: availableOptions.sizes },
+                    'LooseFit': { key: 'loosefit', options: ['Yes'] }
                   }).map(([title, { key, options }]) => (
                     <div key={key} className="mb-6">
                       <h4 className="text-white font-semibold mb-3 text-lg">

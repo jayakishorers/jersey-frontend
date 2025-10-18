@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -10,22 +10,52 @@ const categories = [
   { label: 'Trending', targetId: 'trending', image: "/trending.jpeg" },
   { label: 'Retro Collection', targetId: 'retro-collection', image: "/retro.webp" },
   { label: 'Full Kit', targetId: 'full-kit', image: "/fullkit.jpeg" },
-  { label: 'Player Version', targetId: 'player-version', image: "/playerversion.jpeg" },
-  { label: 'Full Sleeve', targetId: 'full-sleeve', image: "/fullsleeve.webp" },
   { label: 'Master Copy', targetId: 'master-copy', image: "/mastercopy.jpeg" },
   { label: 'Sublimation', targetId: 'sublimation', image: "/sublimation.jpeg" },
-  { label: 'Cricket', targetId: 'cricket', image: "/cricket.jpeg" },
+  { label: 'LooseFit/FiveSleeve', targetId: 'loose-fit', image: "/playerversion.jpeg" },
 ];
 
 export const StaticCategoryCarousel: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const duplicatedCategories = [...categories, ...categories, ...categories];
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
-      const scrollAmount = direction === 'left' ? -300 : 300;
+      setIsAutoScrolling(false);
+      const cardWidth = 160;
+      const scrollAmount = direction === 'left' ? -cardWidth : cardWidth;
       scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      
+      setTimeout(() => setIsAutoScrolling(true), 3000);
     }
   };
+  
+  useEffect(() => {
+    if (!isAutoScrolling) return;
+    
+    const smoothScroll = () => {
+      if (scrollRef.current) {
+        const maxScroll = scrollRef.current.scrollWidth - scrollRef.current.clientWidth;
+        const currentScroll = scrollRef.current.scrollLeft;
+        
+        if (currentScroll >= maxScroll - 10) {
+          scrollRef.current.scrollTo({ left: 0, behavior: 'auto' });
+        } else {
+          scrollRef.current.scrollLeft += 2.25;
+        }
+        
+        setScrollPosition(scrollRef.current.scrollLeft);
+      }
+    };
+    
+    const interval = setInterval(smoothScroll, 33);
+    return () => clearInterval(interval);
+  }, [isAutoScrolling]);
+  
+  const handleMouseEnter = () => setIsAutoScrolling(false);
+  const handleMouseLeave = () => setIsAutoScrolling(true);
 
   const scrollToSection = (label: string) => {
     const sectionMap: Record<string, string> = {
@@ -38,9 +68,8 @@ export const StaticCategoryCarousel: React.FC = () => {
       'Full Kit': 'full-kit',
       'Full Sleeve': 'full-sleeve',
       'Master Copy': 'master-copy',
-      'Player Version': 'player-version',
       'Sublimation': 'sublimation',
-      'Cricket': 'cricket',
+      'LooseFit/FiveSleeve': 'loose-fit',
     };
     const element = document.getElementById(sectionMap[label]);
     if (element) {
@@ -49,45 +78,86 @@ export const StaticCategoryCarousel: React.FC = () => {
   };
 
   return (
-    <div className="relative bg-[url('https://images.unsplash.com/photo-1603808033192-082d6919d7b8?auto=format&fit=crop&w=1500&q=80')] bg-cover bg-center py-6 px-4 sm:px-10">
-      <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-white text-center drop-shadow">
+    <div className="relative py-6 px-4" style={{
+      background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)'
+    }}>
+      {/* Subtle Background Circles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(6)].map((_, index) => (
+          <motion.div
+            key={`bg-circle-${index}`}
+            className="absolute rounded-full border border-gray-200/30"
+            style={{
+              left: `${(index * 20 + 10) % 90}%`,
+              top: `${(index * 15 + 20) % 60}%`,
+              width: `${60 + index * 20}px`,
+              height: `${60 + index * 20}px`,
+            }}
+            animate={{
+              rotate: [0, 360],
+              scale: [0.8, 1, 0.8],
+            }}
+            transition={{
+              duration: 15 + index * 2,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+        ))}
+      </div>
+      
+      <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-white text-center relative z-10">
         Shop by Categories
       </h2>
-      <div className="relative">
-        <button
+      
+      <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => scroll('left')}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white text-black p-2 rounded-full shadow-md hover:bg-gray-100"
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white/80 backdrop-blur-sm text-gray-700 p-2 rounded-full shadow-md hover:bg-white hover:shadow-lg transition-all duration-200"
         >
           <ChevronLeft size={20} />
-        </button>
+        </motion.button>
+        
         <div
           ref={scrollRef}
-          className="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth px-10 py-4"
+          className="flex gap-4 overflow-x-auto no-scrollbar px-8 py-4"
+          style={{ 
+            scrollbarWidth: 'none', 
+            msOverflowStyle: 'none'
+          }}
         >
-          {categories.map((category, index) => (
-  <motion.div
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.95 }}
-    key={index}
-    className="min-w-[140px] sm:min-w-[180px] bg-white text-black rounded-xl shadow-md p-3 text-center cursor-pointer whitespace-nowrap"
-    onClick={() => scrollToSection(category.label)}
-  >
-    <img
-      src={category.image}
-      alt={category.label}
-      className="mx-auto mb-2 h-20 w-20 sm:h-40 sm:w-40 rounded-lg object-cover"
-    />
-    <div className="font-semibold text-sm sm:text-base">{category.label}</div>
-  </motion.div>
-))}
-
+          {duplicatedCategories.map((category, index) => (
+            <motion.div
+              key={`${category.label}-${index}`}
+              className="w-[160px] h-[160px] cursor-pointer flex-shrink-0"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => scrollToSection(category.label)}
+            >
+              <div className="w-full h-full bg-white/60 backdrop-blur-sm rounded-xl overflow-hidden hover:bg-white/80 transition-all duration-300 shadow-sm hover:shadow-md border border-white/50 relative">
+                <img
+                  src={category.image}
+                  alt={category.label}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-white text-gray-800 font-medium text-xs py-1 px-2 text-center">
+                  {category.label}
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
-        <button
+        
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => scroll('right')}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white text-black p-2 rounded-full shadow-md hover:bg-gray-100"
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white/80 backdrop-blur-sm text-gray-700 p-2 rounded-full shadow-md hover:bg-white hover:shadow-lg transition-all duration-200"
         >
           <ChevronRight size={20} />
-        </button>
+        </motion.button>
       </div>
     </div>
   );
