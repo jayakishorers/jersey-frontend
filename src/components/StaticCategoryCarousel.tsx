@@ -10,7 +10,7 @@ const categories = [
   { label: 'Trending', targetId: 'trending', image: "/trending.jpeg" },
   { label: 'Retro Collection', targetId: 'retro-collection', image: "/retro.webp" },
   { label: 'Full Kit', targetId: 'full-kit', image: "/fullkit.jpeg" },
-  { label: 'Master Copy', targetId: 'master-copy', image: "/mastercopy.jpeg" },
+  /* { label: 'Master Copy', targetId: 'master-copy', image: "/mastercopy.jpeg" }, */
   { label: 'Sublimation', targetId: 'sublimation', image: "/sublimation.jpeg" },
   { label: 'LooseFit/FiveSleeve', targetId: 'loose-fit', image: "/playerversion.jpeg" },
 ];
@@ -67,7 +67,7 @@ export const StaticCategoryCarousel: React.FC = () => {
       'Retro Collection': 'retro-collection',
       'Full Kit': 'full-kit',
       'Full Sleeve': 'full-sleeve',
-      'Master Copy': 'master-copy',
+      /* 'Master Copy': 'master-copy', */
       'Sublimation': 'sublimation',
       'LooseFit/FiveSleeve': 'loose-fit',
     };

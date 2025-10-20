@@ -3,7 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { CartItem } from './types';
 import { useState, useEffect } from "react";
-import { ShoppingBag, User, Mail, Phone, MapPin, FileText } from 'lucide-react';
+import { ShoppingBag, User, Mail, Phone, MapPin, FileText, Truck } from 'lucide-react';
+import { calculateDeliveryCharges } from './utils/deliveryCharges';
 
 interface CheckoutPageProps {
   cartItems: CartItem[];
@@ -119,12 +120,19 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
       }
     }
     
-    if (field === 'city' || field === 'district' || field === 'state' || field === 'postOffice') {
+    if (field === 'city' || field === 'district' || field === 'state') {
       if (!value) {
         return `Please enter your ${field}.`;
       }
       if (!/^[A-Za-z\s]{2,50}$/.test(value)) {
         return `${field} should contain only letters (min 2 chars).`;
+      }
+    }
+
+    if (field === 'postOffice') {
+      // Optional field - only validate format if value is provided
+      if (value && !/^[A-Za-z\s]{2,50}$/.test(value)) {
+        return 'Post office should contain only letters (min 2 chars).';
       }
     }
 
@@ -176,7 +184,6 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
       'state',
       'pincode',
       'contactNumber',
-      'postOffice',
     ];
 
     const validationErrors = requiredFields.some(field => getFieldError(field));
@@ -187,6 +194,9 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     }
 
     const sanitizedNotes = formData.notes.replace(/<[^>]*>?/gm, "");
+
+    const deliveryCharges = calculateDeliveryCharges(cartItems.reduce((sum, item) => sum + item.quantity, 0));
+    const finalTotal = cartTotal + deliveryCharges;
 
     const orderData = {
       items: cartItems.map((item) => ({
@@ -199,7 +209,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
         price: item.jersey.price,
         image: item.jersey.image || '',
       })),
-      totalAmount: cartTotal,
+      totalAmount: finalTotal,
       shippingAddress: {
         name: formData.name,
         email: formData.email,
@@ -209,7 +219,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
         district: formData.district,
         state: formData.state,
         pincode: formData.pincode,
-        postOffice: formData.postOffice,
+        ...(formData.postOffice && { postOffice: formData.postOffice }),
       },
       paymentMethod: 'cash_on_delivery',
       notes: sanitizedNotes,
@@ -411,7 +421,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Post Office *
+                    Post Office
                   </label>
                   <input
                     name="postOffice"
@@ -487,10 +497,29 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
           {/* Order Summary */}
           <div className="mt-8 p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-100">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Order Summary</h3>
-            <div className="flex justify-between items-center text-2xl font-bold text-gray-800">
-              <span>Total Amount:</span>
-              <span className="text-blue-600">₹{cartTotal}</span>
+            
+            <div className="space-y-2 mb-4">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-700">Subtotal:</span>
+                <span className="font-semibold">₹{cartTotal}</span>
+              </div>
+              
+              <div className="flex justify-between items-center">
+                <div className="flex items-center space-x-2">
+                  <Truck className="w-4 h-4 text-blue-600" />
+                  <span className="text-gray-700">Delivery Charges:</span>
+                </div>
+                <span className="font-semibold text-blue-600">₹{calculateDeliveryCharges(cartItems.reduce((sum, item) => sum + item.quantity, 0))}</span>
+              </div>
             </div>
+            
+            <div className="border-t border-gray-200 pt-3">
+              <div className="flex justify-between items-center text-2xl font-bold text-gray-800">
+                <span>Total Amount:</span>
+                <span className="text-blue-600">₹{cartTotal + calculateDeliveryCharges(cartItems.reduce((sum, item) => sum + item.quantity, 0))}</span>
+              </div>
+            </div>
+            
             <p className="text-sm text-gray-600 mt-2">Cash on Delivery</p>
           </div>
 
@@ -528,7 +557,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
               ) : (
                 <div className="flex items-center justify-center gap-2">
                   <ShoppingBag className="w-5 h-5" />
-                  Place Order - ₹{cartTotal}
+                  Place Order - ₹{cartTotal + calculateDeliveryCharges(cartItems.reduce((sum, item) => sum + item.quantity, 0))}
                 </div>
               )}
             </button>

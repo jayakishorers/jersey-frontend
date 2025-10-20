@@ -18,12 +18,13 @@ import { useWishlist } from "./hooks/useWishlist";
 import CheckoutPage from "./CheckOutPage";
 import { CartDrawer } from "./components/CartDrawer";
 import { useNavigate } from "react-router-dom";
+
 const OrderSuccess = () => (
   <div className="min-h-screen flex items-center justify-center text-white text-center p-8">
     <div>
       <h1 className="text-3xl font-bold mb-4">🎉 Order Placed Successfully!</h1>
       <p className="text-lg">
-        Thank you for your purchase. We’ll notify you once it’s shipped.
+        Thank you for your purchase. We'll notify you once it's shipped.
       </p>
     </div>
   </div>
@@ -49,7 +50,7 @@ const App: React.FC = () => {
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
   const [currentSection, setCurrentSection] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const {
     cartItems,
     isCartOpen,
@@ -60,23 +61,35 @@ const navigate = useNavigate();
     getCartTotal,
     getCartCount,
   } = useCart();
-const location = useLocation();
-const filterCategory = (location.state as any)?.filterCategory || null;
+  const location = useLocation();
+  const filterCategory = (location.state as any)?.filterCategory || null;
 
   // Auth check
-useEffect(() => {
-  const checkAuth = () => {
-    const token = localStorage.getItem("token");
-    setIsAuthenticated(!!token);
-  };
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = localStorage.getItem("token");
+      setIsAuthenticated(!!token);
+    };
 
-  checkAuth(); // run on mount
+    checkAuth(); // run on mount
 
-  // 🔥 listen for login/logout changes
-  window.addEventListener("storage", checkAuth);
-  return () => window.removeEventListener("storage", checkAuth);
-}, []);
+    // 🔥 listen for login/logout changes
+    window.addEventListener("storage", checkAuth);
+    return () => window.removeEventListener("storage", checkAuth);
+  }, []);
 
+  // Handle browser back button for modal
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      if (isModalOpen && !event.state?.modalOpen) {
+        setIsModalOpen(false);
+        setSelectedJersey(null);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [isModalOpen]);
 
   // Fetch stock data
   useEffect(() => {
@@ -114,6 +127,8 @@ useEffect(() => {
       jerseysWithStock.find((j) => j.id === jersey.id) || jersey;
     setSelectedJersey(enriched);
     setIsModalOpen(true);
+    // Push state to history for back button handling
+    window.history.pushState({ modalOpen: true }, '');
   };
 
   const handleAddToCart = (
@@ -122,10 +137,17 @@ useEffect(() => {
     quantity: number
   ) => {
     addToCart(jersey, size, quantity);
-    setIsModalOpen(false);
+    handleCloseModal();
   };
 
-
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedJersey(null);
+    // Go back in history if modal was opened
+    if (window.history.state?.modalOpen) {
+      window.history.back();
+    }
+  };
 
   const handleSearchClick = () => {
     setShowAdvancedSearch(true);
@@ -153,8 +175,8 @@ useEffect(() => {
         return jerseysWithStock.filter(j => j.type === "Retro");
       case "Full Kit":
         return jerseysWithStock.filter(j => j.fullKit);
-      case "Master Copy":
-        return jerseysWithStock.filter(j => j.type === "Master Copy");
+      /* case "Master Copy":
+        return jerseysWithStock.filter(j => j.type === "Master Copy"); */
       case "Sublimation":
         return jerseysWithStock.filter(j => j.type === "Sublimation");
       case "LooseFit/FiveSleeve":
@@ -288,7 +310,7 @@ useEffect(() => {
                 </div>
                 <div id="full-kit">
                   <CategorySection
-                    title="Full Kit"
+                    title="Full Kit/FC SET"
                     jerseys={jerseysWithStock.filter(
                       (j) => j.fullKit
                     )}
@@ -299,7 +321,8 @@ useEffect(() => {
                     onViewAll={() => handleViewAllSection("Full Kit")}
                   />
                 </div>
-                <div id="master-copy">
+                
+                {/* <div id="master-copy">
                   <CategorySection
                     title="Master Copy"
                     jerseys={jerseysWithStock.filter(
@@ -311,7 +334,7 @@ useEffect(() => {
                     onToggleWishlist={toggleWishlist}
                     onViewAll={() => handleViewAllSection("Master Copy")}
                   />
-                </div>
+                </div> */}
                 <div id="sublimation">
                   <CategorySection
                     title="Sublimation"
@@ -380,7 +403,7 @@ useEffect(() => {
         <ProductModal
           jersey={selectedJersey}
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          onClose={handleCloseModal}
           onAddToCart={handleAddToCart}
         />
       )}

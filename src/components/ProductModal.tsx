@@ -236,6 +236,11 @@ const resetZoom = () => {
                     <div><span className="text-gray-500">Full Kit:</span> <p className="font-medium">{jersey.fullKit ? 'Yes' : 'No'}</p></div>
                   </div>
 
+                  {/* Fit */}
+                  <div>
+                    <span className="text-gray-500">Fit:</span> <p className="font-medium">{jersey.isloosefit ? 'Five Sleeve/Loosefit' : 'Regular fit'}</p>
+                  </div>
+
                     {/* Player Name */}
 <div>
   <h3 className="text-lg font-semibold mb-3">Player Name</h3>

@@ -1512,7 +1512,9 @@ setJerseys(mapped);
                     <p><span className="text-gray-500">District:</span> <span className="text-gray-900">{selectedOrder.shippingAddress.district}</span></p>
                     <p><span className="text-gray-500">State:</span> <span className="text-gray-900">{selectedOrder.shippingAddress.state}</span></p>
                     <p><span className="text-gray-500">Pincode:</span> <span className="text-gray-900">{selectedOrder.shippingAddress.pincode}</span></p>
-                    <p><span className="text-gray-500">PostOffice:</span> <span className="text-gray-900">{selectedOrder.shippingAddress.postOffice}</span></p>
+                    {selectedOrder.shippingAddress.postOffice && (
+                      <p><span className="text-gray-500">Post Office:</span> <span className="text-gray-900">{selectedOrder.shippingAddress.postOffice}</span></p>
+                    )}
                   </div>
                 </div>
               </div>

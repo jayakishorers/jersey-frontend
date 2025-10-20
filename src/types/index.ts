@@ -4,7 +4,7 @@ export interface Jersey {
   club: string;
   country?: string;
   type:  | 'Master Copy' | 'Sublimation' | 'Retro' | 'Full Kit';
-  material: 'Polyester' | 'Mesh' | 'Dri-FIT' | 'Cotton';
+  material: 'Polyester' | 'Mesh' | 'Dri-FIT' | 'Cotton'|'DotKnit cloth';
   category: 'Club' | 'Country' ;
   fullKit: boolean;
   sizes: ('S' | 'M' | 'L' | 'XL' | 'XXL')[];
