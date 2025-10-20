@@ -19,6 +19,25 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
+
+  const getAvailableStock = (size: string) => {
+    return jersey?.stockBySize?.[size] ?? 0;
+  };
+
+  const getStockStatus = (stock: number) => {
+    if (stock === 0) return { text: 'Out of Stock', color: 'text-red-600', bg: 'bg-red-50' };
+    if (stock <= 3) return { text: `Only ${stock} left`, color: 'text-orange-600', bg: 'bg-orange-50' };
+    return { text: 'In Stock', color: 'text-green-600', bg: 'bg-green-50' };
+  };
+
+  // Reset quantity when size changes
+  const handleSizeChange = (size: string) => {
+    setSelectedSize(size);
+    setQuantity(1);
+  };
+
+  // Get max quantity for selected size
+  const maxQuantity = selectedSize ? getAvailableStock(selectedSize) : 0;
   const [showSizeChart, setShowSizeChart] = useState(false);
   const [showDescription, setShowDescription] = useState(false);
   const [showFeatures, setShowFeatures] = useState(false);
@@ -34,9 +53,18 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   };
 
   const handleAddToCart = () => {
-    if (!selectedSize) return;
+    if (!selectedSize || quantity > maxQuantity || maxQuantity === 0) return;
     onAddToCart(jersey, selectedSize, quantity);
-    onClose();
+    // Don't close modal, just reset form
+    setSelectedSize('');
+    setQuantity(1);
+  };
+
+  // Get current quantity in cart for this jersey and size
+  const getCurrentCartQuantity = (jerseyId: string, size: string) => {
+    // This would need to be passed from parent component
+    // For now, we'll handle it in the addToCart function
+    return 0;
   };
 const [modalImageIndex, setModalImageIndex] = useState(0);
 const [zoom, setZoom] = useState(1);
@@ -251,6 +279,23 @@ const resetZoom = () => {
 {/* Size Selection */}
 <div>
   <h3 className="text-lg font-semibold mb-3">Select Size</h3>
+  
+  {/* Stock Status for Selected Size */}
+  {selectedSize && (
+    <div className="mb-3">
+      {(() => {
+        const stock = getAvailableStock(selectedSize);
+        const status = getStockStatus(stock);
+        return (
+          <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${status.bg} ${status.color}`}>
+            <div className={`w-2 h-2 rounded-full mr-2 ${stock === 0 ? 'bg-red-500' : stock <= 3 ? 'bg-orange-500' : 'bg-green-500'}`}></div>
+            Size {selectedSize}: {status.text}
+          </div>
+        );
+      })()}
+    </div>
+  )}
+  
   <div className="grid grid-cols-5 gap-2">
     {jersey.sizes.map((size) => {
       const isStockLoading = !jersey.stockBySize;
@@ -262,7 +307,7 @@ const resetZoom = () => {
           key={size}
           whileHover={!isDisabled ? { scale: 1.05 } : {}}
           whileTap={!isDisabled ? { scale: 0.95 } : {}}
-          onClick={() => !isDisabled && setSelectedSize(size)}
+          onClick={() => !isDisabled && handleSizeChange(size)}
           disabled={isDisabled}
           className={`relative p-3 rounded-lg border-2 transition flex items-center justify-center
             ${selectedSize === size && !isDisabled
@@ -286,21 +331,74 @@ const resetZoom = () => {
   </div>
 </div>
 
+{/* Quantity Selection */}
+{selectedSize && maxQuantity > 0 && (
+  <div>
+    <h3 className="text-lg font-semibold mb-3">Quantity</h3>
+    <div className="flex items-center space-x-3">
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+        disabled={quantity <= 1}
+        className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-blue-500 hover:text-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        -
+      </motion.button>
+      
+      <div className="flex items-center space-x-2">
+        <input
+          type="number"
+          min="1"
+          max={maxQuantity}
+          value={quantity}
+          onChange={(e) => {
+            const val = parseInt(e.target.value) || 1;
+            setQuantity(Math.min(Math.max(1, val), maxQuantity));
+          }}
+          className="w-16 text-center border border-gray-300 rounded-lg py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <span className="text-sm text-gray-500">/ {maxQuantity}</span>
+      </div>
+      
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => setQuantity(Math.min(maxQuantity, quantity + 1))}
+        disabled={quantity >= maxQuantity}
+        className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-blue-500 hover:text-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        +
+      </motion.button>
+    </div>
+    
+    {quantity === maxQuantity && maxQuantity <= 3 && (
+      <p className="text-sm text-orange-600 mt-2">Maximum available quantity selected</p>
+    )}
+  </div>
+)}
+
 {/* Action Buttons */}
 <div className="flex space-x-4">
   <motion.button
     whileHover={{ scale: 1.02 }}
     whileTap={{ scale: 0.98 }}
-    disabled={!selectedSize || !jersey.stockBySize || (jersey.stockBySize?.[selectedSize] ?? 0) === 0}
+    disabled={!selectedSize || !jersey.stockBySize || maxQuantity === 0 || quantity > maxQuantity}
     onClick={handleAddToCart}
     className={`flex-1 flex items-center justify-center space-x-2 py-4 rounded-lg font-semibold transition ${
-      selectedSize && jersey.stockBySize && (jersey.stockBySize[selectedSize] ?? 0) > 0
+      selectedSize && jersey.stockBySize && maxQuantity > 0 && quantity <= maxQuantity
         ? 'bg-blue-600 text-white hover:shadow-lg'
         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
     }`}
   >
     <ShoppingCart className="w-5 h-5" />
-    <span>{!jersey.stockBySize ? 'Loading...' : 'Add to Cart'}</span>
+    <span>
+      {!jersey.stockBySize ? 'Loading...' : 
+       !selectedSize ? 'Select Size' :
+       maxQuantity === 0 ? 'Out of Stock' :
+       quantity > maxQuantity ? `Max ${maxQuantity} available` :
+       'Add to Cart'}
+    </span>
   </motion.button>
 
 

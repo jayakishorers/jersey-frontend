@@ -11,7 +11,7 @@ interface CartDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   cartItems: CartItem[];
-  onUpdateQuantity: (itemId: string, quantity: number) => void;
+  onUpdateQuantity: (itemId: string, quantity: number, maxStock?: number) => void;
   onRemoveItem: (itemId: string) => void;
   cartTotal: number;
 }
@@ -136,7 +136,10 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                               <motion.button
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
-                                onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
+                                onClick={() => {
+                                  const maxStock = item.jersey.stockBySize?.[item.size] ?? 999;
+                                  onUpdateQuantity(item.id, item.quantity - 1, maxStock);
+                                }}
                                 className="p-1 bg-gray-700 text-white rounded hover:bg-gray-600 transition-colors"
                               >
                                 <Minus className="w-3 h-3" />
@@ -147,18 +150,39 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                               <motion.button
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
-                                onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
-                                className="p-1 bg-gray-700 text-white rounded hover:bg-gray-600 transition-colors"
+                                onClick={() => {
+                                  const maxStock = item.jersey.stockBySize?.[item.size] ?? 999;
+                                  if (item.quantity < maxStock) {
+                                    onUpdateQuantity(item.id, item.quantity + 1, maxStock);
+                                  }
+                                }}
+                                disabled={item.quantity >= (item.jersey.stockBySize?.[item.size] ?? 999)}
+                                className={`p-1 rounded transition-colors ${
+                                  item.quantity >= (item.jersey.stockBySize?.[item.size] ?? 999)
+                                    ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                                    : 'bg-gray-700 text-white hover:bg-gray-600'
+                                }`}
                               >
                                 <Plus className="w-3 h-3" />
                               </motion.button>
                             </div>
+                            
+                            {/* Stock warning */}
+                            {item.jersey.stockBySize?.[item.size] && item.quantity >= item.jersey.stockBySize[item.size] && (
+                              <span className="text-xs text-orange-400">Max stock</span>
+                            )}
+                            
+                            {/* Low stock warning */}
+                            {item.jersey.stockBySize?.[item.size] && item.jersey.stockBySize[item.size] <= 3 && (
+                              <span className="text-xs text-orange-400">{item.jersey.stockBySize[item.size]} left</span>
+                            )}
+
 
                             <motion.button
                               whileHover={{ scale: 1.1 }}
                               whileTap={{ scale: 0.9 }}
                               onClick={() => onRemoveItem(item.id)}
-                              className="p-1 text-red-400 hover:text-red-300 transition-colors"
+                              className="p-1 text-red-400 hover:text-red-300 transition-colors ml-2"
                             >
                               <Trash2 className="w-4 h-4" />
                             </motion.button>

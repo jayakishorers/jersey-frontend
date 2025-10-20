@@ -18,6 +18,7 @@ import { useWishlist } from "./hooks/useWishlist";
 import CheckoutPage from "./CheckOutPage";
 import { CartDrawer } from "./components/CartDrawer";
 import { useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast';
 
 const OrderSuccess = () => (
   <div className="min-h-screen flex items-center justify-center text-white text-center p-8">
@@ -136,8 +137,31 @@ const App: React.FC = () => {
     size: string,
     quantity: number
   ) => {
-    addToCart(jersey, size, quantity);
-    handleCloseModal();
+    const existingItem = cartItems.find(item => item.jersey.id === jersey.id && item.size === size);
+    const currentCartQuantity = existingItem ? existingItem.quantity : 0;
+    const availableStock = jersey.stockBySize?.[size] ?? 0;
+    const totalRequested = currentCartQuantity + quantity;
+    
+    if (availableStock === 0) {
+      toast.error('This item is out of stock!');
+      return;
+    }
+    
+    if (totalRequested > availableStock) {
+      const maxAddable = availableStock - currentCartQuantity;
+      if (maxAddable <= 0) {
+        toast.error(`You already have the maximum available quantity (${availableStock}) in your cart!`);
+        return;
+      } else {
+        toast.warning(`Only ${maxAddable} more can be added. Added ${maxAddable} to cart.`);
+        addToCart(jersey, size, maxAddable);
+        handleCloseModal();
+      }
+    } else {
+      addToCart(jersey, size, quantity);
+      toast.success(`Added ${quantity} item(s) to cart!`);
+      handleCloseModal();
+    }
   };
 
   const handleCloseModal = () => {
