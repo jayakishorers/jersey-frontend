@@ -4,7 +4,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'akira': ['Akira Expanded', 'sans-serif'],
+        'montserrat': ['Montserrat', 'sans-serif'],
+        'sans': ['Montserrat', 'sans-serif'],
       },
     },
   },

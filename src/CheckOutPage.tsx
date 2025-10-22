@@ -5,6 +5,7 @@ import { CartItem } from './types';
 import { useState, useEffect } from "react";
 import { ShoppingBag, User, Mail, Phone, MapPin, FileText, Truck } from 'lucide-react';
 import { calculateDeliveryCharges } from './utils/deliveryCharges';
+import { sendOrderEmails } from './utils/emailService';
 
 interface CheckoutPageProps {
   cartItems: CartItem[];
@@ -239,6 +240,29 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
       setLoading(false);
 
       if (res.data.success) {
+        // Send order confirmation emails
+        const emailData = {
+          orderNumber: res.data.data.order.orderNumber,
+          customerName: formData.name,
+          customerEmail: formData.email,
+          customerPhone: formData.contactNumber,
+          shippingAddress: `${formData.address}, ${formData.city}, ${formData.district}, ${formData.state} - ${formData.pincode}`,
+          items: cartItems.map(item => ({
+            name: item.jersey.name,
+            size: item.size,
+            quantity: item.quantity,
+            price: item.jersey.price
+          })),
+          totalAmount: finalTotal,
+          paymentMethod: 'Cash on Delivery',
+          notes: sanitizedNotes
+        };
+        
+        // Send emails (don't wait for completion)
+        sendOrderEmails(emailData).catch(err => 
+          console.error('Email sending failed:', err)
+        );
+        
         toast.success(
           'Thank you for your order! Our executive will call you shortly regarding your transaction.'
         );

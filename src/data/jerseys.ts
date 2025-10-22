@@ -2004,7 +2004,190 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   isFullSleeve: true,
   PlayerName: 'Ronaldo',
   fullKit: false
-}
+},
+{
+    id: '201',
+    name: 'Barcelona Pink Edition 2025',
+    club: 'Barcelona',
+    type: 'Player Version',
+    material: 'Dri-FIT',
+    category: 'Club',
+    fullKit: false,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    price: 899,
+    description: 'Barcelona Pink Edition 2025 Away Jersey',
+    image: '/player version/1.jpg',
+    images: [
+      '/player version/1.jpg',
+      '/player version/1.1.webp',
+      '/player version/1.2.webp',
+      '/player version/1.3.webp'
+    ],
+    features: [
+      'Durable Heat-Pressed Logo',
+      'Modern Slim Fit Design',
+      'Premium-Quality Fabric',
+      'Grade AAA Imported Material'
+    ],
+    isFullSleeve: false
+  },
+  {
+    id: '202',
+    name: 'AC Milan 2025',
+    club: 'AC Milan',
+    type: 'Player Version',
+    material: 'Dri-FIT',
+    category: 'Club',
+    fullKit: false,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    price: 899,
+    description: 'AC Milan 2025 Home Jersey',
+    image: '/player version/2.webp',
+    images: [
+      '/player version/2.webp',
+      '/player version/2.1.webp',
+      '/player version/2.2.webp',
+      '/player version/2.3.webp'
+    ],
+    features: [
+      'Durable Heat-Pressed Logo',
+      'Modern Slim Fit Design',
+      'Premium-Quality Fabric',
+      'Grade AAA Imported Material'
+    ],
+    isFullSleeve: false
+  },
+  {
+    id: '203',
+    name: 'Chelsea 2025',
+    club: 'Chelsea',
+    type: 'Player Version',
+    material: 'Dri-FIT',
+    category: 'Club',
+    fullKit: false,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    price: 899,
+    description: 'Chelsea 2025 Home Jersey',
+    image: '/player version/3.jpg',
+    images: [
+      '/player version/3.jpg',
+      '/player version/3.1.webp',
+      '/player version/3.2.webp',
+      '/player version/3.3.webp'
+    ],
+    features: [
+      'Durable Heat-Pressed Logo',
+      'Modern Slim Fit Design',
+      'Premium-Quality Fabric',
+      'Grade AAA Imported Material'
+    ],
+    isFullSleeve: false
+  },
+  {
+    id: '204',
+    name: 'Inter Miami 2025',
+    club: 'Inter Miami',
+    type: 'Player Version',
+    material: 'Dri-FIT',
+    category: 'Club',
+    fullKit: false,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    price: 899,
+    description: 'Inter Miami 2025 Away Jersey',
+    image: '/player version/4.jpg',
+    images: [
+      '/player version/4.jpg',
+      '/player version/4.1.webp',
+      '/player version/4.2.webp',
+      '/player version/4.3.webp',
+      '/player version/4.4.webp',
+    ],
+    features: [
+      'Durable Heat-Pressed Logo',
+      'Modern Slim Fit Design',
+      'Premium-Quality Fabric',
+      'Grade AAA Imported Material'
+    ],
+    isFullSleeve: false
+  },
+  {
+    id: '205',
+    name: 'Real Madrid 2025',
+    club: 'Real Madrid',
+    type: 'Player Version',
+    material: 'Dri-FIT',
+    category: 'Club',
+    fullKit: false,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    price: 899,
+    description: 'Real Madrid 2025 Third Jersey',
+    image: '/player version/5.jpg',
+    images: [
+      '/player version/5.jpg',
+      '/player version/5.1.webp',
+      '/player version/5.2.webp',
+      '/player version/5.3.webp'
+    ],
+    features: [
+      'Durable Heat-Pressed Logo',
+      'Modern Slim Fit Design',
+      'Premium-Quality Fabric',
+      'Grade AAA Imported Material'
+    ],
+    isFullSleeve: false
+  },
+  {
+    id: '206',
+    name: 'Barcelona 2025',
+    club: 'Barcelona',
+    type: 'Player Version',
+    material: 'Dri-FIT',
+    category: 'Club',
+    fullKit: false,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    price: 899,
+    description: 'Barcelona 2025 Home Jersey',
+    image: '/player version/6.jpg',
+    images: [
+      '/player version/6.jpg',
+      '/player version/6.1.webp',
+      '/player version/6.2.webp',
+      '/player version/6.3.webp'
+    ],
+    features: [
+      'Durable Heat-Pressed Logo',
+      'Modern Slim Fit Design',
+      'Premium-Quality Fabric',
+      'Grade AAA Imported Material'
+    ],
+    isFullSleeve: false
+  },
+  {
+    id: '207',
+    name: 'Manchester City 2025',
+    club: 'Manchester City',
+    type: 'Player Version',
+    material: 'Dri-FIT',
+    category: 'Club',
+    fullKit: false,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    price: 899,
+    description: 'Manchester City 2025 Home Jersey',
+    image: '/player version/7.webp',
+    images: [
+      '/player version/7.webp',
+      '/player version/7.1.webp',
+      '/player version/7.2.webp',
+      '/player version/7.3.webp'
+    ],
+    features: [
+      'Durable Heat-Pressed Logo',
+      'Modern Slim Fit Design',
+      'Premium-Quality Fabric',
+      'Grade AAA Imported Material'
+    ],
+    isFullSleeve: false
+  },
 
   /*{
     id: '101',
@@ -2280,7 +2463,7 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
 
 
 export const categories = {
-  types: [ 'Master Copy', 'Sublimation', 'Retro', 'Full Kit'],
+  types: [ 'Master Copy', 'Sublimation', 'Retro', 'Full Kit','Player Version'],
   materials: ['Polyester', 'Mesh', 'Dri-FIT', 'Cotton','DotKnit cloth'],
   categories: ['Club', 'Country'],
   sizes: ['S', 'M', 'L', 'XL', 'XXL']

@@ -199,6 +199,8 @@ const App: React.FC = () => {
         return jerseysWithStock.filter(j => j.type === "Retro");
       case "Full Kit":
         return jerseysWithStock.filter(j => j.fullKit);
+      case "Player Version":
+        return jerseysWithStock.filter(j => j.type === "Player Version");
       /* case "Master Copy":
         return jerseysWithStock.filter(j => j.type === "Master Copy"); */
       case "Sublimation":
@@ -343,6 +345,20 @@ const App: React.FC = () => {
                     wishlistedItems={wishlist}
                     onToggleWishlist={toggleWishlist}
                     onViewAll={() => handleViewAllSection("Full Kit")}
+                  />
+                </div>
+                
+                <div id="player-version">
+                  <CategorySection
+                    title="Player Version"
+                    jerseys={jerseysWithStock.filter(
+                      (j) => j.type === "Player Version"
+                    )}
+                    onViewDetails={handleViewDetails}
+                    onAddToCart={handleAddToCart}
+                    wishlistedItems={wishlist}
+                    onToggleWishlist={toggleWishlist}
+                    onViewAll={() => handleViewAllSection("Player Version")}
                   />
                 </div>
                 
