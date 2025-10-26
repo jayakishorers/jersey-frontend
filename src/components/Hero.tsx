@@ -67,7 +67,7 @@ export const Hero: React.FC<HeroProps> = ({ onShopNowClick }) => {
               className="flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-medium rounded-2xl shadow-xl overflow-hidden relative"
             >
               <Search className="w-6 h-6 mr-2" />
-              <span className="text-lg">Shop Now</span>
+              <span className="text-lg">Search your Jersey</span>
             </motion.button>
 
             <motion.p

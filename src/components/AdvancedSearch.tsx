@@ -37,17 +37,18 @@
     
     const availableOptions = getAvailableOptions();
     
-    // All homepage sections
+    // All homepage sections - Updated order
     const sections = [
       'New Arrivals',
+      'Player Version',
+      'Full Kit',
+      'Sublimation',
+      'LooseFit/FiveSleeve',
       'Best Sellers', 
       'Country Jerseys',
       'Club Jerseys',
       'Trending',
-      'Retro Collection',
-      'Full Kit',
-      'Master Copy',
-      'Sublimation'
+      'Retro Collection'
     ];
     
     const handleSectionClick = (section: string) => {
@@ -99,6 +100,9 @@
           case 'New Arrivals':
             if (!jersey.isNew) return false;
             break;
+          case 'Player Version':
+            if (jersey.type !== 'Player Version') return false;
+            break;
           case 'Best Sellers':
             if (!jersey.isBestSeller) return false;
             break;
@@ -116,9 +120,6 @@
             break;
           case 'Full Kit':
             if (!jersey.fullKit) return false;
-            break;
-          case 'Master Copy':
-            if (jersey.type !== 'Master Copy') return false;
             break;
           case 'Sublimation':
             if (jersey.type !== 'Sublimation') return false;

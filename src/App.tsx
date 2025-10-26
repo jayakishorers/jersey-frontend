@@ -255,7 +255,7 @@ const App: React.FC = () => {
                 />
                 <StaticCategoryCarousel />
 
-                {/* Category Sections */}
+                {/* Category Sections - Reordered as requested */}
                 <div id="new-arrivals">
                   <CategorySection
                     title="New Arrivals"
@@ -267,84 +267,6 @@ const App: React.FC = () => {
                     wishlistedItems={wishlist}
                     onToggleWishlist={toggleWishlist}
                     onViewAll={() => handleViewAllSection("New Arrivals")}
-                  />
-                </div>
-                <div id="best-sellers">
-                  <CategorySection
-                    title="Best Sellers"
-                    jerseys={jerseysWithStock.filter(
-                      (j) => j.isBestSeller
-                    )}
-                    onViewDetails={handleViewDetails}
-                    onAddToCart={handleAddToCart}
-                    wishlistedItems={wishlist}
-                    onToggleWishlist={toggleWishlist}
-                    onViewAll={() => handleViewAllSection("Best Sellers")}
-                  />
-                </div>
-                <div id="country-jerseys">
-                  <CategorySection
-                    title="Country Jerseys"
-                    jerseys={jerseysWithStock.filter(
-                      (j) => j.category === "Country"
-                    )}
-                    onViewDetails={handleViewDetails}
-                    onAddToCart={handleAddToCart}
-                    wishlistedItems={wishlist}
-                    onToggleWishlist={toggleWishlist}
-                    onViewAll={() => handleViewAllSection("Country Jerseys")}
-                  />
-                </div>
-                <div id="club-jerseys">
-                  <CategorySection
-                    title="Club Jerseys"
-                    jerseys={jerseysWithStock.filter(
-                      (j) => j.category === "Club"
-                    )}
-                    onViewDetails={handleViewDetails}
-                    onAddToCart={handleAddToCart}
-                    wishlistedItems={wishlist}
-                    onToggleWishlist={toggleWishlist}
-                    onViewAll={() => handleViewAllSection("Club Jerseys")}
-                  />
-                </div>
-                <div id="trending">
-                  <CategorySection
-                    title="Trending"
-                    jerseys={jerseysWithStock.filter(
-                      (j) => j.isTrending
-                    )}
-                    onViewDetails={handleViewDetails}
-                    onAddToCart={handleAddToCart}
-                    wishlistedItems={wishlist}
-                    onToggleWishlist={toggleWishlist}
-                    onViewAll={() => handleViewAllSection("Trending")}
-                  />
-                </div>
-                <div id="retro-collection">
-                  <CategorySection
-                    title="Retro Collection"
-                    jerseys={jerseysWithStock.filter(
-                      (j) => j.type === "Retro"
-                    )}
-                    onViewDetails={handleViewDetails}
-                    onAddToCart={handleAddToCart}
-                    wishlistedItems={wishlist}
-                    onToggleWishlist={toggleWishlist}
-                    onViewAll={() => handleViewAllSection("Retro Collection")}
-                  />
-                </div>
-                <div id="full-kit">
-                  <CategorySection
-                    title="Full Kit/FC SET"
-                    jerseys={jerseysWithStock.filter(
-                      (j) => j.fullKit
-                    )}
-                    onViewDetails={handleViewDetails}
-                    onAddToCart={handleAddToCart}
-                    wishlistedItems={wishlist}
-                    onToggleWishlist={toggleWishlist}
-                    onViewAll={() => handleViewAllSection("Full Kit")}
                   />
                 </div>
                 
@@ -362,19 +284,20 @@ const App: React.FC = () => {
                   />
                 </div>
                 
-                {/* <div id="master-copy">
+                <div id="full-kit">
                   <CategorySection
-                    title="Master Copy"
+                    title="Full Kit/FC SET"
                     jerseys={jerseysWithStock.filter(
-                      (j) => j.type === "Master Copy"
+                      (j) => j.fullKit
                     )}
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
                     onToggleWishlist={toggleWishlist}
-                    onViewAll={() => handleViewAllSection("Master Copy")}
+                    onViewAll={() => handleViewAllSection("Full Kit")}
                   />
-                </div> */}
+                </div>
+                
                 <div id="sublimation">
                   <CategorySection
                     title="Sublimation"
@@ -388,6 +311,7 @@ const App: React.FC = () => {
                     onViewAll={() => handleViewAllSection("Sublimation")}
                   />
                 </div>
+                
                 <div id="loose-fit">
                   <CategorySection
                     title="LooseFit/FiveSleeve"
@@ -399,6 +323,76 @@ const App: React.FC = () => {
                     wishlistedItems={wishlist}
                     onToggleWishlist={toggleWishlist}
                     onViewAll={() => handleViewAllSection("LooseFit/FiveSleeve")}
+                  />
+                </div>
+                
+                <div id="retro-collection">
+                  <CategorySection
+                    title="Retro Collection"
+                    jerseys={jerseysWithStock.filter(
+                      (j) => j.type === "Retro"
+                    )}
+                    onViewDetails={handleViewDetails}
+                    onAddToCart={handleAddToCart}
+                    wishlistedItems={wishlist}
+                    onToggleWishlist={toggleWishlist}
+                    onViewAll={() => handleViewAllSection("Retro Collection")}
+                  />
+                </div>
+                
+                <div id="best-sellers">
+                  <CategorySection
+                    title="Best Sellers"
+                    jerseys={jerseysWithStock.filter(
+                      (j) => j.isBestSeller
+                    )}
+                    onViewDetails={handleViewDetails}
+                    onAddToCart={handleAddToCart}
+                    wishlistedItems={wishlist}
+                    onToggleWishlist={toggleWishlist}
+                    onViewAll={() => handleViewAllSection("Best Sellers")}
+                  />
+                </div>
+                
+                <div id="country-jerseys">
+                  <CategorySection
+                    title="Country Jerseys"
+                    jerseys={jerseysWithStock.filter(
+                      (j) => j.category === "Country"
+                    )}
+                    onViewDetails={handleViewDetails}
+                    onAddToCart={handleAddToCart}
+                    wishlistedItems={wishlist}
+                    onToggleWishlist={toggleWishlist}
+                    onViewAll={() => handleViewAllSection("Country Jerseys")}
+                  />
+                </div>
+                
+                <div id="club-jerseys">
+                  <CategorySection
+                    title="Club Jerseys"
+                    jerseys={jerseysWithStock.filter(
+                      (j) => j.category === "Club"
+                    )}
+                    onViewDetails={handleViewDetails}
+                    onAddToCart={handleAddToCart}
+                    wishlistedItems={wishlist}
+                    onToggleWishlist={toggleWishlist}
+                    onViewAll={() => handleViewAllSection("Club Jerseys")}
+                  />
+                </div>
+                
+                <div id="trending">
+                  <CategorySection
+                    title="Trending"
+                    jerseys={jerseysWithStock.filter(
+                      (j) => j.isTrending
+                    )}
+                    onViewDetails={handleViewDetails}
+                    onAddToCart={handleAddToCart}
+                    wishlistedItems={wishlist}
+                    onToggleWishlist={toggleWishlist}
+                    onViewAll={() => handleViewAllSection("Trending")}
                   />
                 </div>
               </>
