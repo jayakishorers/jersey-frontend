@@ -42,13 +42,15 @@
       'New Arrivals',
       'Player Version',
       'Full Kit',
+      'Master Copy 2nd Version',
       'Sublimation',
       'LooseFit/FiveSleeve',
       'Best Sellers', 
       'Country Jerseys',
       'Club Jerseys',
       'Trending',
-      'Retro Collection'
+      'Retro Collection',
+      'Shorts'
     ];
     
     const handleSectionClick = (section: string) => {
@@ -57,12 +59,20 @@
         // Clear corresponding filters when deselecting section
         if (section === 'LooseFit/FiveSleeve') {
           setFilters(prev => ({ ...prev, loosefit: [] }));
+        } else if (section === 'Master Copy 2nd Version') {
+          setFilters(prev => ({ ...prev, type: prev.type.filter(t => t !== 'Master Copy 2nd Version') }));
+        } else if (section === 'Shorts') {
+          setFilters(prev => ({ ...prev, type: prev.type.filter(t => t !== 'Shorts') }));
         }
       } else {
         setSelectedSection(section);
         // Auto-select corresponding filters when selecting section
         if (section === 'LooseFit/FiveSleeve') {
           setFilters(prev => ({ ...prev, loosefit: ['Yes'] }));
+        } else if (section === 'Master Copy 2nd Version') {
+          setFilters(prev => ({ ...prev, type: [...prev.type.filter(t => t !== 'Master Copy 2nd Version'), 'Master Copy 2nd Version'] }));
+        } else if (section === 'Shorts') {
+          setFilters(prev => ({ ...prev, type: [...prev.type.filter(t => t !== 'Shorts'), 'Shorts'] }));
         }
       }
     };
@@ -88,8 +98,13 @@
     
     // Auto-select filters when coming from a section
     useEffect(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       if (sectionTitle === 'LooseFit/FiveSleeve') {
         setFilters(prev => ({ ...prev, loosefit: ['Yes'] }));
+      } else if (sectionTitle === 'Master Copy 2nd Version') {
+        setFilters(prev => ({ ...prev, type: ['Master Copy 2nd Version'] }));
+      } else if (sectionTitle === 'Shorts') {
+        setFilters(prev => ({ ...prev, type: ['Shorts'] }));
       }
     }, [sectionTitle]);
 
