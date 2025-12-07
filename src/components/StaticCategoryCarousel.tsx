@@ -11,8 +11,9 @@ const categories = [
   { label: 'Retro Collection', targetId: 'retro-collection', image: "/retro.webp" },
   { label: 'Full Kit', targetId: 'full-kit', image: "/fullkit.jpeg" },
   { label: 'Player Version', targetId: 'player-version', image: "/mastercopy.jpeg" },
-  /* { label: 'Master Copy', targetId: 'master-copy', image: "/mastercopy.jpeg" }, */
+  { label: 'Master Copy 2nd Version', targetId: 'master-copy-2nd', image: "/mastercopy2ndvers/1.JPG" },
   { label: 'Sublimation', targetId: 'sublimation', image: "/sublimation.jpeg" },
+  { label: 'Shorts', targetId: 'shorts', image: "/shorts/2.jpg" },
   { label: 'LooseFit/FiveSleeve', targetId: 'loose-fit', image: "/playerversion.jpeg" },
 ];
 
@@ -68,9 +69,9 @@ export const StaticCategoryCarousel: React.FC = () => {
       'Retro Collection': 'retro-collection',
       'Full Kit': 'full-kit',
       'Player Version': 'player-version',
-      'Full Sleeve': 'full-sleeve',
-      /* 'Master Copy': 'master-copy', */
+      'Master Copy 2nd Version': 'master-copy-2nd',
       'Sublimation': 'sublimation',
+      'Shorts': 'shorts',
       'LooseFit/FiveSleeve': 'loose-fit',
     };
     const element = document.getElementById(sectionMap[label]);

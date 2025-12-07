@@ -24,8 +24,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const isStockLoading = !jersey.stockBySize;
-  const totalStock = jersey.stockBySize
+  // Check if stock is actually loaded (has keys) vs just empty object
+  const isStockLoading = !jersey.stockBySize || Object.keys(jersey.stockBySize).length === 0;
+  const totalStock = jersey.stockBySize && Object.keys(jersey.stockBySize).length > 0
     ? Object.values(jersey.stockBySize).reduce((sum, qty) => sum + qty, 0)
     : 0;
   const isOutOfStock = totalStock === 0 && !isStockLoading;
@@ -142,14 +143,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               setImageLoaded(true);
             }}
           />
-          {/* Loading or Out of Stock overlay */}
-          {(isStockLoading || isOutOfStock) && (
+          {/* Out of Stock overlay - only show after stock is loaded */}
+          {isOutOfStock && (
             <>
               <div className="absolute inset-0 z-10 bg-white/25"></div>
-              <div className={`absolute bottom-0 left-0 right-0 z-20 text-white text-sm font-bold text-center py-1 ${
-                isStockLoading ? 'bg-blue-600' : 'bg-red-600'
-              }`}>
-                {isStockLoading ? 'LOADING STOCK...' : 'SOLD OUT'}
+              <div className="absolute bottom-0 left-0 right-0 z-20 text-white text-sm font-bold text-center py-1 bg-red-600">
+                SOLD OUT
               </div>
             </>
           )}

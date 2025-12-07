@@ -298,7 +298,7 @@ const resetZoom = () => {
   
   <div className="grid grid-cols-5 gap-2">
     {jersey.sizes.map((size) => {
-      const isStockLoading = !jersey.stockBySize;
+      const isStockLoading = !jersey.stockBySize || Object.keys(jersey.stockBySize).length === 0;
       const stock = jersey.stockBySize?.[size] ?? 0;
       const isDisabled = stock === 0 || isStockLoading;
 
@@ -383,7 +383,7 @@ const resetZoom = () => {
   <motion.button
     whileHover={{ scale: 1.02 }}
     whileTap={{ scale: 0.98 }}
-    disabled={!selectedSize || !jersey.stockBySize || maxQuantity === 0 || quantity > maxQuantity}
+    disabled={!selectedSize || !jersey.stockBySize || Object.keys(jersey.stockBySize || {}).length === 0 || maxQuantity === 0 || quantity > maxQuantity}
     onClick={handleAddToCart}
     className={`flex-1 flex items-center justify-center space-x-2 py-4 rounded-lg font-semibold transition ${
       selectedSize && jersey.stockBySize && maxQuantity > 0 && quantity <= maxQuantity
@@ -393,7 +393,7 @@ const resetZoom = () => {
   >
     <ShoppingCart className="w-5 h-5" />
     <span>
-      {!jersey.stockBySize ? 'Loading...' : 
+      {!jersey.stockBySize || Object.keys(jersey.stockBySize).length === 0 ? 'Fetching Stock Availability...' : 
        !selectedSize ? 'Select Size' :
        maxQuantity === 0 ? 'Out of Stock' :
        quantity > maxQuantity ? `Max ${maxQuantity} available` :

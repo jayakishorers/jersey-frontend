@@ -203,10 +203,14 @@ const App: React.FC = () => {
         return jerseysWithStock.filter(j => j.type === "Player Version");
       /* case "Master Copy":
         return jerseysWithStock.filter(j => j.type === "Master Copy"); */
+      case "Master Copy 2nd Version":
+        return jerseysWithStock.filter(j => j.type === "Master Copy 2nd Version");
       case "Sublimation":
         return jerseysWithStock.filter(j => j.type === "Sublimation");
       case "LooseFit/FiveSleeve":
         return jerseysWithStock.filter(j => j.isloosefit);
+      case "Shorts":
+        return jerseysWithStock.filter(j => j.type === "Shorts");
       default:
         return jerseysWithStock;
     }
@@ -295,6 +299,20 @@ const App: React.FC = () => {
                     wishlistedItems={wishlist}
                     onToggleWishlist={toggleWishlist}
                     onViewAll={() => handleViewAllSection("Full Kit")}
+                  />
+                </div>
+                
+                <div id="master-copy-2nd">
+                  <CategorySection
+                    title="Master Copy 2nd Version"
+                    jerseys={jerseysWithStock.filter(
+                      (j) => j.type === "Master Copy 2nd Version"
+                    )}
+                    onViewDetails={handleViewDetails}
+                    onAddToCart={handleAddToCart}
+                    wishlistedItems={wishlist}
+                    onToggleWishlist={toggleWishlist}
+                    onViewAll={() => handleViewAllSection("Master Copy 2nd Version")}
                   />
                 </div>
                 
@@ -393,6 +411,20 @@ const App: React.FC = () => {
                     wishlistedItems={wishlist}
                     onToggleWishlist={toggleWishlist}
                     onViewAll={() => handleViewAllSection("Trending")}
+                  />
+                </div>
+                
+                <div id="shorts">
+                  <CategorySection
+                    title="Shorts"
+                    jerseys={jerseysWithStock.filter(
+                      (j) => j.type === "Shorts"
+                    )}
+                    onViewDetails={handleViewDetails}
+                    onAddToCart={handleAddToCart}
+                    wishlistedItems={wishlist}
+                    onToggleWishlist={toggleWishlist}
+                    onViewAll={() => handleViewAllSection("Shorts")}
                   />
                 </div>
               </>
