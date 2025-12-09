@@ -153,7 +153,7 @@ const App: React.FC = () => {
         toast.error(`You already have the maximum available quantity (${availableStock}) in your cart!`);
         return;
       } else {
-        toast.warning(`Only ${maxAddable} more can be added. Added ${maxAddable} to cart.`);
+        toast(`Only ${maxAddable} more can be added. Added ${maxAddable} to cart.`, { icon: '⚠️' });
         addToCart(jersey, size, maxAddable);
         handleCloseModal();
       }
@@ -304,7 +304,7 @@ const App: React.FC = () => {
                 
                 <div id="master-copy-2nd">
                   <CategorySection
-                    title="Master Copy 2nd Version"
+                    title="Master Version 2nd Copy"
                     jerseys={jerseysWithStock.filter(
                       (j) => j.type === "Master Copy 2nd Version"
                     )}

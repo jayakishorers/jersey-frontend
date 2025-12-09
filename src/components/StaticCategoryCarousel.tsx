@@ -11,7 +11,7 @@ const categories = [
   { label: 'Retro Collection', targetId: 'retro-collection', image: "/retro.webp" },
   { label: 'Full Kit', targetId: 'full-kit', image: "/fullkit.jpeg" },
   { label: 'Player Version', targetId: 'player-version', image: "/mastercopy.jpeg" },
-  { label: 'Master Copy 2nd Version', targetId: 'master-copy-2nd', image: "/fullsleeve.webp" },
+  { label: 'Master Version 2nd copy', targetId: 'master-copy-2nd', image: "/fullsleeve.webp" },
   { label: 'Sublimation', targetId: 'sublimation', image: "/sublimation.jpeg" },
   { label: 'Shorts', targetId: 'shorts', image: "/shorts/2.jpg" },
   { label: 'LooseFit/FiveSleeve', targetId: 'loose-fit', image: "/playerversion.jpeg" },
