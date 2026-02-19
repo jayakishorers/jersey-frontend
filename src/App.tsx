@@ -203,8 +203,8 @@ const App: React.FC = () => {
         return jerseysWithStock.filter(j => j.type === "Player Version");
       /* case "Master Copy":
         return jerseysWithStock.filter(j => j.type === "Master Copy"); */
-      case "Master Copy 2nd Version":
-        return jerseysWithStock.filter(j => j.type === "Master Copy 2nd Version");
+      case "Master Copy 1st Version":
+        return jerseysWithStock.filter(j => j.type === "Master Copy 1st Version");
       case "Sublimation":
         return jerseysWithStock.filter(j => j.type === "Sublimation");
       case "LooseFit/FiveSleeve":
@@ -304,9 +304,9 @@ const App: React.FC = () => {
                 
                 <div id="master-copy-2nd">
                   <CategorySection
-                    title="Master Version 2nd Copy"
+                    title="Master Version 1st Copy"
                     jerseys={jerseysWithStock.filter(
-                      (j) => j.type === "Master Copy 2nd Version"
+                      (j) => j.type === "Master Copy 1st Version"
                     )}
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
@@ -341,6 +341,20 @@ const App: React.FC = () => {
                     wishlistedItems={wishlist}
                     onToggleWishlist={toggleWishlist}
                     onViewAll={() => handleViewAllSection("LooseFit/FiveSleeve")}
+                  />
+                </div>
+                
+                <div id="shorts">
+                  <CategorySection
+                    title="Shorts"
+                    jerseys={jerseysWithStock.filter(
+                      (j) => j.type === "Shorts"
+                    )}
+                    onViewDetails={handleViewDetails}
+                    onAddToCart={handleAddToCart}
+                    wishlistedItems={wishlist}
+                    onToggleWishlist={toggleWishlist}
+                    onViewAll={() => handleViewAllSection("Shorts")}
                   />
                 </div>
                 
@@ -411,20 +425,6 @@ const App: React.FC = () => {
                     wishlistedItems={wishlist}
                     onToggleWishlist={toggleWishlist}
                     onViewAll={() => handleViewAllSection("Trending")}
-                  />
-                </div>
-                
-                <div id="shorts">
-                  <CategorySection
-                    title="Shorts"
-                    jerseys={jerseysWithStock.filter(
-                      (j) => j.type === "Shorts"
-                    )}
-                    onViewDetails={handleViewDetails}
-                    onAddToCart={handleAddToCart}
-                    wishlistedItems={wishlist}
-                    onToggleWishlist={toggleWishlist}
-                    onViewAll={() => handleViewAllSection("Shorts")}
                   />
                 </div>
               </>

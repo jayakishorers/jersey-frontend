@@ -258,21 +258,22 @@ const resetZoom = () => {
 
                   {/* Info Grid */}
                   <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div><span className="text-gray-500">Type:</span> <p className="font-medium">{jersey.type}</p></div>
-                    <div><span className="text-gray-500">Material:</span> <p className="font-medium">{jersey.material}</p></div>
-                    <div><span className="text-gray-500">Category:</span> <p className="font-medium">{jersey.category}</p></div>
-                    <div><span className="text-gray-500">Full Kit:</span> <p className="font-medium">{jersey.fullKit ? 'Yes' : 'No'}</p></div>
+                    <div><span className="text-gray-900 font-semibold">Type:</span> <p className="text-gray-700">{jersey.type}</p></div>
+                    <div><span className="text-gray-900 font-semibold">Material:</span> <p className="text-gray-700">{jersey.material}</p></div>
+                    <div><span className="text-gray-900 font-semibold">Category:</span> <p className="text-gray-700">{jersey.category}</p></div>
+                    <div><span className="text-gray-900 font-semibold">Full Kit:</span> <p className="text-gray-700">{jersey.fullKit ? 'Yes' : 'No'}</p></div>
+                    <div><span className="text-gray-900 font-semibold">Embroidery:</span> <p className="text-gray-700">{(jersey.type === 'Master Copy 1st Version' || jersey.fullKit) ? 'Yes' : 'No'}</p></div>
                   </div>
 
                   {/* Fit */}
                   <div>
-                    <span className="text-gray-500">Fit:</span> <p className="font-medium">{jersey.isloosefit ? 'Five Sleeve/Loosefit' : 'Regular fit'}</p>
+                    <span className="text-gray-900 font-semibold">Fit:</span> <p className="text-gray-700">{jersey.isloosefit ? 'Five Sleeve/Loosefit' : 'Regular fit'}</p>
                   </div>
 
                     {/* Player Name */}
 <div>
   <h3 className="text-lg font-semibold mb-3">Player Name</h3>
-  <p className="text-gray-700 text-base font-medium">
+  <p className="text-gray-700 text-base">
     {jersey.PlayerName || 'None'}
   </p>
 </div>
