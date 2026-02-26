@@ -262,7 +262,7 @@ const resetZoom = () => {
                     <div><span className="text-gray-900 font-semibold">Material:</span> <p className="text-gray-700">{jersey.material}</p></div>
                     <div><span className="text-gray-900 font-semibold">Category:</span> <p className="text-gray-700">{jersey.category}</p></div>
                     <div><span className="text-gray-900 font-semibold">Full Kit:</span> <p className="text-gray-700">{jersey.fullKit ? 'Yes' : 'No'}</p></div>
-                    <div><span className="text-gray-900 font-semibold">Embroidery:</span> <p className="text-gray-700">{(jersey.type === 'Master Copy 1st Version' || jersey.fullKit) ? 'Yes' : 'No'}</p></div>
+                    <div><span className="text-gray-900 font-semibold">Embroidery:</span> <p className="text-gray-700">{(jersey.type === 'Master Version 1st Copy' || jersey.fullKit) ? 'Yes' : 'No'}</p></div>
                   </div>
 
                   {/* Fit */}

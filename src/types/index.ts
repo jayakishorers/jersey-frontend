@@ -3,7 +3,7 @@ export interface Jersey {
   name: string;
   club: string;
   country?: string;
-  type:  | 'Master Copy' | 'Sublimation' | 'Retro' | 'Full Kit'|'Player Version'|'Shorts'|'Master Copy 1st Version';
+  type:  | 'Master Copy' | 'Sublimation' | 'Retro' | 'Full Kit'|'Player Version'|'Shorts'|'Master Version 1st Copy';
   material: 'Polyester' | 'Mesh' | 'Dri-FIT' | 'Cotton'|'DotKnit cloth';
   category: 'Club' | 'Country' ;
   fullKit: boolean;

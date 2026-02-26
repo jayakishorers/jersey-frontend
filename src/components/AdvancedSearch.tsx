@@ -42,7 +42,7 @@
       'New Arrivals',
       'Player Version',
       'Full Kit',
-      'Master Copy 2nd Version',
+      'Master Version 1st Copy',
       'Sublimation',
       'LooseFit/FiveSleeve',
       'Best Sellers', 
@@ -59,8 +59,8 @@
         // Clear corresponding filters when deselecting section
         if (section === 'LooseFit/FiveSleeve') {
           setFilters(prev => ({ ...prev, loosefit: [] }));
-        } else if (section === 'Master Copy 2nd Version') {
-          setFilters(prev => ({ ...prev, type: prev.type.filter(t => t !== 'Master Copy 2nd Version') }));
+        } else if (section === 'Master Version 1st Copy') {
+          setFilters(prev => ({ ...prev, type: prev.type.filter(t => t !== 'Master Version 1st Copy') }));
         } else if (section === 'Shorts') {
           setFilters(prev => ({ ...prev, type: prev.type.filter(t => t !== 'Shorts') }));
         }
@@ -69,8 +69,8 @@
         // Auto-select corresponding filters when selecting section
         if (section === 'LooseFit/FiveSleeve') {
           setFilters(prev => ({ ...prev, loosefit: ['Yes'] }));
-        } else if (section === 'Master Copy 2nd Version') {
-          setFilters(prev => ({ ...prev, type: [...prev.type.filter(t => t !== 'Master Copy 2nd Version'), 'Master Copy 2nd Version'] }));
+        } else if (section === 'Master Version 1st Copy') {
+          setFilters(prev => ({ ...prev, type: [...prev.type.filter(t => t !== 'Master Version 1st Copy'), 'Master Version 1st Copy'] }));
         } else if (section === 'Shorts') {
           setFilters(prev => ({ ...prev, type: [...prev.type.filter(t => t !== 'Shorts'), 'Shorts'] }));
         }
@@ -101,8 +101,8 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
       if (sectionTitle === 'LooseFit/FiveSleeve') {
         setFilters(prev => ({ ...prev, loosefit: ['Yes'] }));
-      } else if (sectionTitle === 'Master Copy 2nd Version') {
-        setFilters(prev => ({ ...prev, type: ['Master Copy 2nd Version'] }));
+      } else if (sectionTitle === 'Master Version 1st Copy') {
+        setFilters(prev => ({ ...prev, type: ['Master Version 1st Copy'] }));
       } else if (sectionTitle === 'Shorts') {
         setFilters(prev => ({ ...prev, type: ['Shorts'] }));
       }

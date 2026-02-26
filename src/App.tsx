@@ -203,8 +203,8 @@ const App: React.FC = () => {
         return jerseysWithStock.filter(j => j.type === "Player Version");
       /* case "Master Copy":
         return jerseysWithStock.filter(j => j.type === "Master Copy"); */
-      case "Master Copy 1st Version":
-        return jerseysWithStock.filter(j => j.type === "Master Copy 1st Version");
+      case "Master Version 1st Copy":
+        return jerseysWithStock.filter(j => j.type === "Master Version 1st Copy");
       case "Sublimation":
         return jerseysWithStock.filter(j => j.type === "Sublimation");
       case "LooseFit/FiveSleeve":
@@ -306,13 +306,13 @@ const App: React.FC = () => {
                   <CategorySection
                     title="Master Version 1st Copy"
                     jerseys={jerseysWithStock.filter(
-                      (j) => j.type === "Master Copy 1st Version"
+                      (j) => j.type === "Master Version 1st Copy"
                     )}
                     onViewDetails={handleViewDetails}
                     onAddToCart={handleAddToCart}
                     wishlistedItems={wishlist}
                     onToggleWishlist={toggleWishlist}
-                    onViewAll={() => handleViewAllSection("Master Copy 2nd Version")}
+                    onViewAll={() => handleViewAllSection("Master Version 1st Copy")}
                   />
                 </div>
                 
