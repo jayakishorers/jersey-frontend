@@ -222,7 +222,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
         pincode: formData.pincode,
         ...(formData.postOffice && { postOffice: formData.postOffice }),
       },
-      paymentMethod: 'cash_on_delivery',
+      paymentMethod: 'prepaid',
       notes: sanitizedNotes,
     };
 
@@ -254,7 +254,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
             price: item.jersey.price
           })),
           totalAmount: finalTotal,
-          paymentMethod: 'Cash on Delivery',
+          paymentMethod: 'Prepaid',
           notes: sanitizedNotes
         };
         
@@ -544,7 +544,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
               </div>
             </div>
             
-            <p className="text-sm text-gray-600 mt-2">Cash on Delivery</p>
+
           </div>
 
           {/* Place Order Button */}
