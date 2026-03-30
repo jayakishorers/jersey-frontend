@@ -288,6 +288,17 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({
     } catch (err: any) {
       setLoading(false);
       console.error(err.response || err);
+      if (err?.response?.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.setItem("checkoutForm", JSON.stringify(formData));
+        navigate('/signin', {
+          state: {
+            from: location.pathname,
+            message: 'Your session has expired. Please sign in again.',
+          },
+        });
+        return;
+      }
       toast.error(
         err?.response?.data?.message ||
           'Something went wrong while placing the order.'
