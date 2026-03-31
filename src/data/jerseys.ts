@@ -2336,7 +2336,7 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   fullKit: false
 },
 {
-  id: '126',
+  id: '144',
   name: 'Argentina Messi 10 2026 Away Black',
   club: 'Argentina',
   country: 'Argentina',
@@ -2355,7 +2355,7 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   fullKit: false
 },
 {
-  id: '127',
+  id: '145',
   name: 'Argentina Messi 10 2016 Away Black',
   club: 'Argentina',
   country: 'Argentina',
@@ -2374,7 +2374,7 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   fullKit: false
 },
 {
-  id: '128',
+  id: '146',
   name: 'Real Madrid Ronaldo 10 2013 Away Black',
   club: 'Real Madrid',
   type: 'Sublimation',
@@ -2392,7 +2392,7 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   fullKit: false
 },
 {
-  id: '129',
+  id: '147',
   name: 'France Zidane 10 Home Blue',
   club: 'France',
   country: 'France',
@@ -2411,7 +2411,7 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   fullKit: false
 },
 {
-  id: '130',
+  id: '148',
   name: 'France Zidane 10 Away White',
   club: 'France',
   country: 'France',
@@ -2430,7 +2430,7 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   fullKit: false
 },
 {
-  id: '131',
+  id: '149',
   name: 'CSK Dhoni 7 2026 Home Yellow',
   club: 'CSK',
   type: 'Sublimation',
@@ -2448,7 +2448,7 @@ description: 'Official Barcelona  jersey with premium Dri-FIT technology.',
   fullKit: false
 },
 {
-  id: '132',
+  id: '150',
   name: 'RCB Virat 18 2026 Home Red Collar with Zip',
   club: 'RCB',
   type: 'Sublimation',
